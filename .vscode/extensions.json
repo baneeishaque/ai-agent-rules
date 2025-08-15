@@ -1,0 +1,50 @@
+{
+  "recommendations": [
+    "donjayamanne.githistory",
+    "eamodio.gitlens",
+    "github.vscode-pull-request-github",
+    "hashhar.gitattributes",
+    "mhutchie.git-graph",
+    "moshfeu.compare-folders",
+    "moshfeu.diff-merge",
+    "piotrpalarz.vscode-gitignore-generator",
+    "pkief.material-icon-theme",
+    "ryu1kn.partial-diff",
+    "semanticdiff.semanticdiff",
+    "sleistner.vscode-fileutils",
+    "vscode.configuration-editing",
+    "vscode.git",
+    "vscode.git-base",
+    "vscode.json",
+    "vscode.json-language-features",
+    "vscode.markdown",
+    "vscode.markdown-language-features",
+    "vscode.merge-conflict",
+    "vscode.references-view",
+    "vscode.search-result",
+    "vscode.terminal-suggest"
+  ],
+  "onlyVscodeSupported": [
+    "github.copilot",
+    "github.copilot-chat"
+  ],
+  "onlyGitpodSupported": [
+    "lang2hong.githd",
+    "solomonkinard.git-files"
+  ],
+  "additionalRecommendations": [
+    "continue.continue",
+    "foxundermoon.shell-format",
+    "gocodeo.gocodeo",
+    "google.geminicodeassist",
+    "taichikubo.dired-plus"
+  ],
+  "onlyDesktopSupported": [
+    "quentinguidee.gitignore-ultimate"
+  ],
+  "gitpodAlternativeRecommendations": [
+    "fittentech.fitten-code",
+    "nick-rudenko.back-n-forth",
+    "vscode.github-authentication"
+  ]
+}
