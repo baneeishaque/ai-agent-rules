@@ -55,19 +55,22 @@ This file documents all personal rules configured in Warp AI Agent for backup an
 - Automatic codebase search capability when navigating to any git repo
 - No need to manually configure codebase indexing for each project
 
-### 5. GitHub Repos: Auto-clone to sample/path with gh CLI
+### 5. Git Repos: Auto-clone to sample/path with CLI tools
 **Rule ID:** `SAMPLE_RULE_ID_5`
-**Description:** When cloning GitHub repositories, always use 'gh repo clone' command instead of 'git clone' to leverage GitHub CLI authentication and features. Clone all repositories to ~/sample/path/ directory following the hyphenated naming convention (matching the original repo name). Use 'gh repo list' or 'gh search repos' to find repositories before cloning.
+**Description:** When cloning repositories, always use platform-specific CLI tools instead of 'git clone' to leverage authentication and features. For GitHub repositories, use 'gh repo clone'. For GitLab repositories, use 'glab repo clone'. Clone all repositories to ~/sample/path/ directory following the hyphenated naming convention (matching the original repo name). Use respective search commands ('gh repo list', 'gh search repos', 'glab repo list', 'glab repo search') to find repositories before cloning.
 
-**Key Behaviors:**
-- Use `gh repo clone` instead of `git clone`
-- Default location: `~/sample/path/`
-- Maintain original repository naming
-- Leverage GitHub CLI authentication
+**Platform-Specific Behaviors:**
+- **GitHub**: Use `gh repo clone` instead of `git clone`
+- **GitLab**: Use `glab repo clone` instead of `git clone`
+- **Default location**: `~/sample/path/`
+- **Consistent naming**: Maintain original repository naming (hyphenated)
+- **CLI authentication**: Leverage platform-specific authentication
 
 **Usage Examples:**
-- `gh repo clone user/repository-name` → `~/sample/path/repository-name/`
-- Search first: `gh repo list` or `gh search repos`
+- **GitHub**: `gh repo clone user/repository-name` → `~/sample/path/repository-name/`
+- **GitLab**: `glab repo clone group/project-name` → `~/sample/path/project-name/`
+- **Search**: `gh repo list`, `gh search repos`, `glab repo list`, `glab repo search keyword`
+- **Self-hosted**: Configure with `glab auth login --hostname your-gitlab.com`
 
 ### 6. Brew: Prefer Head/Source Builds Over Binaries
 **Rule ID:** `SAMPLE_RULE_ID_6`
@@ -87,7 +90,7 @@ This file documents all personal rules configured in Warp AI Agent for backup an
 3. Always use verbose logging: `--verbose` flag
 
 ### 7. Rule Management: Documentation Sync Workflow
-**Rule ID:** `[To be assigned by Warp]`
+**Rule ID:** `SAMPLE_RULE_ID_7`
 **Description:** Whenever the user mentions adding or modifying a Warp AI rule, always remind them to update the agent-rules.md documentation. The workflow is: 1) Help craft the rule name and description, 2) User adds/modifies rule in Warp first, 3) Remind user to say "Update agent-rules.md with the new/modified rule", 4) Update the markdown file and commit with conventional commit message. This ensures documentation stays synchronized with actual Warp rules.
 
 **Workflow Steps:**
@@ -101,22 +104,6 @@ This file documents all personal rules configured in Warp AI Agent for backup an
 - "New rule: when I do X, you should Y"
 - "Let's create a rule that..."
 - "Modify the rule for..."
-
-### 8. GitLab Repos: Auto-clone to lab-data with glab CLI
-**Rule ID:** `[To be assigned by Warp]`
-**Description:** When cloning GitLab repositories, always use 'glab repo clone' command instead of 'git clone' to leverage GitLab CLI authentication and features. Clone all repositories to ~/lab-data/ directory following the hyphenated naming convention (matching the original repo name). Use 'glab repo list' or 'glab repo search' to find repositories before cloning.
-
-**Key Behaviors:**
-- Use `glab repo clone` instead of `git clone` for GitLab repos
-- Default location: `~/lab-data/`
-- Maintain original repository naming (hyphenated)
-- Leverage GitLab CLI authentication
-- Works with GitLab.com and self-hosted instances
-
-**Usage Examples:**
-- `glab repo clone group/project-name` → `~/lab-data/project-name/`
-- Search first: `glab repo list` or `glab repo search keyword`
-- Self-hosted: Configure with `glab auth login --hostname your-gitlab.com`
 
 ## Configured Codebases
 
@@ -143,4 +130,4 @@ This file documents all personal rules configured in Warp AI Agent for backup an
 ## Last Updated
 **Date:** 2025-08-15
 **By:** sample-user
-**Total Rules:** 8
+**Total Rules:** 7
