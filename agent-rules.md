@@ -105,6 +105,10 @@ This file documents all personal rules configured in Warp AI Agent for backup an
 - "Let's create a rule that..."
 - "Modify the rule for..."
 
+### 8. Repository Search: Check GitHub First, Then GitLab
+**Rule ID:** `SAMPLE_RULE_ID_8`
+**Description:** When explicitly asked to clone repositories without specifying the hosting provider, always check GitHub first using 'gh repo list' or 'gh search repos', then check GitLab using 'glab repo list' or 'glab repo search'. Once found, use the appropriate CLI tool (gh repo clone or glab repo clone) to clone to ~/lab-data/ following the standard naming conventions.
+
 ## Configured Codebases
 
 ### Sample_Scripts
