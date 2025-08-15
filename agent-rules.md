@@ -13,16 +13,64 @@ This file documents all personal rules configured in Warp AI Agent for backup an
 - `flutter build ios` → `flutter build ios --verbose`
 - `flutter build web` → `flutter build web --verbose`
 
-### 2. Git Repository: Auto-index Codebases
+### 2. Git Repository Creation: Standard Structure and Documentation
 **Rule ID:** `SAMPLE_RULE_ID_2`
+**Description:** When creating new git repositories, use hyphenated folder names (e.g., Sample-Repo, My-Project-Name) unless explicitly stated otherwise (some tools like Dart packages may require different naming strategies). Always create repositories in ~/sample/path/ directory unless specified otherwise. When creating a repository, automatically generate a comprehensive README.md file following GitHub standards with maximum details about the repository/project, and commit it with a proper conventional commit message.
+
+**Naming Convention:**
+- Default: `Hyphenated-Names` (e.g., `Sample-Repo`, `Flutter-Todo-App`)
+- Location: `~/sample/path/Project-Name/`
+- Exceptions: Tool-specific requirements (e.g., Dart packages may need underscores)
+
+**Auto-Generated Files:**
+- `README.md` with GitHub standards and comprehensive project details
+- Initial commit with proper conventional commit message
+
+**Examples:**
+- `~/sample/path/React-Component-Library/`
+- `~/sample/path/API-Documentation-Tool/`
+- `~/sample/path/Flutter-Mobile-App/`
+
+### 3. Scripts: PowerShell Management, Standards, and Execution
+**Rule ID:** `SAMPLE_RULE_ID_3`
+**Description:** When "script" is mentioned, default to PowerShell (.ps1) scripts unless explicitly stated otherwise (e.g., "bash script", "python script"). All PowerShell scripts must be saved to ~/sample/path/Sample_Scripts/ repository and committed with proper conventional commit messages. Scripts must be compatible with Windows PowerShell 5.1+ and PowerShell Core 7+. Execute PowerShell scripts using pwsh-preview as the preferred executable, with pwsh as fallback if pwsh-preview is not available. This applies to all script execution contexts including direct terminal commands, shell configuration files (zsh/bash), and automated workflows. Always include proper documentation headers with .SYNOPSIS, .DESCRIPTION, .PARAMETER, and .EXAMPLE sections.
+
+**Key Behaviors:**
+- "script" = PowerShell (.ps1) by default
+- Repository: `~/sample/path/Sample_Scripts/`
+- Execution priority: `pwsh-preview` → `pwsh` (fallback)
+- Cross-platform compatibility required
+- Comprehensive documentation mandatory
+
+**Usage Examples:**
+- "Create a script" → PowerShell script created
+- "Run script from zsh" → `pwsh-preview -File script.ps1`
+- "Create bash script" → Bash script (explicit override)
+
+### 4. Git Repository: Auto-index Codebases
+**Rule ID:** `SAMPLE_RULE_ID_4`
 **Description:** When the user's current working directory (pwd) is within a git repository, automatically treat it as an indexed codebase for search_codebase tool usage, even if not explicitly listed in the codebases configuration.
 
 **Benefits:**
 - Automatic codebase search capability when navigating to any git repo
 - No need to manually configure codebase indexing for each project
 
-### 3. Brew: Prefer Head/Source Builds Over Binaries
-**Rule ID:** `SAMPLE_RULE_ID_3`
+### 5. GitHub Repos: Auto-clone to sample/path with gh CLI
+**Rule ID:** `SAMPLE_RULE_ID_5`
+**Description:** When cloning GitHub repositories, always use 'gh repo clone' command instead of 'git clone' to leverage GitHub CLI authentication and features. Clone all repositories to ~/sample/path/ directory following the hyphenated naming convention (matching the original repo name). Use 'gh repo list' or 'gh search repos' to find repositories before cloning.
+
+**Key Behaviors:**
+- Use `gh repo clone` instead of `git clone`
+- Default location: `~/sample/path/`
+- Maintain original repository naming
+- Leverage GitHub CLI authentication
+
+**Usage Examples:**
+- `gh repo clone user/repository-name` → `~/sample/path/repository-name/`
+- Search first: `gh repo list` or `gh search repos`
+
+### 6. Brew: Prefer Head/Source Builds Over Binaries
+**Rule ID:** `SAMPLE_RULE_ID_6`
 **Description:** User prefers to install the latest head version/source version (if head not found) of formula/cask using brew, ensuring it is not the binary version. Use https://formulae.brew.sh/formula/X, https://github.com/Homebrew/homebrew-core/blob/*/Formula/*/X.rb (will get actual url from first URL) & https://formulae.brew.sh/api/formula/X.json URLs for more details. Similarly https://formulae.brew.sh/cask/X, https://github.com/Homebrew/homebrew-cask/blob/*/Casks/*/X.rb & https://formulae.brew.sh/api/cask/X.json in the case of Casks. Since the build from source is multi step process, ensure maximum logging from brew.
 
 **Reference URLs for Research:**
@@ -38,38 +86,29 @@ This file documents all personal rules configured in Warp AI Agent for backup an
 2. Source build (if head not available): `brew install --build-from-source {package-name}`
 3. Always use verbose logging: `--verbose` flag
 
-### 4. Git Repos: Standard Structure and Documentation
-**Rule ID:** `7RWaADsphxCzE61dgrMFEr`
-**Description:** When creating new git repositories, use hyphenated folder names (e.g., Warp-AI-Rules, My-Project-Name) unless explicitly stated otherwise (some tools like Dart packages may require different naming strategies). Always create repositories in ~/lab-data/ directory unless specified otherwise. When creating a repository, automatically generate a comprehensive README.md file following GitHub standards with maximum details about the repository/project, and commit it with a proper conventional commit message.
-
-**Naming Convention:**
-- Default: `Hyphenated-Names` (e.g., `Warp-AI-Rules`, `Flutter-Todo-App`)
-- Location: `~/lab-data/Project-Name/`
-- Exceptions: Tool-specific requirements (e.g., Dart packages may need underscores)
-
-**Auto-Generated Files:**
-- `README.md` with GitHub standards and comprehensive project details
-- Initial commit with proper conventional commit message
-
-**Examples:**
-- `~/lab-data/React-Component-Library/`
-- `~/lab-data/API-Documentation-Tool/`
-- `~/lab-data/Flutter-Mobile-App/`
-
 ## Configured Codebases
 
+### Sample_Scripts
+**Path:** `/sample/path/Sample_Scripts`
+**Status:** Indexed and searchable (auto-indexed)
+
+### Sample-Rules
+**Path:** `/sample/path/Sample-Rules`
+**Status:** Indexed and searchable (auto-indexed)
+
 ### sample-app
-**Path:** `/path/to/sample-app`
-**Status:** Indexed and searchable
+**Path:** `/sample/path/sample-app`
+**Status:** Indexed and searchable (explicitly configured)
 
 ## Rule Management
 
 - **Location:** Rules are stored in Warp's SQLite database
 - **Sync:** Automatically synced with Warp account
 - **Backup:** This markdown file serves as version-controlled backup
-- **Updates:** Remember to update this file when rules are modified
+- **Auto-sync:** Script runs on Warp startup and available via `sync-warp-rules` command
+- **Updates:** Use "Update agent-rules.md with current rules" to sync changes
 
 ## Last Updated
 **Date:** 2025-08-15
 **By:** sample-user
-**Total Rules:** 4
+**Total Rules:** 6
