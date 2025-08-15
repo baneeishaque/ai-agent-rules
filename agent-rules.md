@@ -38,6 +38,24 @@ This file documents all personal rules configured in Warp AI Agent for backup an
 2. Source build (if head not available): `brew install --build-from-source {package-name}`
 3. Always use verbose logging: `--verbose` flag
 
+### 4. Git Repos: Standard Structure and Documentation
+**Rule ID:** `7RWaADsphxCzE61dgrMFEr`
+**Description:** When creating new git repositories, use hyphenated folder names (e.g., Warp-AI-Rules, My-Project-Name) unless explicitly stated otherwise (some tools like Dart packages may require different naming strategies). Always create repositories in ~/lab-data/ directory unless specified otherwise. When creating a repository, automatically generate a comprehensive README.md file following GitHub standards with maximum details about the repository/project, and commit it with a proper conventional commit message.
+
+**Naming Convention:**
+- Default: `Hyphenated-Names` (e.g., `Warp-AI-Rules`, `Flutter-Todo-App`)
+- Location: `~/lab-data/Project-Name/`
+- Exceptions: Tool-specific requirements (e.g., Dart packages may need underscores)
+
+**Auto-Generated Files:**
+- `README.md` with GitHub standards and comprehensive project details
+- Initial commit with proper conventional commit message
+
+**Examples:**
+- `~/lab-data/React-Component-Library/`
+- `~/lab-data/API-Documentation-Tool/`
+- `~/lab-data/Flutter-Mobile-App/`
+
 ## Configured Codebases
 
 ### sample-app
@@ -54,4 +72,4 @@ This file documents all personal rules configured in Warp AI Agent for backup an
 ## Last Updated
 **Date:** 2025-08-15
 **By:** sample-user
-**Total Rules:** 3
+**Total Rules:** 4
