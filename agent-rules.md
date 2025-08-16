@@ -105,9 +105,39 @@ This file documents all personal rules configured in Warp AI Agent for backup an
 - "Let's create a rule that..."
 - "Modify the rule for..."
 
-### 8. Repository Search: Check GitHub First, Then GitLab
+### 8. Repository Search: Multi-Platform Discovery and Smart Cloning
 **Rule ID:** `SAMPLE_RULE_ID_8`
 **Description:** When explicitly asked to clone repositories without specifying the hosting provider, always check GitHub first using 'gh repo list' or 'gh search repos', then check GitLab using 'glab repo list' or 'glab repo search'. Once found, use the appropriate CLI tool (gh repo clone or glab repo clone) to clone to ~/lab-data/ following the standard naming conventions.
+
+**Search Priority Order:**
+1. **GitHub First** - Use `gh repo list` or `gh search repos [keyword]`
+2. **GitLab Second** - Use `glab repo list` or `glab repo search [keyword]`
+3. **User's Own Repos** - Check personal/organization repositories first
+4. **Public Search** - Search public repositories if not found in personal repos
+
+**Search Commands:**
+- **GitHub Personal**: `gh repo list` (user's own repos)
+- **GitHub Search**: `gh search repos [keyword] --limit 10`
+- **GitLab Personal**: `glab repo list`
+- **GitLab Search**: `glab repo search [keyword]`
+
+**Cloning Workflow:**
+- **Destination**: Always clone to `~/lab-data/` directory
+- **Naming**: Preserve original repository name (hyphenated format preferred)
+- **GitHub**: Use `gh repo clone [user/repo]` for authentication and features
+- **GitLab**: Use `glab repo clone [group/project]` for authentication and features
+- **Fallback**: If CLI tools fail, use `git clone [url]` as last resort
+
+**Enhanced Features:**
+- **Interactive Selection**: When multiple matches found, present options to user
+- **Repository Info**: Show basic repo info (stars, description, language) before cloning
+- **Branch Selection**: Clone default branch unless specified otherwise
+- **Authentication**: Leverage CLI tool authentication (gh auth, glab auth)
+
+**Usage Examples:**
+- `gh search repos flutter todo --limit 5` → Show top 5 Flutter todo repos
+- `gh repo clone user/awesome-project` → `~/lab-data/awesome-project/`
+- `glab repo clone group/mobile-app` → `~/lab-data/mobile-app/`
 
 ## Configured Codebases
 
