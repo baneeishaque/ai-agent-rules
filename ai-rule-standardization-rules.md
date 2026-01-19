@@ -44,6 +44,7 @@ Rule files must follow a predictable, industrialized structure to maximize reada
 3. **Section Dividers**: Use `***` (horizontal rules) between major H3 sections.
 4. **Numbered Sections**: Use H3 headers with sequential numbering (e.g., `### 1. Preparation & Context Assembly`).
 5. **Sub-sections**: Use H4 for specific technical details (e.g., `#### 1.1 Command Syntax`).
+6. **Related Conversations**: Use an H3 section at the bottom for traceability (e.g., `### 6. Related Conversations & Traceability`), linking to permanent session logs in the `docs/conversations/` directory.
 
 ***
 
@@ -53,7 +54,19 @@ The content must balance conciseness with technical depth:
 
 - **Zero Noise**: Avoid introductory fluff, "happy to help" phrases, or redundant explanations.
 - **Pedagogical Snippets**: Use code blocks to demonstrate correct command usage or file formats.
-- **Prohibited Behaviors**: Explicitly list actions the agent is forbidden from taking.
+- **Industrial Folder Structure**: For feature-level or architecture rules, the rule MUST follow a standardized directory structure:
+    - `/types.ts`: Centralized Enums and Interfaces (SSOT).
+    - `/config.json`: Environmental/Externalized configuration.
+    - `/engine.ts`: Main logic or bridge.
+    - `/docs/`: Implementation plans and technical goal documents.
+- **Context Discovery Protocol**: Rules MUST mandate that the assistant:
+    1. **Identifies Context**: Detect build tools (Vite/CRA), frameworks (React/Vue), and identifiers (Email/PubKey).
+    2. **Confirms Context**: Explicitly ask the user to confirm the detected environment before proceeding.
+- **SSOT (Single Source of Truth)**: Rules MUST mandate centralized Enums for any inter-process (Worker) or inter-component communication.
+- **Traceability Portability**: Permanent session logs MUST be stored in `ai-agent-rules/conversations/` to ensure the rule set remains a self-contained, portable unit.
+- **Architectural Samples (PoC)**: Rules MUST link to high-fidelity reference implementations (templates) rather than just scripts.
+- **Performance Abstraction**: Mandate backgrounding (Workers/Threads) for all heavy logic (Crypto/Network) to ensure 60 FPS UI stability.
+- **Storage Logic Hierarchy**: Rules MUST provide a selection logic for storage (Relational -> NoSQL -> File) based on problem context.
 - **Mandatory Protocols**: Use clear, imperative language (e.g., "The agent MUST...", "The agent is BLOCKED from...").
 
 ***

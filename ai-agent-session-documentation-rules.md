@@ -17,7 +17,7 @@ Regardless of whether the document is public or private, do not include any unre
 
 ## 2. Documentation Protocol (Sensitive Data & Relevance)
 
-- **Session Log Location:** Store session logs in a dedicated folder (e.g., `docs/conversations/`).
+- **Session Log Location**: Store session logs in a dedicated folder WITHIN the rule set (e.g., `ai-agent-rules/conversations/`) to ensure the entire rule ecosystem remains portable and self-contained.
 - **File Naming:** Use a timestamped, descriptive filename (e.g., `2025-12-27-session-topic.md`).
 - **Session Metadata:** Begin each log with metadata including date, topic/objective, and participants (if relevant).
 - **Conversation Order:** Document the session in strict chronological order, alternating user questions and agent responses. Each entry should be clearly marked as a user or agent message.
@@ -35,7 +35,7 @@ Regardless of whether the document is public or private, do not include any unre
 - **Sensitive Data Review:** Before finalizing, review the document for any sensitive or unrelated data and redact or remove as needed.
 - **Session Relevance:** Exclude unrelated execution logs, attachments, references, or next steps. Only include information directly relevant to the session’s topic and actions.
 - **Problem & Resolution:** If an issue arises (e.g., platform-specific behavior, workflow failure), document the problem, analysis, and the resolution strategy, but only if relevant to the session.
-- **Implementation Plan:** For technical changes, include a step-by-step plan and note user approval before execution, but only if relevant.
+- **Implementation Plan**: For technical changes, include or link to a permanent implementation plan (Goal Document) stored within the rule set's `/architectures/` or `/docs/` directory.
 - **Artifacts:** List only artifacts produced that are relevant and non-sensitive.
 - **Rule Compliance:** Note compliance only with rules actually applied in the session.
 - **Session Continuity:** Link sessions only if directly relevant.
