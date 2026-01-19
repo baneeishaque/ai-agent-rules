@@ -35,7 +35,7 @@ Regardless of whether the document is public or private, do not include any unre
 - **Sensitive Data Review:** Before finalizing, review the document for any sensitive or unrelated data and redact or remove as needed.
 - **Session Relevance:** Exclude unrelated execution logs, attachments, references, or next steps. Only include information directly relevant to the session’s topic and actions.
 - **Problem & Resolution:** If an issue arises (e.g., platform-specific behavior, workflow failure), document the problem, analysis, and the resolution strategy, but only if relevant to the session.
-- **Implementation Plan**: For technical changes, include or link to a permanent implementation plan (Goal Document) stored within the rule set's `/architectures/` or `/docs/` directory.
+- **Implementation Plan**: For technical changes, include or link to a permanent implementation plan (Goal Document) stored within the rule set's `/architectures/` or `/docs/` directory. The plan MUST include a step-by-step technical breakdown and a log of user approval/confirmation before execution.
 - **Artifacts:** List only artifacts produced that are relevant and non-sensitive.
 - **Rule Compliance:** Note compliance only with rules actually applied in the session.
 - **Session Continuity:** Link sessions only if directly relevant.

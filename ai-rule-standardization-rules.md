@@ -54,19 +54,22 @@ The content must balance conciseness with technical depth:
 
 - **Zero Noise**: Avoid introductory fluff, "happy to help" phrases, or redundant explanations.
 - **Pedagogical Snippets**: Use code blocks to demonstrate correct command usage or file formats.
+- **Architectural Samples (PoC)**: Rules defining complex patterns MUST link to high-fidelity reference implementations (templates) in the `/architectures/` directory. These MUST include a `package.json` for dependency transparency.
 - **Industrial Folder Structure**: For feature-level or architecture rules, the rule MUST follow a standardized directory structure:
     - `/types.ts`: Centralized Enums and Interfaces (SSOT).
-    - `/config.json`: Environmental/Externalized configuration.
-    - `/engine.ts`: Main logic or bridge.
+    - `/config.json`: Environmental/Externalized configuration to avoid hardcoded logic.
+    - `/engine.ts` or `/index.ts`: Main logic or entry point.
     - `/docs/`: Implementation plans and technical goal documents.
+    - `/*.md`: Every code file MUST have an adjacent Markdown file explaining the code line-by-line with usage scenarios.
 - **Context Discovery Protocol**: Rules MUST mandate that the assistant:
     1. **Identifies Context**: Detect build tools (Vite/CRA), frameworks (React/Vue), and identifiers (Email/PubKey).
     2. **Confirms Context**: Explicitly ask the user to confirm the detected environment before proceeding.
-- **SSOT (Single Source of Truth)**: Rules MUST mandate centralized Enums for any inter-process (Worker) or inter-component communication.
-- **Traceability Portability**: Permanent session logs MUST be stored in `ai-agent-rules/conversations/` to ensure the rule set remains a self-contained, portable unit.
-- **Architectural Samples (PoC)**: Rules MUST link to high-fidelity reference implementations (templates) rather than just scripts.
+- **SSOT (Single Source of Truth)**: Rules MUST mandate centralized Enums for any inter-process (Worker) or inter-component communication to prevent "magic string" typos.
+- **Decoupled Configuration**: Parameters likely to change (Relays, Endpoints, feature toggles) MUST be isolated in machine-readable config files (JSON preferred).
+- **Storage Logic Hierarchy**: Rules MUST provide a selection logic for storage (Relational -> NoSQL -> File -> Text) based on problem context.
 - **Performance Abstraction**: Mandate backgrounding (Workers/Threads) for all heavy logic (Crypto/Network) to ensure 60 FPS UI stability.
-- **Storage Logic Hierarchy**: Rules MUST provide a selection logic for storage (Relational -> NoSQL -> File) based on problem context.
+- **Prohibited Behaviors**: Explicitly list actions the agent is forbidden from taking (e.g., "DO NOT hardcode keys", "DO NOT block UI").
+- **Traceability Portability**: Permanent session logs MUST be stored in `ai-agent-rules/conversations/` to ensure the rule set remains a self-contained, portable unit.
 - **Mandatory Protocols**: Use clear, imperative language (e.g., "The agent MUST...", "The agent is BLOCKED from...").
 
 ***
