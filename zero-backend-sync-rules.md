@@ -6,69 +6,79 @@ category: Architecture & Sync
 
 # Zero-Backend Auto-Sync Rules
 
-This rule defines the standard protocol for cross-device data synchronization in environments without a backend server. It ensures 100% backgrounded, invisible, and secure sync by bridging devices via a decentralized "Central Buffer."
+This rule defines the standard protocol for cross-device data synchronization in environments where a traditional backend is unavailable or involvement is prohibited. It ensures 100% backgrounded, invisible, and secure sync by bridging devices via a decentralized "Central Buffer."
 
 ***
 
 ### 1. Context Discovery & Confirmation (Mandatory)
 
-Before implementation, the assistant MUST perform the following discovery steps and obtain user confirmation for each:
+Before implementation, the assistant MUST perform the following discovery steps and obtain explicit user confirmation for each. This ensures the chosen technology stack fits the specific context:
 
-1.  **Platform Environment**: Detect the build tool (e.g., Vite, Webpack, CRA) and framework (e.g., React, Vue, Flutter).
-2.  **Unique Identifier (Identity)**: Identify the stable identifier available in the session (e.g., User Email, PubKey). 
-    - **Note**: Identifiers may be compound (e.g., `user_id + platform_id`).
-3.  **Storage Context**: Evaluate the data complexity and choose the appropriate storage layer:
-    - **Relational/Reactive** (Preferred): RxDB with IndexedDB.
+1.  **Platform Environment**: Detect the build tool (e.g., Vite, Webpack, CRA) and framework (e.g., React, Vue).
+    - **Industry Standard Example**: For CRA, we use **CRACO** to inject Webpack's `wasm-loader`. For Vite, we use appropriate WASM plugins.
+2.  **Unique Identifier (Identity)**: Identify the stable identifier already available in the app session.
+    - **Note**: The identifier may be simple (e.g., Email) or compound (e.g., `user_id + platform_salt`). The assistant MUST propose the identifier and the user MUST confirm.
+3.  **Storage Context**: Evaluate data complexity and choose the best-fit storage layer based on discussion:
+    - **Relational/Reactive** (Preferred for complex apps): RxDB with IndexedDB.
     - **NoSQL**: PouchDB / Simple IndexedDB.
-    - **File-based**: JSON/YAML (for simple flat settings).
+    - **File-based**: JSON, YAML, or CSV (Chosen according to context and discussion).
 
 ***
 
 ### 2. Core Architecture (Industrial SSOT)
 
-Implementations MUST follow the industrial folder structure to ensure maintainability and Single Source of Truth ([Reference Architecture Implementation](./architectures/sync/)):
+Implementations MUST follow the industrial folder structure to ensure maintainability and Single Source of Truth ([Reference Architecture Implementation](./architectures/sync/)).
 
 #### 2.1 Standard Directory Structure
-- `types.ts`: Enums for all inter-process message types and data interfaces.
-- `config.json`: Decoupled configuration for relays, salt, and constants. **Hardcoding relays in code is PROHIBITED.**
-- `engine.ts`: Main thread bridge and lifecycle manager.
-- `worker/index.ts`: Background thread logic (Web Worker or system equivalent).
-- `worker/crypto.asm.ts`: AssemblyScript (WASM) logic for identity hardening.
+- `types.ts`: Enums for all inter-process message types and data interfaces ([Explainer](./architectures/sync/types.ts.md)).
+- `config.json`: Decoupled configuration for relays, salt, and constants. **Hardcoding relays in logic is PROHIBITED.** ([Explainer](./architectures/sync/config.json.md)).
+- `engine.ts`: Main thread bridge and lifecycle manager ([Explainer](./architectures/sync/engine.ts.md)).
+- `worker/index.ts`: Background thread logic (Web Worker) ([Explainer](./architectures/sync/worker/index.ts.md)).
+- `worker/crypto.asm.ts`: AssemblyScript (WASM) logic for identity hardening ([Explainer](./architectures/sync/worker/crypto.asm.ts.md)).
+- `storage.ts`: Data access layer (RxDB/NoSQL/File) ([Explainer](./architectures/sync/storage.ts.md)).
 
-#### 2.2 Performance Standard (Zero UI Hangs)
-- **Background-Only**: All cryptographic hashing (PBKDF2), encryption (AES-GCM), and network operations (WebSockets) MUST reside in a background process (e.g., Web Worker).
-- The main UI thread MUST remain 100% free for rendering (60 FPS Goal).
+#### 2.2 Performance & UI Stability (60 FPS Goal)
+- **Background-Only**: All cryptographic hashing (PBKDF2), encryption (AES-GCM), and **Network Operations** MUST reside in a background process (e.g., Web Worker).
+- **Prohibited**: The main UI thread MUST NOT execute heavy logic that causes frame drops.
+
+#### 2.3 Real-time Reactivity
+- **Protocol**: Use **WebSockets** for the relay bridge.
+- **Speed**: Target sub-second synchronization (< 500ms) between online devices. Nostr relays handle millions of events daily and are as fast as real-time chat.
 
 ***
 
 ### 3. Identity & Security (Blind Vault)
 
 #### 3.1 Key Derivation Logic
-- Derive the **Nostr Private Key** and a **Symmetric AES-256 Key** using **PBKDF2** (>= 100,000 iterations).
-- **Salt Hardening**: Use **AssemblyScript (WASM)** to bake the Platform Salt into a binary module, preventing casual string-scraping from JS bundles.
+- **Silent Derivation**: Identity MUST be derived silently from existing app state without explicit logins or prompts. 
+- **Keys**: Generate a **Nostr Private Key** and a **Symmetric AES-256 Key** using **PBKDF2** (>= 100,000 iterations).
+- **Hardening (WASM)**: The Salt MUST NOT be stored as a plain string in JS. Use **AssemblyScript (WASM)** to bake the salt into a binary module.
+    - **Why WASM?**: Frontend secrets have two options:
+        - **Option A (Plain JS)**: Very easy to find (View Source).
+        - **Option B (WASM Binary)**: Requires specialist reverse-engineering tools. It is the most "future-proof" and standardized way to hide logic in a frontend-only app.
+    - **Cracking**: A WASM binary is like a compiled EXE; it is extremely difficult to "read" without converting it back to assembly code.
 
 #### 3.2 End-to-End Encryption (E2EE)
-- **MANDATORY**: All data MUST be encrypted using AES-GCM *before* transmission.
-- **Relay Blindness**: The relay mesh (e.g., Nostr Kind 30078) stores only the **ciphertext**. It is a "Blind Vault" with no access to plain data.
+- **Mandatory**: All data MUST be encrypted before transport. The relay stores only ciphertext, remaining "blind" to user data.
 
 ***
 
-### 4. Technical Guardrails
+### 4. Technical Guardrails & Trade-offs
 
-- **Relay Mesh Redundancy**: Connect to at least 3 high-uptime relays (e.g., `wss://nos.lol`, `wss://relay.damus.io`, `wss://relay.nostr.band`).
-- **Relay Fallback**: The client MUST automatically failover between relays if a connection drops.
+- **Redundancy**: Connect to at least 3 high-uptime relays (e.g., `wss://nos.lol`, `wss://relay.damus.io`, `wss://relay.nostr.band`).
+- **Failover**: The client MUST automatically failover between relays if a connection drops.
 - **Schema Management**: Use strict schemas (e.g., RxDB JSON Schema) to prevent data corruption during cross-device merges.
-- **WASM MIME Type**: Ensure `.wasm` files are served with `application/wasm` headers.
+- **No Plaintext Fallback**: If encryption fails, the sync MUST fail securely rather than transmitting plaintext.
 
 ***
 
 ### 5. Prohibited Behaviors
 
-- **DO NOT** use `localStorage` for primary sync (no indexing/relational capacity).
-- **DO NOT** use plain strings for inter-thread message passing; Enums are mandatory.
-- **DO NOT** prompt the user for "Enable Sync" or "Login" if a unique identifier is available.
-- **DO NOT** block the UI thread durante key derivation or relay sync.
-- **DO NOT** hardcode environment-specific parameters (URLs, Salts) in logic files.
+- **DO NOT** use `localStorage` for primary sync data.
+- **DO NOT** use "magic strings" for worker messages; use Enums.
+- **DO NOT** prompt the user for "Enable Sync" if a unique identifier is available.
+- **DO NOT** hardcode environment-specific parameters (Relay URLs, Salts) in logic files.
+- **DO NOT** block the UI durante key derivation or relay sync.
 
 ***
 
@@ -76,4 +86,4 @@ Implementations MUST follow the industrial folder structure to ensure maintainab
 
 - **Architectural Discussion**: [Zero-Backend Preferences Sync Implementation](./conversations/2026-01-15-zero-backend-preferences-sync.md)
 - **Goal Document**: [Industrial Sync Plan (v15)](./architectures/sync/docs/implementation-plans/v15-industrial-plan.md)
-- **Reference Implementation**: [Sync Architecture Template](./architectures/sync/)
+- **Reference Implementation**: [Sync Architecture Template Package](./architectures/sync/)

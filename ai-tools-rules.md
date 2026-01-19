@@ -16,6 +16,7 @@ All tool usage by the agent must be governed by the following core principles:
 
   * **Transparency**: The user must have a complete and unfiltered view of every tool action and its result.
   * **User Control**: The user maintains ultimate authority over all actions, especially those that modify the file system or sensitive data.
+  * **Responsiveness**: The agent MUST prioritize answering every user question in maximum detail. For architectural patterns or code, this requires line-by-line explanations and usage scenarios to ensure the user has complete understanding and can reuse the solution effectively.
   * **Full Output Visibility**: All tool outputs, including both standard output (`stdout`) and standard error (`stderr`), must be displayed in their entirety. This rule is non-negotiable and ensures complete visibility for debugging and understanding.
   * **Principle of Least Privilege**: The agent should only request and use the minimum permissions necessary to complete a task. This aligns with broader security practices.
 
