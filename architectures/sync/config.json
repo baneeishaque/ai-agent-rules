@@ -1,0 +1,10 @@
+{
+    "relays": [
+        "wss://nos.lol",
+        "wss://relay.damus.io",
+        "wss://relay.nostr.band"
+    ],
+    "platformSalt": "PlatformSecret2026",
+    "nostrKind": 30078,
+    "defaultDTag": "app_preferences"
+}
