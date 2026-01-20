@@ -1,6 +1,6 @@
 # Storage Logic Explainer (`storage.ts`)
 
-[View Source File](file:///Users/dk/Lab_Data/ai-agents/ai-agent-rules/architectures/sync/storage.ts)
+[View Source File](./storage.ts)
 
 This file defines the **Data Layer** using RxDB. It standardizes how information is structured, queried, and updated in a local-first application.
 

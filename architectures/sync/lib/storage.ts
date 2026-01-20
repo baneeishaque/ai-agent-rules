@@ -75,8 +75,16 @@ export class SyncStorageHandler {
    * Generic query for a specific preference scope.
    */
   async getById(id: string): Promise<SyncData | null> {
-    const doc = await this.collection.findOne(id).exec();
-    // Industrial Standard: Manual cast with runtime null check
-    return doc ? (doc.value as SyncData) : null;
+    try {
+      const doc = await this.collection.findOne(id).exec();
+      // Industrial Standard: Manual cast with runtime null check
+      if (!doc || !doc.value) return null;
+      
+      // Defensive parsing/casting
+      return doc.value as SyncData;
+    } catch (err) {
+      console.error('[SyncStorage] Query failed for id:', id, err);
+      return null;
+    }
   }
 }

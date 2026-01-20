@@ -1,6 +1,6 @@
 # Sync Worker Explainer (`worker/index.ts`)
 
-[View Source File](file:///Users/dk/Lab_Data/ai-agents/ai-agent-rules/architectures/sync/worker/index.ts)
+[View Source File](./index.ts)
 
 The `SyncWorker` is the heart of the background process. It handles the "Heavy Compute" (Key Derivation/Encryption) and the "Network Mesh" (WebSockets).
 
@@ -31,12 +31,15 @@ This is the **Background Logic Thread**. It offloads all compute-heavy (Crypto) 
         - `kind: 30078`: Arbitrary App Data.
         - `tags: [['d', scope]]`: Scopes the data (e.g., to your app).
         - `content`: Plaintext is never stored; only **ciphertext** is broadcasted.
+    - **finalizeEvent**: Uses `nostr-tools` to sign the event with the derived `privateKey`.
 
 - **encrypt / decrypt**:
-    - **E2EE**: These are wrappers for **AES-GCM**. They ensure the data is secured on the device before it ever touches a network cable.
+    - **Industrial E2EE (AES-GCM)**: These are production-ready implementations using the browser's native **WebCrypto API** (`crypto.subtle`).
+    - **IV (Initialization Vector)**: Every encryption uses a random 12-byte IV, ensuring that even the same data produces different ciphertext every time.
+    - **Combined Payload**: The IV is prepended to the ciphertext and Base64-encoded for transmission.
 
-- **handleSyncIn (Placeholder)**:
-    - **Why empty?**: Nostr libraries (like `nostr-tools`) handle subscriptions differently based on version. In a real PoC, you would use a filters object here to subscribe to your `publicKey`.
+- **handleSyncIn (Subscription)**:
+    - **Nostr Mesh Pulse**: Sends a `["REQ", sub_id, { kinds: [30078], authors: [publicKey], '#d': [scope] }]` message to the relay. This instructs the relay to push the latest state and all future updates to this worker.
 
 ### Usage Scenario
 While a user is scrolling a list (60 FPS), a remote update arrives from the relay. The worker receives the WebSocket event, decrypts the JSON, and sends a final payload to the main thread. The main thread simply updates the state. No frame is dropped because the heavy lifting was backgrounded.

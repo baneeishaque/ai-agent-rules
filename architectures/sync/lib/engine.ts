@@ -21,21 +21,29 @@ export class SyncEngine {
     this.worker = new Worker(new URL('./worker/index.ts', import.meta.url));
 
     // Listens for structured messages from the background worker
-    this.worker.onmessage = (event: MessageEvent<SyncMessage<any>>) => {
-      const { type, payload } = event.data;
+    this.worker.onmessage = (event: MessageEvent<SyncMessage<unknown>>) => {
+      try {
+        const data = event.data;
+        if (!data || typeof data !== 'object') throw new Error('Invalid worker response');
+        
+        const { type, payload } = data;
 
-      switch (type) {
-        case SyncMessageType.READY:
-          console.log('[SyncEngine] Backend Bridge Ready (Nostr + WASM Established)');
-          break;
-        case SyncMessageType.SYNC_RECEIVED:
-          // Casting payload to SyncPayload for type-safe access
-          const syncData = (payload as SyncPayload).data;
-          if (this.onUpdateCallback) this.onUpdateCallback(syncData);
-          break;
-        case SyncMessageType.ERROR:
-          console.error('[SyncEngine] Critical Failure:', (payload as { message: string }).message);
-          break;
+        switch (type) {
+          case SyncMessageType.READY:
+            console.log('[SyncEngine] Backend Bridge Ready (Nostr + WASM Established)');
+            break;
+          case SyncMessageType.SYNC_RECEIVED:
+            if (payload && typeof payload === 'object' && 'data' in (payload as any)) {
+              const syncData = (payload as SyncPayload).data;
+              if (this.onUpdateCallback) this.onUpdateCallback(syncData);
+            }
+            break;
+          case SyncMessageType.ERROR:
+            console.error('[SyncEngine] Critical Failure:', (payload as { message: string }).message);
+            break;
+        }
+      } catch (err) {
+        console.error('[SyncEngine] Error parsing worker message:', err);
       }
     };
 

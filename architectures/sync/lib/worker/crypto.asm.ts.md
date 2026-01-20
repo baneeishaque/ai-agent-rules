@@ -1,6 +1,6 @@
 # WASM Crypto Explainer (`crypto.asm.ts`)
 
-[View Source File](file:///Users/dk/Lab_Data/ai-agents/ai-agent-rules/architectures/sync/worker/crypto.asm.ts)
+[View Source File](./crypto.asm.ts)
 
 This file contains the **Identity Hardening** logic. It is written in **AssemblyScript** (a TypeScript-like language for WASM) and is intended to be compiled into a `.wasm` binary.
 
@@ -15,14 +15,16 @@ In a frontend-only application, any JavaScript code can be easily read via "Insp
 
 - **SALT_CODES**:
     - **Purpose**: The Platform Salt stored as a numeric array of character codes (`u8`).
-    - **Security**: By using a byte array instead of a string, we prevent the secret from appearing in "Strings" searches of the compiled binary. In WASM, this is baked into the binary bytecode.
+    - **Byte Encoding**: We store the salt as an array of `u8` bytes (UTF-8 codes) rather than a string. This ensures the secret never appears in plaintext string searches of the compiled binary.
+    - **Security**: In WASM, this is baked into the binary bytecode as numeric constants.
 
 - **deriveSeed(identity)**:
+    - **Purpose**: Takes a user's identifier (like an email) and stable-mixes it with the internal salt.
     - **identity**: The raw identifier (e.g., Email).
     - **Logic**:
         1. Encodes the string to UTF-8.
         2. Combines it with the binary salt.
-        3. Calls `hashBuffer` for each byte of the 32-byte seed.
+        3. Calls `hashBuffer` for each byte of the 32-byte seed, making it extremely difficult to guess the salt even if the input identity is known.
     - **Why AssemblyScript?**: It allows developers to write high-performance, binary-destined logic using a syntax nearly identical to TypeScript.
 
 - **hashBuffer(identityByte, saltByte, index)**:

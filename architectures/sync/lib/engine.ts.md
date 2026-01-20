@@ -1,6 +1,6 @@
 # Sync Engine Explainer (`engine.ts`)
 
-[View Source File](file:///Users/dk/Lab_Data/ai-agents/ai-agent-rules/architectures/sync/engine.ts)
+[View Source File](./engine.ts)
 
 The `SyncEngine` is the **Main Thread Bridge**. It serves as the primary API for your React components to interact with the background sync worker. It manages the lifecycle of the background worker and provides a simple, reactive API for the UI.
 
@@ -10,7 +10,7 @@ The `SyncEngine` is the **Main Thread Bridge**. It serves as the primary API for
     - **Why?**: Synchronization must be a single, persistent process. Having multiple workers would lead to race conditions, redundant relay connections, and wasted memory. Static members ensure one instance of the Web Worker exists across the entire application lifecycle.
 
 - **Worker Initialization (`new Worker`)**:
-    - **`init(identitySeed, onUpdate)`**: Loads `worker/index.ts` using the browser's native `Worker` API.
+    - **`init(identitySeed, onUpdate)`**: Loads `./worker/index.ts` using the browser's native `Worker` API.
     - **`new URL('./worker/index.ts', import.meta.url)`**: This is the modern industrial way to load workers. It ensures the bundler (Vite/Webpack) correctly resolves and bundles the worker code, even with TypeScript.
     - **Background Isolation**: By moving logic to a `Worker`, we ensure that heavy tasks (Nostr event signing, AES encryption) never block the UI thread, maintaining **60 FPS stability**.
 

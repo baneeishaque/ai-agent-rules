@@ -62,8 +62,11 @@ The content must balance conciseness with technical depth:
     - `/engine.ts` or `/index.ts`: Main logic or entry point.
     - `/docs/`: Implementation plans and technical goal documents.
     - `/*.md`: Every code file MUST have an adjacent Markdown file explaining the code line-by-line with usage scenarios. These explainers MUST be pedagogical and deep, assuming the reader may be new to specific APIs (e.g., Worker, WebSocket, RxDB).
+    - **Relative Links**: Documentation and explainers MUST use **Relative Links** (not absolute paths) to ensure the rule set remains portable and functional in any local filesystem.
+    - **Multi-Project SSOT**: When providing multiple samples (e.g., CRA and Vite), the core logic MUST be extracted into a **Shared Library** folder. Samples MUST reference this shared core (e.g., via symbolic links or relative imports) to maintain a Single Source of Truth and avoid code duplication.
 - **Core Logic Links**: Rules defining complex logic MUST link to their respective architectural SSOT providers (e.g., [Sync Logic](./zero-backend-sync-rules.md)).
-- **Technology Independence & Depth**: Rules MUST be technology-independent in their core principles but MUST provide maximum-detail, industry-standard examples (e.g., Nostr, WASM, RxDB) that can be reused according to the specific context.
+- **Technology Independence & Depth**: Rules MUST be technology-independent in their core principles but MUST provide maximum-detail, industry-standard examples (e.g., Nostr, WASM, RxDB) that can be reused or generated as new implementations according to the situation.
+    - **Selection & Trade-offs**: Rules MUST clearly explain the options, trade-offs, and alternatives available for an architectural pattern. The assistant MUST iterate with the USER to present all options (sorted by priority) and discuss the best fit for the context before concluding with a final recommendation for approval.
 - **Context Discovery Protocol**: Rules MUST mandate that the assistant:
     1. **Identifies Context**: Detect build tools (Vite/CRA), frameworks (React/Vue), and identifiers (Email/PubKey).
     2. **Confirms Context**: Explicitly ask the user to confirm the detected environment before proceeding.
@@ -74,6 +77,8 @@ The content must balance conciseness with technical depth:
 - **Coding Standards (SSOT & Safety)**:
     - **Comment Style**: Comments MUST be placed *before* the code line or in block format. Avoid trailing comments after semicolons.
     - **Deep Type Safety**: Implementations MUST avoid `any` and use deep typing for all data structures (e.g., MessageEvent data).
+    - **Runtime & Type Safety**: The agent MUST prioritize both compile-time (TS) and runtime (Schema/Validation) safety.
+    - **Defensive Programming**: All network and I/O logic MUST implement defensive programming (e.g., try-catch, JSON validation, socket state checks) to prevent silent failures.
     - **Real Usage Samples**: Rules for frameworks (React/Vue) MUST include a real integration sample showing component/hook orchestration.
 - **Prohibited Behaviors**: Explicitly list actions the agent is forbidden from taking (e.g., "DO NOT hardcode keys", "DO NOT block UI"). These MUST be clear, non-ambiguous, and explained as the SSOT for what to avoid.
 - **Traceability Portability**: Permanent session logs MUST be stored in `ai-agent-rules/conversations/` to ensure the rule set remains a self-contained, portable unit.
