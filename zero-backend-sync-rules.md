@@ -29,8 +29,8 @@ Before implementation, the assistant MUST perform the following discovery steps 
     - **Discovery Protocol**: Identify the identifier(s) silently from existing application state without explicit logins or user prompts.
     - **Confirmation**: The assistant MUST propose the discovered identifier(s) and obtain user confirmation. Sometimes the identifier will be a compound of multiple attributes.
 3.  **Storage Context**: Evaluate data complexity and choose the best-fit storage layer (Prioritized):
-    - **1. Relational/Reactive (RxDB + IndexedDB)**: Mandatory for complex data and reactive multi-device merges.
-    - **2. NoSQL (PouchDB / Simple IndexedDB)**: Preferred for document-centric storage.
+    - **1. Relational/Reactive (RxDB + IndexedDB)**: Mandatory for complex data, multi-device merges, and relational needs.
+    - **2. NoSQL (PouchDB / Simple IndexedDB)**: Preferred for document-centric storage without complex relations.
     - **3. File/Text (JSON/YAML/CSV)**: Only for extremely low-complexity, static data with **no indexing or relational capacity**.
     - **Decision Protocol**: Present all options in the sorted way (According to priority) above. Final decision MUST be according to context, discussion, and user approval - even for the file format in the third case.
 
