@@ -1,8 +1,8 @@
 # config.json Explainer
 
-This file contains the **Externalized Configuration** for the sync engine.
+This file contains the **Externalized Configuration** for the sync engine. **Hardcoding relays or secrets in logic is PROHIBITED** to ensure flexibility and rotation.
 
-### Code Breakdown
+[View Configuration File](./config.json)
 
 - **relays**:
     - **Purpose**: A list of Nostr relay URLs.
