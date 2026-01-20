@@ -81,7 +81,7 @@ For low-complexity applications (e.g., simple notes), you may replace **RxDB** w
 
 ## 6. UI Integration (Pedagogical Sample)
 
-Integrate the engine into your root component. This ensures "Zero User Intervention"—the sync starts silently when the user is identified:
+Integrate the engine into your root component. Inside your app entry point (e.g., `App.tsx`), implement silent discovery. This ensures "Zero User Intervention"—the sync starts silently when the user is identified:
 
 ```typescript
 import { SyncEngine } from './services/sync/lib/engine';
@@ -118,7 +118,8 @@ Initialize your RxDB collection using the schema in `storage.ts`.
 1.  **Real-time Check**: Open two browsers. Change a setting in one. Verify the update appears in the second in **< 500ms**.
 2.  **Persistence Check**: Close both browsers. Re-open. Verify state is recovered from the Nostr Mesh.
 3.  **Security Check**: Inspect Network traffic. Verify all content is **encrypted** (ciphertext) and the **Salt** is absent from the JS bundle (**Hardened in WASM**).
-4.  **WASM MIME Type**: Verify that your host serves `.wasm` files with the `application/wasm` header.
-5.  **Relay Failover**: Manually block one relay in the dev tools (Network -> Request blocking) and verify the worker cycles to the next relay automatically.
-6.  **60 FPS Check**: Perform heavy navigation while a sync is in progress; ensure no frame drops.
-7.  **UTF-8 Check**: Verify that the salt is encoded as `u8` bytes in the WASM binary (prevents string scraping).
+4.  **Blind Vault Test**: Verify via Network tab that Nostr events (Kind 30078) contain only ciphertext.
+5.  **WASM MIME Type**: Verify that your host serves `.wasm` files with the `application/wasm` header.
+6.  **Relay Failover**: Manually block one relay in the dev tools (Network -> Request blocking) and verify the worker cycles to the next relay automatically.
+7.  **60 FPS Check**: Perform heavy navigation while a sync is in progress; ensure no frame drops.
+8.  **UTF-8 Check**: Verify that the salt is encoded as `u8` bytes in the WASM binary (prevents string scraping).
