@@ -2,6 +2,8 @@
 
 [View Source File](file:///Users/dk/Lab_Data/ai-agents/ai-agent-rules/architectures/sync/storage.ts)
 
+This file defines the **Data Layer** using RxDB. It standardizes how information is structured, queried, and updated in a local-first application.
+
 The storage layer utilizes **RxDB (Reactive Database)** over IndexedDB. This ensures that the application follows a **Local-First** architecture.
 
 ### Code Breakdown
@@ -11,7 +13,7 @@ The storage layer utilizes **RxDB (Reactive Database)** over IndexedDB. This ens
     - **updatedAt**: Industrial standard numeric Epoch (milliseconds).
         - **Why number?**: Native sorting in databases is significantly faster for numbers than string date formats. All modern JS `Date.now()` calls return this format.
 - **PreferenceSchema**:
-    - **type: ['object', 'array', ...]**: This is a multi-type schema definition. It ensures that the `value` field can store complex structures like a list of favorite items (`array`) or a deep settings object (`object`) with runtime safety.
+    - **type: ['object', 'array', ...]**: This is a multi-type schema definition. It ensures that the `value` field can store complex structures like a list of favorite items (`array`) or a deep settings object (`object`) with **runtime safety**. If you try to save a type not in this list, RxDB will throw an error before it touches the disk. This ensures both compile-time (TypeScript) and runtime (RxDB Schema) safety.
 - **SyncStorageHandler**:
     - **upsert()**: Atomic "Update or Insert". This is the engine of the sync process. When remote data arrives, we upsert it to the local store.
     - **watchAllChanges()**: 

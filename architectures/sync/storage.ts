@@ -1,10 +1,10 @@
-/**
- * RxDB Schema and Data Layer (Industrial Reference)
- * Handles structured, relational, and reactive storage for synced data.
- */
-
 import { RxJsonSchema, RxCollection } from 'rxdb';
 import { SyncData } from './types';
+
+/**
+ * Data Layer: RxDB Standard Implementation.
+ * Standardizes how information is structured, queried, and updated in a local-first application.
+ */
 
 /**
  * Single Source of Truth for Preference Document
@@ -76,6 +76,7 @@ export class SyncStorageHandler {
    */
   async getById(id: string): Promise<SyncData | null> {
     const doc = await this.collection.findOne(id).exec();
+    // Industrial Standard: Manual cast with runtime null check
     return doc ? (doc.value as SyncData) : null;
   }
 }

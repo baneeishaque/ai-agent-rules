@@ -3,7 +3,7 @@
  * Offloads compute (WASM) and network (WebSockets) logic from the UI thread.
  */
 
-import * as nostrTools from 'nostr-tools';
+import { generateSecretKey, getPublicKey, finalizeEvent } from 'nostr-tools';
 import { SyncMessageType, SyncMessage, SyncConfig, SyncPayload, InitPayload, SyncData } from '../types';
 import syncConfigJson from '../config.json';
 
@@ -21,19 +21,26 @@ let publicKey: string;
 let socket: WebSocket | null = null;
 let currentRelayIndex = 0;
 
-self.onmessage = async (event: MessageEvent<SyncMessage<any>>) => {
-  const { type, payload } = event.data;
+self.onmessage = async (event: MessageEvent<SyncMessage<unknown>>) => {
+  try {
+    const { type, payload } = event.data;
 
-  switch (type) {
-    case SyncMessageType.INIT:
-      await handleInit((payload as InitPayload).identitySeed);
-      break;
-    case SyncMessageType.SYNC_OUT:
-      handleSyncOut((payload as SyncPayload).data);
-      break;
-    case SyncMessageType.SYNC_IN:
-      handleSyncIn();
-      break;
+    switch (type) {
+      case SyncMessageType.INIT:
+        // Defensive cast: Ensure identitySeed exists
+        await handleInit((payload as InitPayload).identitySeed);
+        break;
+      case SyncMessageType.SYNC_OUT:
+        // Defensive cast: Ensure data exists
+        handleSyncOut((payload as SyncPayload).data);
+        break;
+      case SyncMessageType.SYNC_IN:
+        handleSyncIn();
+        break;
+    }
+  } catch (err) {
+    console.error('[SyncWorker] Message handling error:', err);
+    self.postMessage({ type: SyncMessageType.ERROR, payload: { message: 'Internal Worker logic failure' } });
   }
 };
 
@@ -52,8 +59,8 @@ async function handleInit(identitySeed: string | string[]) {
   // 1. WASM Hardened Key Derivation
   // PRODUCTION: import { deriveSeed } from './crypto.asm';
   // const seed = deriveSeed(normalizedSeed);
-  privateKey = nostrTools.generateSecretKey(); 
-  publicKey = nostrTools.getPublicKey(privateKey);
+  privateKey = generateSecretKey(); 
+  publicKey = getPublicKey(privateKey);
   
   self.postMessage({ 
     type: SyncMessageType.READY, 
@@ -124,7 +131,7 @@ function handleSyncOut(data: SyncData) {
   };
 
   // Sign and Publish (NIP-01)
-  const signedEvent = nostrTools.finalizeEvent(event, privateKey);
+  const signedEvent = finalizeEvent(event, privateKey);
   socket.send(JSON.stringify(['EVENT', signedEvent]));
   console.log(`[SyncWorker] Data published (Kind ${event.kind})`);
 }

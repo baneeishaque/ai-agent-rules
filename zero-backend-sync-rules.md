@@ -10,8 +10,9 @@ This rule defines the standard protocol for cross-device data synchronization in
 
 **Core Principles**:
 - **Zero User Intervention**: Sync MUST be invisible and automatic. Zero user action is mandatory for industrial-grade UX.
-- **Local-First Mesh**: The solution MUST follow a local-first architecture (e.g., RxDB) to ensure offline availability and sub-millisecond responsiveness. Data persistence is immediate; UI reads/writes only to the local instance without waiting for network ACK.
-- **Real-Time Bridge**: Utilize a decentralized relay mesh (e.g., Nostr) for instant updates (< 500ms) and asynchronous bridging between online devices.
+- **Local-First Mesh**: The solution MUST follow a local-first architecture (e.g., RxDB) to ensure offline availability and sub-millisecond responsiveness. Data persistence is immediate; UI reads/writes only to the local architecture instance without waiting for network ACK.
+- **Asynchronous Bridge**: Utilize a decentralized relay mesh (e.g., Nostr) to bridge devices asynchronously and in real-time. This ensures architecture-level reliability (Device A pushes status, Device B pulls it later) even if devices are never online at the same time.
+- **Real-Time Reliability**: Target sub-second synchronization (< 500ms) between online devices using a global WebSocket mesh (e.g., Nostr) which handles millions of events daily.
 
 ***
 
@@ -21,15 +22,14 @@ Before implementation, the assistant MUST perform the following discovery steps 
 
 1.  **Platform Environment**: Detect the build tool (e.g., Vite, Webpack, CRA) and framework (e.g., React, Vue).
     - **CRA / Webpack**: Building `.wasm` in CRA requires **CRACO** to inject Webpack's `wasm-loader` without ejecting. This is the industrial standard.
-    - **Vite**: Use the `vite-plugin-wasm` and `top-level-await` plugins.
-    - **WASM MIME Type**: Ensure the server/environment serves `.wasm` files with `application/wasm` headers.
-2.  **Unique Identifier (Identity Discovery)**: The assistant MUST identify the stable identifier already available in the app session (e.g., User Email, PubKey, or a Compound ID like `userId + platformSalt`).
+    - **Confirmation**: The user MUST confirm the discovered environment before implementation.
+2.  **Unique Identifier (Identity Discovery)**: The assistant MUST identify the stable identifier already available in the app session (e.g., User Email, PubKey, or a Compound ID).
     - **Zero Prompts**: Identity MUST be derived silently from existing application state without explicit logins or user prompts.
-    - **Confirmation**: The assistant MUST propose the discovered identifier(s) and the user MUST confirm before implementation.
-3.  **Storage Context**: Evaluate data complexity and choose the best-fit storage layer based on priority:
+    - **Confirmation**: The user MUST confirm the discovered identifier(s) before proceeding.
+3.  **Storage Context**: Evaluate data complexity and choose the best-fit storage layer (Prioritized):
     - **1. Relational/Reactive (RxDB + IndexedDB)**: Mandatory for complex data, multi-device merges, and relational needs.
     - **2. NoSQL (PouchDB / Simple IndexedDB)**: Preferred for document-centric storage without complex relations.
-    - **3. File/Text (JSON/YAML/CSV)**: Only for extremely low-complexity, static data with no indexing or relational capacity.
+    - **3. File/Text (JSON/YAML/CSV)**: Only for extremely low-complexity, static data with **no indexing or relational capacity**.
 
 ***
 
@@ -64,8 +64,8 @@ Implementations MUST follow the industrial folder structure to ensure maintainab
     - **Why WASM?**: Frontend secrets have two options:
         - **Option A (Plain JS)**: Very easy to find via "Inspect Source" or simple string-scraping from JS bundles.
         - **Option B (WASM Binary)**: Requires a specialist with reverse-engineering tools. It prevents 99% of casual extraction attempts.
-    - **Industrial Standard**: WASM is the "future-proof" standard used by companies like Adobe and Figma to protect performance-critical and proprietary logic.
-    - **Conclusion**: While not 100% unbreakable, WASM is the highest bar available for frontend-only secret protection.
+    - **Industrial Standard**: WASM is the biggest shift in web technology in 20 years. All major browsers promote it to a **"first-class"** language.
+    - **Conclusion**: While not 100% unbreakable, WASM is the highest bar available for frontend-only secret protection and is the future-proof standard for performance-critical logic.
 
 #### 3.2 End-to-End Encryption (E2EE)
 - **Mandatory**: All data MUST be encrypted using **AES-GCM** *before* transmission.

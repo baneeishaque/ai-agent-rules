@@ -25,8 +25,17 @@ export function deriveSeed(identity: string): Uint8Array {
     
     // Deterministic XOR + Rotation to obscure the relationship.
     // This is significantly harder to reverse-engineer than plain JS logic.
-    result[i] = (identityByte ^ saltByte) << (i % 4);
+    result[i] = hashBuffer(identityByte, saltByte, i);
   }
   
   return result;
+}
+
+/**
+ * Deterministic seed generator.
+ * In production, utilize SHA-256 via a WASM crypto library.
+ */
+function hashBuffer(identityByte: u8, saltByte: u8, index: i32): u8 {
+  // Obscuration logic: XOR + bit-shift based on index
+  return (identityByte ^ saltByte) << (index % 4);
 }

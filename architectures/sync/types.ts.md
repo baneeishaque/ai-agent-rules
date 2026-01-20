@@ -21,7 +21,7 @@ This file defines the **Single Source of Truth (SSOT)** for all data structures 
     - **Type Safety**: Uses `unknown` for the payload to force the developer to cast it to a specific sub-type (like `InitPayload`), preventing runtime crashes.
 
 - **SyncConfig (Interface)**:
-    - **Purpose**: Typed structure for `config.json`. Ensures relay lists and salts are accessed safely by the worker without hardcoding.
+    - **Purpose**: Typed structure for [config.json](file:///Users/dk/Lab_Data/ai-agents/ai-agent-rules/architectures/sync/config.json). Ensures relay lists and salts are accessed safely by the worker without hardcoding ([Config Explainer](file:///Users/dk/Lab_Data/ai-agents/ai-agent-rules/architectures/sync/config.json.md)).
 
 - **SyncData (Interface)**:
     - **Industrial Standard**: Instead of `any`, we use a recursive record type. This enforces that the data being synced is a valid JSON-like object (strings, numbers, booleans, nested objects/arrays).
