@@ -61,7 +61,8 @@ The content must balance conciseness with technical depth:
     - `/config.json`: Environmental/Externalized configuration to avoid hardcoded logic.
     - `/engine.ts` or `/index.ts`: Main logic or entry point.
     - `/docs/`: Implementation plans and technical goal documents.
-    - `/*.md`: Every code file MUST have an adjacent Markdown file explaining the code line-by-line with usage scenarios. These explainers MUST be pedagogical and deep, assuming the reader may be new to specific APIs (e.g., Worker, WebSocket).
+    - `/*.md`: Every code file MUST have an adjacent Markdown file explaining the code line-by-line with usage scenarios. These explainers MUST be pedagogical and deep, assuming the reader may be new to specific APIs (e.g., Worker, WebSocket, RxDB).
+- **Core Logic Links**: Rules defining complex logic MUST link to their respective architectural SSOT providers (e.g., [Sync Logic](./zero-backend-sync-rules.md)).
 - **Technology Independence & Depth**: Rules MUST be technology-independent in their core principles but MUST provide maximum-detail, industry-standard examples (e.g., Nostr, WASM, RxDB) that can be reused according to the specific context.
 - **Context Discovery Protocol**: Rules MUST mandate that the assistant:
     1. **Identifies Context**: Detect build tools (Vite/CRA), frameworks (React/Vue), and identifiers (Email/PubKey).

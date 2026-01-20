@@ -2,78 +2,75 @@
 
 This guide provides a high-fidelity walkthrough for integrating the background sync engine into a production React application.
 
-## 1. Context Discovery & Setup
+## 1. Environment Setup
 
 Confirm your environment before implementation:
 - **Build Tool**: CRA (requires CRACO) or Vite (requires `vite-plugin-wasm`).
-- **Identifier**: Determine the stable identifier (e.g., `user.email` or a `compound_id`) from your app's session state.
-- **WASM Support**: Ensure your host serves `.wasm` files with `application/wasm` headers.
+- **Identifier**: Determine the stable identifier (e.g., `user.email`) from your app's session state.
+- **WASM Support**: In a CRA project, use a `craco.config.js` to inject the `wasm-loader`.
 
-## 2. Installation & Core Stack
-
-Install the industrial synchronization dependencies:
+### Install Dependencies
 ```bash
 npm install rxdb nostr-tools rxjs
-# Mandatory for CRA users to support WASM and Workers
-npm install @craco/craco --save-dev
+npm install @craco/craco assemblyscript --save-dev
 ```
 
-## 3. Configuration (`src/services/sync/config.json`)
+## 2. Industrial Folder Restructuring
 
-Externalize all environmental parameters. This allows for **Secret Rotation** and mesh updates without logic changes.
-
-```json
-{
-  "relays": ["wss://nos.lol", "wss://relay.damus.io"],
-  "platformSalt": "INDUSTRIAL_SALT_VALUE_2026",
-  "nostrKind": 30078,
-  "defaultDTag": "my-app-v1"
-}
+Copy the reference architecture into your project to maintain the industrial standard:
+```bash
+mkdir -p src/services/sync/worker
+cp ai-agent-rules/architectures/sync/*.ts src/services/sync/
+cp ai-agent-rules/architectures/sync/config.json src/services/sync/
+cp ai-agent-rules/architectures/sync/worker/*.ts src/services/sync/worker/
 ```
 
-## 4. AssemblyScript & WASM Hardening
+## 3. Webpack Modification (CRACO)
 
-To protect your identity salt, the `worker/crypto.asm.ts` must be compiled to a binary "Black Box."
+Building `.wasm` in CRA requires a `craco.config.js` in your root. This allows you to add advanced features without ejecting:
 
-### Steps for CRA/CRACO:
-1. Create `craco.config.js` in the project root:
 ```javascript
 module.exports = {
   webpack: {
     configure: (config) => {
-      config.experiments = { asyncWebAssembly: true, syncWebAssembly: true };
+      // Enable WASM and Worker Support
+      config.experiments = { 
+        ...config.experiments,
+        asyncWebAssembly: true,
+        syncWebAssembly: true 
+      };
+      
+      // Handle .wasm files via Webpack's wasm-loader
+      config.module.rules.push({
+        test: /\.wasm$/,
+        type: "webassembly/async",
+      });
+
       return config;
     }
   }
 };
 ```
-2. Compile the ASM file: 
-```bash
-npx asc src/services/sync/worker/crypto.asm.ts -o src/services/sync/worker/crypto.wasm
-```
+**Important**: Update your `package.json` scripts to use `craco start`, `craco build`, etc.
 
-## 5. Simplified Fallback Strategy
+## 4. Identity Discovery & Initialization
 
-For low-complexity applications (e.g., simple notes), you may replace **RxDB** with a direct **IndexedDB** or **File-based** store. 
-- **Requirement**: The `60 FPS` mandate still applies; sync logic MUST remain in a Web Worker to prevent UI blocking.
-- **Relay Fallback**: The worker must still implement the mesh failover loop provided in the `worker/index.ts` template.
-
-## 6. UI Integration (Pedagogical Sample)
-
-Integrate the engine into your root component. This ensures "Zero User Intervention"—the sync starts silently when the user is identified.
+Inside your app entry point (e.g., `App.tsx`), implement silent discovery:
 
 ```typescript
 import { SyncEngine } from './services/sync/engine';
 
 function App() {
   useEffect(() => {
-    // 1. Silent Discovery
-    const userId = session.user.email; 
+    // 1. Context Discovery: Detect User Identifier
+    // We use the session email. Support for Compound IDs (Email + Salt) is built-in.
+    const userIdentifier = auth.session.user.email; 
 
-    // 2. Singleton Initialization
-    SyncEngine.init(userId, (newData) => {
-      // 3. Reactive UI Update
-      dispatch(syncActions.updateState(newData));
+    // 2. Initialize the Sync Engine (Background Thread)
+    SyncEngine.init(userIdentifier, (remoteData) => {
+      // 3. Reactive Storage Upsert
+      // When remote data arrives, RxDB merges it and triggers UI reactivity.
+      storageHandler.upsert(remoteData.key, remoteData.value);
     });
   }, []);
 
@@ -81,7 +78,16 @@ function App() {
 }
 ```
 
-## 7. Verification Protocol
-- **Blind Vault Test**: Verify via Network tab that Nostr events contain only ciphertext.
-- **Relay Failover**: Manually block one relay in the dev tools and verify the worker cycles to the next relay automatically.
-- **60 FPS Check**: Perform heavy navigation while a sync is in progress; ensure no frame drops.
+## 5. Storage Layer (RxDB)
+
+Initialize your RxDB collection using the schema in `storage.ts`.
+- **Primary Key**: The `id` field (max length 100) is the primary key. 
+- **Value**: Supports complex nested JSON or Arrays with **runtime safety**.
+- **Timestamp**: Uses numeric Epoch for cross-device conflict resolution.
+
+## 6. Verification Protocol
+
+1.  **Real-time Check**: Open two browsers. Change a setting in one. Verify the update appears in the second in **< 500ms**.
+2.  **Persistence Check**: Close both browsers. Re-open. Verify state is recovered from the Nostr Mesh.
+3.  **Security Check**: Inspect Network traffic. Verify all content is **encrypted** (ciphertext) and the **Salt** is absent from the JS bundle (**Hardened in WASM**).
+4.  **WASM MIME Type**: Verify that your host serves `.wasm` files with the `application/wasm` header.

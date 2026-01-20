@@ -2,7 +2,7 @@
  * Sync Engine (Reference Implementation)
  */
 
-import { SyncMessageType, SyncMessage, InitPayload } from './types';
+import { SyncMessageType, SyncMessage, InitPayload, SyncData, SyncPayload } from './types';
 
 export class SyncEngine {
   // Singleton instance of the background worker
@@ -34,7 +34,7 @@ export class SyncEngine {
           if (this.onUpdateCallback) this.onUpdateCallback(syncData);
           break;
         case SyncMessageType.ERROR:
-          console.error('[SyncEngine] Critical Failure:', payload.message);
+          console.error('[SyncEngine] Critical Failure:', (payload as { message: string }).message);
           break;
       }
     };

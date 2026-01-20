@@ -11,17 +11,17 @@ export const SyncManager: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // 1. Context Discovery (Silently find user identifier)
+    // 1. Context Discovery (Silently derive user identifier)
     // Assume currentUser is provided by your Auth Provider.
     const currentUserEmail = 'user@example.com'; 
-    const platformId = 'web-v1';
+    const platformId = 'prod-v1';
     
     // Industrial Standard: Use a compound ID for increased entropy
     const compoundId = [currentUserEmail, platformId];
 
     // 2. Singleton Initialization
     SyncEngine.init(compoundId, (newData) => {
-      console.log('[SyncManager] Remote update received:', newData);
+      console.log('[SyncManager] Remote sync received:', newData);
       // Reactive UI Update
       setSyncedState((prev) => ({ ...prev, ...newData }));
     });
@@ -31,30 +31,43 @@ export const SyncManager: React.FC = () => {
     setIsReady(true);
   }, []);
 
-  const handleUpdate = (key: string, value: any) => {
+  const handleUpdate = (key: string, value: string | number | boolean | null) => {
     const fragment = { [key]: value };
     
-    // Local update (Immediate responsiveness)
+    // Local Update (Immediate responsiveness)
     setSyncedState((prev) => ({ ...prev, ...fragment }));
     
-    // Remote update (Backgrounded)
+    // Remote Push (Backgrounded)
     SyncEngine.pushUpdate(fragment);
   };
 
   return (
-    <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
-      <h3>Zero-Backend Sync Manager</h3>
-      <p>Status: {isReady ? '✅ Active (Background Bridge Established)' : '⏳ Initializing...'}</p>
+    <div style={{ padding: '2rem', background: '#f9f9f9', borderRadius: '12px', border: '1px solid #eee' }}>
+      <h2>Zero-Backend Sync Manager</h2>
+      <p>Status: {isReady ? '✅ Active (Decentralized Mesh Connected)' : '⏳ Initializing...'}</p>
       
-      <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-        <button onClick={() => handleUpdate('theme', 'dark')}>Set Dark Mode</button>
-        <button onClick={() => handleUpdate('theme', 'light')}>Set Light Mode</button>
-        <button onClick={() => handleUpdate('fontSize', 16)}>Reset Font</button>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginTop: '1.5rem' }}>
+        <button 
+          onClick={() => handleUpdate('theme', syncedState.theme === 'dark' ? 'light' : 'dark')}
+          style={{ padding: '0.8rem', cursor: 'pointer', borderRadius: '8px', border: 'none', background: '#007bff', color: 'white' }}
+        >
+          Toggle Theme ({syncedState.theme || 'light'})
+        </button>
+        
+        <button 
+          onClick={() => handleUpdate('fontSize', 16)}
+          style={{ padding: '0.8rem', cursor: 'pointer', borderRadius: '8px', border: 'none', background: '#6c757d', color: 'white' }}
+        >
+          Reset Font Size
+        </button>
       </div>
 
-      <pre style={{ background: '#f4f4f4', padding: '10px', marginTop: '20px' }}>
-        {JSON.stringify(syncedState, null, 2)}
-      </pre>
+      <div style={{ marginTop: '2rem' }}>
+        <h4>Current Sync State:</h4>
+        <pre style={{ background: '#333', color: '#fff', padding: '1rem', borderRadius: '8px', overflowX: 'auto' }}>
+          {JSON.stringify(syncedState, null, 2)}
+        </pre>
+      </div>
     </div>
   );
 };

@@ -4,6 +4,8 @@
 
 The `SyncWorker` is the heart of the background process. It handles the "Heavy Compute" (Key Derivation/Encryption) and the "Network Mesh" (WebSockets).
 
+This is the **Background Logic Thread**. It offloads all compute-heavy (Crypto) and latency-heavy (Network) operations to ensure the UI remains at 60 FPS.
+
 ### Core Responsibilities
 
 - **Background Execution**: By running in a Web Worker, all WebSocket traffic and encryption happen on a separate OS thread. This prevents the UI from stuttering, even during high-traffic sync events.
@@ -42,6 +44,12 @@ While a user is scrolling a list (60 FPS), a remote update arrives from the rela
 ### Technical Breakdown
 
 - **WebSocket Mesh & Failover (`connectRelayMesh`)**:
+    - **What is a WebSocket?**: A WebSocket is a persistent, bi-directional communication channel between a client (your app) and a server (the relay). Unlike HTTP, which is "request-response" (one-way at a time), WebSockets allow the server to push updates to the client the instant they happen.
+    - **socket = new WebSocket(relay)**: Opens a persistent, bi-directional pipe to the Nostr relay mesh.
+    - **onopen**: Fired when the pipe is ready. We trigger `handleSyncIn` to start listening for updates.
+    - **onmessage (MessageEvent)**: Fired when the relay pushes new data. 
+        - **event.data**: The raw Nostr protocol message (e.g., `["EVENT", "sub_id", { ... }]`).
+    - **onerror**: Essential failover hook. If a relay drops, the industrial standard is to cycle to the next relay in the `config.json` mesh.
     - **Industrial Mandate**: You MUST NOT rely on a single relay. If a relay goes down, the client should automatically cycle to the next one in `config.json`.
     - **Reconnection Loop**: The `onclose` handler uses a `setTimeout` to retry connection. This ensures the app is resilient to network drops or server restarts.
 - **Nostr Protocol Handling (`onmessage`)**:
