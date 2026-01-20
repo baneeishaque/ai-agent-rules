@@ -55,20 +55,26 @@ The content must balance conciseness with technical depth:
 - **Zero Noise**: Avoid introductory fluff, "happy to help" phrases, or redundant explanations.
 - **Pedagogical Snippets**: Use code blocks to demonstrate correct command usage or file formats.
 - **Architectural Samples (PoC)**: Rules defining complex patterns MUST link to high-fidelity reference implementations (templates) in the `/architectures/` directory. These MUST include a `package.json` for dependency transparency.
+    - **Industrial Portability**: All implementations MUST be linked as examples so that when a rule or standard changes, the reference implementations can be updated in sync.
 - **Industrial Folder Structure**: For feature-level or architecture rules, the rule MUST follow a standardized directory structure:
     - `/types.ts`: Centralized Enums and Interfaces (SSOT).
     - `/config.json`: Environmental/Externalized configuration to avoid hardcoded logic.
     - `/engine.ts` or `/index.ts`: Main logic or entry point.
     - `/docs/`: Implementation plans and technical goal documents.
-    - `/*.md`: Every code file MUST have an adjacent Markdown file explaining the code line-by-line with usage scenarios.
+    - `/*.md`: Every code file MUST have an adjacent Markdown file explaining the code line-by-line with usage scenarios. These explainers MUST be pedagogical and deep, assuming the reader may be new to specific APIs (e.g., Worker, WebSocket).
+- **Technology Independence & Depth**: Rules MUST be technology-independent in their core principles but MUST provide maximum-detail, industry-standard examples (e.g., Nostr, WASM, RxDB) that can be reused according to the specific context.
 - **Context Discovery Protocol**: Rules MUST mandate that the assistant:
     1. **Identifies Context**: Detect build tools (Vite/CRA), frameworks (React/Vue), and identifiers (Email/PubKey).
     2. **Confirms Context**: Explicitly ask the user to confirm the detected environment before proceeding.
 - **SSOT (Single Source of Truth)**: Rules MUST mandate centralized Enums for any inter-process (Worker) or inter-component communication to prevent "magic string" typos.
 - **Decoupled Configuration**: Parameters likely to change (Relays, Endpoints, feature toggles) MUST be isolated in machine-readable config files (JSON preferred).
-- **Storage Logic Hierarchy**: Rules MUST provide a selection logic for storage (Relational -> NoSQL -> File -> Text) based on problem context.
+- **Storage Logic Hierarchy**: Rules MUST provide a selection logic for storage (Relational -> NoSQL -> File -> Text) based on problem context. Priority MUST be documented (e.g., 1st, 2nd, 3rd) with clear rationale for each.
 - **Performance Abstraction**: Mandate backgrounding (Workers/Threads) for all heavy logic (Crypto/Network) to ensure 60 FPS UI stability.
-- **Prohibited Behaviors**: Explicitly list actions the agent is forbidden from taking (e.g., "DO NOT hardcode keys", "DO NOT block UI").
+- **Coding Standards (SSOT & Safety)**:
+    - **Comment Style**: Comments MUST be placed *before* the code line or in block format. Avoid trailing comments after semicolons.
+    - **Deep Type Safety**: Implementations MUST avoid `any` and use deep typing for all data structures (e.g., MessageEvent data).
+    - **Real Usage Samples**: Rules for frameworks (React/Vue) MUST include a real integration sample showing component/hook orchestration.
+- **Prohibited Behaviors**: Explicitly list actions the agent is forbidden from taking (e.g., "DO NOT hardcode keys", "DO NOT block UI"). These MUST be clear, non-ambiguous, and explained as the SSOT for what to avoid.
 - **Traceability Portability**: Permanent session logs MUST be stored in `ai-agent-rules/conversations/` to ensure the rule set remains a self-contained, portable unit.
 - **Mandatory Protocols**: Use clear, imperative language (e.g., "The agent MUST...", "The agent is BLOCKED from...").
 

@@ -4,6 +4,7 @@
  */
 
 import { RxJsonSchema, RxCollection } from 'rxdb';
+import { SyncData } from './types';
 
 /**
  * Single Source of Truth for Preference Document
@@ -18,7 +19,7 @@ export interface PreferenceDoc {
   /** 
    * Complex value container (Objects, Arrays, Primitives).
    */
-  value: any;
+  value: SyncData;
 
   /** 
    * Timestamp in Epoch Milliseconds (Industrial Standard for sorting/merging).
@@ -35,10 +36,13 @@ export const PreferenceSchema: RxJsonSchema<PreferenceDoc> = {
   properties: {
     id: { type: 'string', maxLength: 100 },
     value: { 
-      // Multi-type support for complex settings
+      // Multi-type support for deeply nested structures
       type: ['object', 'array', 'string', 'number', 'boolean', 'null'] 
     }, 
-    updatedAt: { type: 'number', minimum: 0 }
+    updatedAt: { 
+      type: 'number', 
+      minimum: 0 
+    }
   },
   required: ['id', 'value', 'updatedAt']
 };
@@ -49,7 +53,7 @@ export class SyncStorageHandler {
   /**
    * Persists data locally and triggers reactivity.
    */
-  async upsert(id: string, value: any) {
+  async upsert(id: string, value: SyncData) {
     return await this.collection.upsert({
       id,
       value,
@@ -59,16 +63,19 @@ export class SyncStorageHandler {
 
   /**
    * Reactive subscription for UI synchronization.
+   * Fires whenever the local database is updated (manually or via sync).
+   * @param callback - Function receiving the latest collection state
    */
   watchAllChanges(callback: (docs: PreferenceDoc[]) => void) {
+    // Leveraging RxDB's observable stream for sub-millisecond UI updates
     return this.collection.find().$.subscribe(callback);
   }
 
   /**
    * Generic query for a specific preference scope.
    */
-  async getById(id: string): Promise<any | null> {
+  async getById(id: string): Promise<SyncData | null> {
     const doc = await this.collection.findOne(id).exec();
-    return doc ? doc.value : null;
+    return doc ? (doc.value as SyncData) : null;
   }
 }
