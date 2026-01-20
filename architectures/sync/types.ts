@@ -11,8 +11,12 @@ export enum SyncMessageType {
   ERROR = 'ERROR'
 }
 
-export interface SyncMessage<T = any> {
+export interface SyncMessage<T = unknown> {
   type: SyncMessageType;
+  /**
+   * Raw payload of the message.
+   * Typed as unknown to enforce explicit type checking/casting.
+   */
   payload: T;
 }
 
@@ -24,9 +28,21 @@ export interface SyncConfig {
 }
 
 export interface InitPayload {
-  identitySeed: string; // Generic: can be email, pubkey, or compound ID
+  /**
+   * Identity seed from existing app session.
+   * Can be a string (email) or string[] (compound ID).
+   */
+  identitySeed: string | string[];
+}
+
+/**
+ * Interface for synchronization data.
+ * Replaces 'any' with a structured record for better type safety.
+ */
+export interface SyncData {
+  [key: string]: string | number | boolean | null | undefined | SyncData | Array<string | number | boolean | null | undefined | SyncData>;
 }
 
 export interface SyncPayload {
-  data: any;
+  data: SyncData;
 }

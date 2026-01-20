@@ -8,6 +8,11 @@ category: Architecture & Sync
 
 This rule defines the standard protocol for cross-device data synchronization in environments where a traditional backend is unavailable or involvement is prohibited. It ensures 100% backgrounded, invisible, and secure sync by bridging devices via a decentralized "Central Buffer."
 
+**Core Principles**:
+- **Zero User Intervention**: Sync MUST be invisible and automatic. Zero user action is mandatory for industrial-grade UX.
+- **Local-First Mesh**: The solution MUST follow a local-first architecture (e.g., RxDB) to ensure offline availability and sub-millisecond responsiveness. Data persistence is immediate; UI reads/writes only to the local instance without waiting for network ACK.
+- **Real-Time Bridge**: Utilize a decentralized relay mesh (e.g., Nostr) for instant updates (< 500ms) and asynchronous bridging between online devices.
+
 ***
 
 ### 1. Context Discovery & Confirmation (Mandatory)
@@ -15,13 +20,16 @@ This rule defines the standard protocol for cross-device data synchronization in
 Before implementation, the assistant MUST perform the following discovery steps and obtain explicit user confirmation for each. This ensures the chosen technology stack fits the specific context:
 
 1.  **Platform Environment**: Detect the build tool (e.g., Vite, Webpack, CRA) and framework (e.g., React, Vue).
-    - **Industry Standard Example**: For CRA, we use **CRACO** to inject Webpack's `wasm-loader`. For Vite, we use appropriate WASM plugins.
-2.  **Unique Identifier (Identity)**: Identify the stable identifier already available in the app session.
-    - **Note**: The identifier may be simple (e.g., Email) or compound (e.g., `user_id + platform_salt`). The assistant MUST propose the identifier and the user MUST confirm.
-3.  **Storage Context**: Evaluate data complexity and choose the best-fit storage layer based on discussion:
-    - **Relational/Reactive** (Preferred for complex apps): RxDB with IndexedDB.
-    - **NoSQL**: PouchDB / Simple IndexedDB.
-    - **File-based**: JSON, YAML, or CSV (Chosen according to context and discussion).
+    - **CRA / Webpack**: Building `.wasm` in CRA requires **CRACO** to inject Webpack's `wasm-loader` without ejecting. This is the industrial standard.
+    - **Vite**: Use the `vite-plugin-wasm` and `top-level-await` plugins.
+    - **WASM MIME Type**: Ensure the server/environment serves `.wasm` files with `application/wasm` headers.
+2.  **Unique Identifier (Identity Discovery)**: The assistant MUST identify the stable identifier already available in the app session (e.g., User Email, PubKey, or a Compound ID like `userId + platformSalt`).
+    - **Zero Prompts**: Identity MUST be derived silently from existing application state without explicit logins or user prompts.
+    - **Confirmation**: The assistant MUST propose the discovered identifier(s) and the user MUST confirm before implementation.
+3.  **Storage Context**: Evaluate data complexity and choose the best-fit storage layer based on priority:
+    - **1. Relational/Reactive (RxDB + IndexedDB)**: Mandatory for complex data, multi-device merges, and relational needs.
+    - **2. NoSQL (PouchDB / Simple IndexedDB)**: Preferred for document-centric storage without complex relations.
+    - **3. File/Text (JSON/YAML/CSV)**: Only for extremely low-complexity, static data with no indexing or relational capacity.
 
 ***
 
@@ -52,14 +60,16 @@ Implementations MUST follow the industrial folder structure to ensure maintainab
 #### 3.1 Key Derivation Logic
 - **Silent Derivation**: Identity MUST be derived silently from existing app state without explicit logins or prompts. 
 - **Keys**: Generate a **Nostr Private Key** and a **Symmetric AES-256 Key** using **PBKDF2** (>= 100,000 iterations).
-- **Hardening (WASM)**: The Salt MUST NOT be stored as a plain string in JS. Use **AssemblyScript (WASM)** to bake the salt into a binary module.
+- **Hardening (WASM)**: The Salt MUST NOT be stored as a plain string in JS. Use **AssemblyScript (WASM)** to encapsulate the salt and derivation logic, creating a cryptographic "Black Box."
     - **Why WASM?**: Frontend secrets have two options:
-        - **Option A (Plain JS)**: Very easy to find (View Source).
-        - **Option B (WASM Binary)**: Requires specialist reverse-engineering tools. It is the most "future-proof" and standardized way to hide logic in a frontend-only app.
-    - **Cracking**: A WASM binary is like a compiled EXE; it is extremely difficult to "read" without converting it back to assembly code.
+        - **Option A (Plain JS)**: Very easy to find via "Inspect Source" or simple string-scraping from JS bundles.
+        - **Option B (WASM Binary)**: Requires a specialist with reverse-engineering tools. It prevents 99% of casual extraction attempts.
+    - **Industrial Standard**: WASM is the "future-proof" standard used by companies like Adobe and Figma to protect performance-critical and proprietary logic.
+    - **Conclusion**: While not 100% unbreakable, WASM is the highest bar available for frontend-only secret protection.
 
 #### 3.2 End-to-End Encryption (E2EE)
-- **Mandatory**: All data MUST be encrypted before transport. The relay stores only ciphertext, remaining "blind" to user data.
+- **Mandatory**: All data MUST be encrypted using **AES-GCM** *before* transmission.
+- **Relay Blindness**: The relay mesh (e.g., Nostr Kind 30078) stores only the **ciphertext**. It acts as a "Blind Vault" with zero access to plain user data.
 
 ***
 
@@ -74,11 +84,14 @@ Implementations MUST follow the industrial folder structure to ensure maintainab
 
 ### 5. Prohibited Behaviors
 
-- **DO NOT** use `localStorage` for primary sync data.
-- **DO NOT** use "magic strings" for worker messages; use Enums.
-- **DO NOT** prompt the user for "Enable Sync" if a unique identifier is available.
+- **DO NOT** use `localStorage` for primary sync data (performance/race condition risk).
+- **DO NOT** use "magic strings" for worker messages; **Enums are mandatory** for inter-thread passing.
+- **DO NOT** prompt the user for "Enable Sync" or "Login" if a unique identifier is available; sync MUST be silent.
 - **DO NOT** hardcode environment-specific parameters (Relay URLs, Salts) in logic files.
-- **DO NOT** block the UI durante key derivation or relay sync.
+- **DO NOT** block the UI during key derivation or relay sync; offload to Workers.
+- **DO NOT** store API keys or Anon Keys in plain text if a decentralized alternative exists.
+- **DO NOT** fallback to plaintext transmission if encryption fails; the sync must fail securely.
+- **DO NOT** rely on a single relay; the client MUST implement **Relay Fallback** and failover between mesh points automatically.
 
 ***
 

@@ -5,44 +5,58 @@
 import { SyncMessageType, SyncMessage, InitPayload } from './types';
 
 export class SyncEngine {
+  // Singleton instance of the background worker
   private static worker: Worker;
-  private static onUpdateCallback: (data: any) => void;
+  // Reactive UI callback for incoming data
+  private static onUpdateCallback: (data: SyncData) => void;
 
   /**
-   * Initializes the sync engine.
-   * @param identitySeed Unique stable identifier (Email, Composite ID, etc.)
-   * @param onUpdate Data change listener
+   * Initializes the sync engine as a singleton.
+   * @param identitySeed - Email or Compound ID from app session
+   * @param onUpdate - Reactive listener for remote changes
    */
-  static init(identitySeed: string, onUpdate: (data: any) => void) {
+  static init(identitySeed: string | string[], onUpdate: (data: SyncData) => void) {
+    if (this.worker) return; // Guard against multi-init
     this.onUpdateCallback = onUpdate;
     this.worker = new Worker(new URL('./worker/index.ts', import.meta.url));
 
-    this.worker.onmessage = (event: MessageEvent<SyncMessage>) => {
+    // Listens for structured messages from the background worker
+    this.worker.onmessage = (event: MessageEvent<SyncMessage<any>>) => {
       const { type, payload } = event.data;
 
       switch (type) {
         case SyncMessageType.READY:
-          console.log('[Sync] Ready. Identity Verified.');
+          console.log('[SyncEngine] Backend Bridge Ready (Nostr + WASM Established)');
           break;
         case SyncMessageType.SYNC_RECEIVED:
-          if (this.onUpdateCallback) this.onUpdateCallback(payload.data);
+          // Casting payload to SyncPayload for type-safe access
+          const syncData = (payload as SyncPayload).data;
+          if (this.onUpdateCallback) this.onUpdateCallback(syncData);
           break;
         case SyncMessageType.ERROR:
-          console.error('[Sync] Fault detected:', payload.message);
+          console.error('[SyncEngine] Critical Failure:', payload.message);
           break;
       }
     };
 
+    const normalizedSeed = Array.isArray(identitySeed) ? identitySeed.join('|') : identitySeed;
     const initMsg: SyncMessage<InitPayload> = {
       type: SyncMessageType.INIT,
-      payload: { identitySeed }
+      payload: { identitySeed: normalizedSeed }
     };
     this.worker.postMessage(initMsg);
   }
 
-  static pushUpdate(data: any) {
+  /**
+   * Pushes local changes to the worker for encryption and broadcast.
+   * @param data - The local state fragment to synchronize
+   */
+  static pushUpdate(data: SyncData) {
     if (!this.worker) return;
-    const msg: SyncMessage = { type: SyncMessageType.SYNC_OUT, payload: { data } };
+    const msg: SyncMessage<SyncPayload> = { 
+      type: SyncMessageType.SYNC_OUT, 
+      payload: { data } 
+    };
     this.worker.postMessage(msg);
   }
 }

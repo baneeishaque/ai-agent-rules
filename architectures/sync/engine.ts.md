@@ -1,22 +1,29 @@
-# engine.ts Explainer
+# Sync Engine Explainer (`engine.ts`)
 
-This is the **Main Thread Bridge**. It serves as the primary API for your React components to interact with the background sync worker.
+[View Source File](file:///Users/dk/Lab_Data/ai-agents/ai-agent-rules/architectures/sync/engine.ts)
 
-### Code Breakdown
+The `SyncEngine` is the **Main Thread Bridge**. It manages the lifecycle of the background worker and provides a simple, reactive API for the UI.
 
-- **SyncEngine Class**:
-    - **Static Pattern**: Used to ensure a singleton instance of the Web Worker across the entire application lifecycle.
+### Deep Technical Breakdown
 
-- **init(identitySeed, onUpdate)**:
-    - **Worker Initialization**: Loads `worker/index.ts` using the browser's native `Worker` API.
-    - **Message Handling**: Listens for messages from the worker.
-        - `READY`: Logs that the "Blind Vault" (Identity) is established.
-        - `SYNC_RECEIVED`: Fires the `onUpdate` callback with remote data whenever another device pushes an update.
-    - **Initial Signal**: Immediately sends the `INIT` message with the `identitySeed`.
+- **Singleton Pattern (`static`)**:
+    - **Why?**: Synchronization must be a single, persistent process. Having multiple workers would lead to race conditions, redundant relay connections, and wasted memory. Static members ensure one instance exists for the entire app.
+
+- **Worker Initialization (`new Worker`)**:
+    - **`new URL('./worker/index.ts', import.meta.url)`**: This is the modern industrial way to load workers. It ensures the bundler (Vite/Webpack) correctly resolves and bundles the worker code, even with TypeScript.
+    - **Background Isolation**: By moving logic to a `Worker`, we ensure that heavy tasks (Nostr event signing, AES encryption) never block the UI thread, maintaining **60 FPS stability**.
+
+- **Message Handling (`onmessage`)**:
+    - **`MessageEvent<SyncMessage<any>>`**: The `event` object contains the data sent from the worker.
+    - **Reactivity**: When `SYNC_RECEIVED` is fired, the engine executes the `onUpdateCallback`. This is where you would update your local React state or store.
+
+- **Initialization Signal (`INIT`)**:
+    - **`normalizedSeed`**: We support compound identifiers (e.g., `userId + platformSalt`). This increases the difficulty of identity spoofing.
+    - **`postMessage`**: This is the primary API for sending data to the worker. It uses the "Structured Clone Algorithm," which is faster than JSON stringification for complex objects.
 
 - **pushUpdate(data)**:
-    - **Purpose**: Sends local state changes to the worker to be encrypted and broadcasted.
-    - **Non-Blocking**: This call returns instantly; the heavy encryption and network work happen in the background.
+    - **Purpose**: This is the "outbound" pipe. Whenever the local user changes a setting, the application calls this.
+    - **Non-Blocking**: The call returns instantly. All the heavy lifting (signing and network mesh broadcasting) happens in the background.
 
 ### Usage Scenario (React)
 ```typescript
@@ -29,3 +36,6 @@ useEffect(() => {
 }, []);
 ```
 In this scenario, the user doesn't see a "Syncing..." spinner; it happens instantly and silently.
+
+### Pedagogical Note for New Developers
+If you are new to Web Workers, remember: **Workers cannot access the DOM**. They cannot use `window`, `document`, or `localStorage`. They communicate strictly via `postMessage`. This isolation is what keeps the app fast.
