@@ -94,6 +94,11 @@ Follow the guidelines in:
 |-----------|---------|
 | [`android-app-launch-rules.md`](./android-app-launch-rules.md) | Automated protocol for emulator setup and deployment, optimized for M2 machines, with architecture and device fallbacks. |
 
+### Architecture & Sync
+| Rule File | Purpose |
+|-----------|---------|
+| [`zero-backend-sync-rules.md`](./zero-backend-sync-rules.md) | Architecture and implementation standards for background, invisible data synchronization using decentralized relays (Nostr), local-first storage (RxDB), and WASM hardening. |
+
 ### CI/CD & DevOps
 | Rule File | Purpose |
 |-----------|---------|
@@ -115,6 +120,11 @@ Follow the guidelines in:
 | [`ai-tools-rules.md`](./ai-tools-rules.md) | Comprehensive rules for AI tool usage, including mandates for output visibility, explicit user confirmation for file writes, and integration with agent planning and security protocols. |
 | [`github-cli-permission-rules.md`](./github-cli-permission-rules.md) | Explicit permission protocol for running `gh` commands, ensuring user control and transparency. |
 | [`shell-execution-rules.md`](./shell-execution-rules.md) | Guidelines for shell command execution, ensuring transparency, user control, and adherence to security protocols. |
+
+### Data Transfer & Cloud Storage
+| Rule File | Purpose |
+|-----------|---------|
+| [`rclone-download-rules.md`](./rclone-download-rules.md) | Protocol for efficient, reliable, and user-controlled rclone downloads with progress tracking, size-based ordering, and integrity verification. |
 
 ### Development Frameworks
 | Rule File | Purpose |
@@ -180,6 +190,11 @@ Follow the guidelines in:
 | [`rule-management-rules.md`](./rule-management-rules.md) | Documentation sync and update workflow, including metadata management for rule indexing. |
 | [`script-management-rules.md`](./script-management-rules.md) | Script standards, folder usage, and safeguards for helper scripts. |
 | [`warp-terminal-ai-rules.md`](./warp-terminal-ai-rules.md) | Backup and reference for Warp AI Agent specific configurations. |
+
+### VCS-Integration
+| Rule File | Purpose |
+|-----------|---------|
+| [`github-atom-feed-rules.md`](./github-atom-feed-rules.md) | Protocol for generating and providing GitHub repository Atom feed URLs for commits and releases |
 
 
 ***
