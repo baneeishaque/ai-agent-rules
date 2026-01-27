@@ -29,6 +29,7 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | Git Text Normalization Rules | [git-text-normalization-rules.md](./git-text-normalization-rules.md) | Rules to ensure Git treats text files correctly across encodings and platforms, preventing binary diffs and EOL churn. |
 | GitHub Action Creation Rules | [GitHub-Action-Creation-rules.md](./GitHub-Action-Creation-rules.md) | Strict guidelines for creating, structuring, and publishing GitHub Composite Actions to the Marketplace. enforce "Industrial" standards. |
 | GitHub Actions Workflow Rules | [github-actions-workflow-rules.md](./github-actions-workflow-rules.md) | Rules for GitHub Actions workflows, covering trigger preferences, security, performance, and integrations. |
+| GitHub Atom Feed URL Generation Rules | [github-atom-feed-rules.md](./github-atom-feed-rules.md) | Protocol for generating and providing GitHub repository Atom feed URLs for commits and releases |
 | GitHub CLI Permission | [github-cli-permission-rules.md](./github-cli-permission-rules.md) | Explicit permission protocol for running `gh` commands, ensuring user control and transparency. |
 | GitHub PR Management Rules | [github-pr-management-rules.md](./github-pr-management-rules.md) | Sequential, CLI-first protocols for handling Pull Requests, emphasizing security for private repositories and explicit user handoff. |
 | GitHub Repo Metadata Management Rules | [github-repo-metadata-management-rules.md](./github-repo-metadata-management-rules.md) | Ultra-Lean Industrial protocols for Metadata-as-Code (MaC), using README.md as the absolute Single Source of Truth with visible markers for automation. |
@@ -39,6 +40,7 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | Mise Plugin Backend Management Rules | [mise-plugin-backend-management-rules.md](./mise-plugin-backend-management-rules.md) | Intelligent backend selection for mise plugin installations with fallback handling and user prompts. |
 | NestJS React App Rules | [nestjs-react-app-rules.md](./nestjs-react-app-rules.md) | Guidelines for developing NestJS backends with React frontends. |
 | NestJS React Flutter Stack Rules | [nestjs-react-flutter-stack-rules.md](./nestjs-react-flutter-stack-rules.md) | Full-stack guidelines for NestJS/React web apps with an accompanying Flutter mobile client. |
+| Rclone Download Optimization Rules | [rclone-download-rules.md](./rclone-download-rules.md) | Protocol for efficient, reliable, and user-controlled rclone downloads with progress tracking, size-based ordering, and integrity verification. |
 | Render Deployment Rules | [render-deployment-rules.md](./render-deployment-rules.md) | Deployment configurations for Render, including environment variables and custom domains. |
 | Repo Discovery Rules | [repo-discovery-rules.md](./repo-discovery-rules.md) | Multi-platform repository discovery and smart cloning workflows. |
 | Rule Management Workflow | [rule-management-rules.md](./rule-management-rules.md) | Documentation sync and update workflow, including metadata management for rule indexing. |
@@ -46,3 +48,4 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | Shell Execution | [shell-execution-rules.md](./shell-execution-rules.md) | Guidelines for shell command execution, ensuring transparency, user control, and adherence to security protocols. |
 | ShellCheck Fixer Rules | [shellcheck-fixer-rules.md](./shellcheck-fixer-rules.md) | Specialized rules for repairing shell scripts to meet ShellCheck standards. |
 | Warp Terminal AI Rules | [warp-terminal-ai-rules.md](./warp-terminal-ai-rules.md) | Backup and reference for Warp AI Agent specific configurations. |
+| Zero-Backend Auto-Sync Rules | [zero-backend-sync-rules.md](./zero-backend-sync-rules.md) | Architecture and implementation standards for background, invisible data synchronization using decentralized relays (Nostr), local-first storage (RxDB), and WASM hardening. |
