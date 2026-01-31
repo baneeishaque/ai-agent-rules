@@ -7,7 +7,7 @@ This file is a comprehensive, flat index of all rule files in this repository.
 ## Rule List
 
 | Rule Domain | File Name | Description |
-|---|---|---|
+| :--- | :--- | :--- |
 | Rule Domain | File Name | Description |
 |---|---|---|
 | AI Agent Rule Standardization Rules | [ai-rule-standardization-rules.md](./ai-rule-standardization-rules.md) | Craftsmanship standards for developing "Ultra-Lean Industrial" AI Agent Rules, ensuring consistent formatting, structural hierarchy, and pedagogical clarity. |
@@ -16,14 +16,16 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | Agent Planning | [ai-agent-planning-rules.md](./ai-agent-planning-rules.md) | Guidelines for agent planning, including the core directive to plan before acting and a protocol for iterative plan revisions. |
 | Android App Launch Rules | [android-app-launch-rules.md](./android-app-launch-rules.md) | Automated protocol for emulator setup and deployment, optimized for M2 machines, with architecture and device fallbacks. |
 | CI/CD Rules | [ci-cd-rules.md](./ci-cd-rules.md) | Principles and practices for CI/CD, including protected branches, security, observability, advanced deployment strategies, and automated rollbacks. |
+| Code Documentation & Pedagogical Explainer Rules | [code-documentation-rules.md](./code-documentation-rules.md) | Standards for deep-dive, pedagogical code documentation including adjacent markdown files and various folder patterns. |
 | Docker | [Docker-rules.md](./Docker-rules.md) | Guidelines for Docker containerization, best practices for Dockerfiles, and image optimization. |
 | Flutter Android Rules | [flutter-android-rules.md](./flutter-android-rules.md) | Specific guidelines for Android configurations within Flutter projects. |
 | Flutter App Development Rules | [flutter-app-development-rules.md](./flutter-app-development-rules.md) | Rules for Flutter app development, including version pinning with `mise`, dependency management, and mandatory documentation. |
 | Git .gitignore Handling Rules | [git-gitignore-handling-rules.md](./git-gitignore-handling-rules.md) | Protocols for generating, maintaining, and customizing .gitignore files using standard APIs. |
-| Git Atomic Commit Construction | [git-atomic-commit-construction-rules.md](./git-atomic-commit-construction-rules.md) | Authoritative protocol for analyzing, grouping, and arranging changes into logical, independent atomic units before execution. |
+| Git Atomic Commit Construction | [git-atomic-commit-construction-rules.md](./git-atomic-commit-construction-rules.md) | Authoritative protocol for analysing, grouping, and arranging changes into logical, independent atomic units before execution. |
 | Git Commit Message Generation | [git-commit-message-rules.md](./git-commit-message-rules.md) | Strict rules for generating git commit messages, enforcing Conventional Commits, contextual information in titles, and no redundancy between title and body. |
 | Git History Refinement Rules | [git-history-refinement-rules.md](./git-history-refinement-rules.md) | Protocols for refining existing commit history using backup branches, jq for JSON atomicity, and tree parity verification. |
 | Git Operation Rules | [git-operation-rules.md](./git-operation-rules.md) | Strict protocols for standard Git operations (commits & pushes), mandating explicit user requests and forbidding auto-actions. |
+| Git Rebase Standardization Rules | [git-rebase-standardization-rules.md](./git-rebase-standardization-rules.md) | Industrial protocol for hierarchical branch rebasing, cross-branch deduplication, and literal commit fidelity. |
 | Git Repository Management Rules | [git-repo-management-rules.md](./git-repo-management-rules.md) | Comprehensive protocol for the repository lifecycle, including standardized creation, CLI-based cloning, submodule initialization, and auto-indexing. |
 | Git Submodule Management | [git-submodule-rules.md](./git-submodule-rules.md) | Protocols for managing submodules, preventing detached HEAD states, proper branch tracking, and descriptive parent commit messages. |
 | Git Text Normalization Rules | [git-text-normalization-rules.md](./git-text-normalization-rules.md) | Rules to ensure Git treats text files correctly across encodings and platforms, preventing binary diffs and EOL churn. |

@@ -120,11 +120,15 @@ Follow the guidelines in:
 ### Core Agent Behavior
 | Rule File | Purpose |
 |-----------|---------|
-| [`ai-agent-planning-rules.md`](./ai-agent-planning-rules.md) | Guidelines for agent planning, including the core directive to plan before acting and a protocol for iterative plan revisions. |
 | [`ai-agent-session-documentation-rules.md`](./ai-agent-session-documentation-rules.md) | Protocol for documenting AI agent sessions or conversations as Markdown, including file attachment references, structured data, and traceability. |
 | [`ai-tools-rules.md`](./ai-tools-rules.md) | Comprehensive rules for AI tool usage, including mandates for output visibility, explicit user confirmation for file writes, and integration with agent planning and security protocols. |
 | [`github-cli-permission-rules.md`](./github-cli-permission-rules.md) | Explicit permission protocol for running `gh` commands, ensuring user control and transparency. |
 | [`shell-execution-rules.md`](./shell-execution-rules.md) | Guidelines for shell command execution, ensuring transparency, user control, and adherence to security protocols. |
+
+### Core Agent Behaviour
+| Rule File | Purpose |
+|-----------|---------|
+| [`ai-agent-planning-rules.md`](./ai-agent-planning-rules.md) | Guidelines for agent planning, including the core directive to plan before acting and a protocol for iterative plan revisions. |
 
 ### Data Transfer & Cloud Storage
 | Rule File | Purpose |
@@ -139,16 +143,18 @@ Follow the guidelines in:
 ### Documentation & Standards
 | Rule File | Purpose |
 |-----------|---------|
+| [`code-documentation-rules.md`](./code-documentation-rules.md) | Standards for deep-dive, pedagogical code documentation including adjacent markdown files and various folder patterns. |
 | [`markdown-generation-rules.md`](./markdown-generation-rules.md) | Standards for creating machine-parseable, lint-compliant markdown documents. |
 
 ### Git & Repository Management
 | Rule File | Purpose |
 |-----------|---------|
-| [`git-atomic-commit-construction-rules.md`](./git-atomic-commit-construction-rules.md) | Authoritative protocol for analyzing, grouping, and arranging changes into logical, independent atomic units before execution. |
+| [`git-atomic-commit-construction-rules.md`](./git-atomic-commit-construction-rules.md) | Authoritative protocol for analysing, grouping, and arranging changes into logical, independent atomic units before execution. |
 | [`git-commit-message-rules.md`](./git-commit-message-rules.md) | Strict rules for generating git commit messages, enforcing Conventional Commits, contextual information in titles, and no redundancy between title and body. |
 | [`git-gitignore-handling-rules.md`](./git-gitignore-handling-rules.md) | Protocols for generating, maintaining, and customizing .gitignore files using standard APIs. |
 | [`git-history-refinement-rules.md`](./git-history-refinement-rules.md) | Protocols for refining existing commit history using backup branches, jq for JSON atomicity, and tree parity verification. |
 | [`git-operation-rules.md`](./git-operation-rules.md) | Strict protocols for standard Git operations (commits & pushes), mandating explicit user requests and forbidding auto-actions. |
+| [`git-rebase-standardization-rules.md`](./git-rebase-standardization-rules.md) | Industrial protocol for hierarchical branch rebasing, cross-branch deduplication, and literal commit fidelity. |
 | [`git-repo-management-rules.md`](./git-repo-management-rules.md) | Comprehensive protocol for the repository lifecycle, including standardized creation, CLI-based cloning, submodule initialization, and auto-indexing. |
 | [`git-submodule-rules.md`](./git-submodule-rules.md) | Protocols for managing submodules, preventing detached HEAD states, proper branch tracking, and descriptive parent commit messages. |
 | [`git-text-normalization-rules.md`](./git-text-normalization-rules.md) | Rules to ensure Git treats text files correctly across encodings and platforms, preventing binary diffs and EOL churn. |
@@ -209,6 +215,10 @@ Follow the guidelines in:
 ```
 AI-Agent-Rules/
 ├── 📄 agent-rules.md                    # Central index (start here!)
+│
+├── 📖 Documentation & Standards
+│   ├── code-documentation-rules.md     # Deep-dive & Pedagogical standards
+│   └── markdown-generation-rules.md    # Lint-compliant formatting
 │
 ├── 🧠 Core Agent Rules
 │   ├── ai-agent-planning-rules.md               # Planning & workflow protocols
