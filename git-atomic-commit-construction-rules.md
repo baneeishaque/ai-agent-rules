@@ -8,15 +8,7 @@ category: Git & Repository Management
 
 This document defines the mandatory protocol for creating "Arranged Commits"—logical, independent, and atomic units of change. This approach ensures high-quality history and minimizes regression risks.
 
-***
-
-## 0. Phase 0: Establish Correct Repository Context
-
-Before any change analysis, the agent's first action is to confirm its operational context.
-
-- **Identify the Target Repository**: The agent MUST determine the correct Git repository to operate within based on the user's request and the file paths being discussed.
-- **Handle Nested Repositories**: If a user's request concerns changes within a nested repository (a sub-directory that is its own Git project), the agent **MUST** change its working directory into that sub-directory *before* proceeding to Phase 1 analysis. All subsequent `git` commands for the task must be executed from within that directory.
-- **Clarify Ambiguity**: If the workspace contains multiple repositories and the target is unclear, the agent must ask the user for clarification before proceeding (e.g., "Which repository should I be working in? `project-a/` or `project-b/`?").
+**Prerequisite**: All actions must first adhere to the context and pre-check protocols defined in [git-operation-rules.md](./git-operation-rules.md).
 
 ***
 
