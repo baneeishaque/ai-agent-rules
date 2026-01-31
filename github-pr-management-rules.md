@@ -10,7 +10,17 @@ This document defines the mandatory protocols for AI agents when processing Pull
 
 ***
 
-### 1. Security & Tooling Strategy
+## 0. Phase 0: Establish Correct Repository Context
+
+Before any PR analysis, the agent's first action is to confirm its operational context.
+
+- **Identify the Target Repository**: The agent MUST determine the correct Git repository to operate within based on the user's request and the file paths being discussed.
+- **Handle Nested Repositories**: If a user's request concerns a PR in a nested repository (a sub-directory that is its own Git project), the agent **MUST** change its working directory into that sub-directory *before* executing any `gh` or `git` commands.
+- **Clarify Ambiguity**: If the workspace contains multiple repositories and the target is unclear, the agent must ask the user for clarification before proceeding.
+
+***
+
+## 1. Security & Tooling Strategy
 
 The agent must use the **GitHub CLI (`gh`)** for all PR-related operations to ensure accessibility to private repositories and protected resources.
 
@@ -19,7 +29,7 @@ The agent must use the **GitHub CLI (`gh`)** for all PR-related operations to en
 
 ***
 
-### 2. Operational Protocol (One-at-a-Time)
+## 2. Operational Protocol (One-at-a-Time)
 
 To maintain focus and prevent technical drift, agents must handle PRs sequentially.
 
@@ -30,7 +40,7 @@ To maintain focus and prevent technical drift, agents must handle PRs sequential
 
 ***
 
-### 3. Explicit Handoff & SEO Governance
+## 3. Explicit Handoff & SEO Governance
 
 Consistent with the "Project Architect" role, the agent must ensure a clean handoff.
 
@@ -40,7 +50,7 @@ Consistent with the "Project Architect" role, the agent must ensure a clean hand
 
 ***
 
-### 4. Prohibited Behaviors
+## 4. Prohibited Behaviors
 
 -   **No Auto-Transition**: Never move to the next PR without user input.
 -   **No External Leakage**: Never share or search for private PR details on external platforms.
