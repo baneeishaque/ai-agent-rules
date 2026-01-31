@@ -42,7 +42,7 @@ After ensuring the environment is valid, the agent's first action is to confirm 
 - When asked to commit staged files, only consider files that are staged (use git diff --cached or git status --short).
 - Always respect the folder, repository, or submodule specified by the user. If not specified, use the workspace root or known repositories.
 - If the folder is a submodule, follow all submodule commit and branch management rules (see git-submodule-rules.md).
-- Don't manually scan or assume file changes; always rely on git for authoritative status.
+- Don't manually scan or assume file changes; always rely on git for authoritative status. This includes untracked files not captured by `.gitignore`, which require explicit user confirmation before staging.
 - **Workflow-First Priority**: If changes involve CI/CD (workflows, scripts), fix and verify the logic **FIRST** before committing.
 
 ## Version Control Operations
@@ -96,31 +96,35 @@ This is the mandatory workflow for updating a local branch against its remote co
     - **Offer, Don't Execute**: After commits, OFFER the user to push. Wait for explicit "yes" or "push" command.
 
 - **Safety First (High-Risk Operations)**:
-    - **`git reset`**: Strictly forbidden for synchronization or resolving conflicts. If unstaging is needed, use `git reset <file>`. Hard resets require explicit user confirmation after explaining the data loss risk.
-    - **`git rebase`**: Requires explicit user confirmation.
+  - **`git reset`**: Strictly forbidden for synchronization or resolving conflicts. If unstaging is needed, use `git reset <file>`. Hard resets require explicit user confirmation after explaining the data loss risk.
+  - **`git rebase`**: Requires explicit user confirmation.
 
 ### 4. Stash Workflow for Rebase Operations
 
 When rebasing with unstaged changes, use `git stash` to temporarily save work.
 
 - **Stash Before Rebase**:
+
   ```bash
   git stash push -m "Descriptive message for stash"
   git pull --rebase origin <branch>
   ```
 
 - **Pop After Rebase**:
+
   ```bash
   git stash pop
   ```
 
 - **Conflict Resolution**: If `git stash pop` creates conflicts, resolve them manually, then:
+
   ```bash
   git add <resolved-files>
   git stash drop  # Remove the stash entry after manual resolution
   ```
 
 - **List Stashes**: View all stashed changes:
+
   ```bash
   git stash list
   ```

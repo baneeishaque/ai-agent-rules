@@ -120,9 +120,11 @@ Commit messages and change descriptions MUST be derived from actual file analysi
 For EVERY file rename operation, the agent MUST perform global link verification to prevent broken references.
 
 1. **Immediate Grep Check**: After each `git mv` operation, run:
+
    ```bash
    grep -r "Old-Filename.md" . --exclude-dir=.git
    ```
+
 2. **Update All References**: Use `sed` or manual edits to update ALL discovered references, including:
    - Internal documentation links
    - Template files (e.g., `templates/README.md.template`)
@@ -136,23 +138,35 @@ For EVERY file rename operation, the agent MUST perform global link verification
 When splitting a commit that has subsequent commits built on top of it, the agent MUST preserve those dependent commits.
 
 1. **Identify Dependents**: After splitting, list all commits created after the split commit:
-   ```bash
-   git log --oneline <split-commit>..HEAD
-   ```
+
+    ```bash
+    git log --oneline <split-commit>..HEAD
+    ```
+
 2. **Sequential Cherry-Pick**: Reapply each dependent commit in chronological order:
-   ```bash
-   git cherry-pick <commit-hash>
-   ```
+
+    ```bash
+    git cherry-pick <commit-hash>
+    ```
+
 3. **Conflict Resolution**: If conflicts arise:
-   - Resolve them while preserving the original commit's intent
-   - Use `git show <original-hash>` to reference the original changes
-   - Mark conflicts as resolved: `git add <file>`
-   - Continue: `git cherry-pick --continue`
+    - Resolve them while preserving the original commit's intent
+    - Use `git show <original-hash>` to reference the original changes
+    - Mark conflicts as resolved: `git add <file>`
+    - Continue: `git cherry-pick --continue`
 4. **Verification**: After all cherry-picks, verify the final tree state matches the pre-refinement state:
-   ```bash
-   git diff HEAD <backup-branch>
-   ```
-   Expected: Empty diff (tree parity maintained).
+
+    ```bash
+    git diff HEAD <backup-branch>
+    ```
+
+    Expected: Empty diff (tree parity maintained).
+
+***
+
+## 2.9 Hierarchical Rebase Coordination
+
+For complex multi-branch operations or chain rebasing, the agent MUST follow the **[Git Rebase Standardization Rules](./git-rebase-standardization-rules.md)** to ensure graph integrity and eliminate cross-branch redundancies.
 
 ***
 
@@ -203,6 +217,7 @@ git branch backup/pre-force-push-<n> origin/<branch>
 
 1. **Naming**: Use incremental integers `<n>` to avoid overwriting existing backups.
 2. **Verification**: Confirm backup existence:
+
    ```bash
    git branch --list "backup/pre-force-push-*"
    ```
@@ -222,9 +237,9 @@ Assign every remote commit to exactly one category:
 
 | Category | Definition | Action |
 | :--- | :--- | :--- |
-| **New** | Truly unique logic, content, or manual fixes created after refinement started. | MUST Cherry-pick. |
-| **Covered** | Changes already present in refined history (renames, splits, formatting). | Skip (User approval required). |
-| **Regenerative**| Auto-generated files (e.g., `README.md`, `agent-rules.md`) synced by CI. | Skip (User approval required). |
+| **New**         | Truly unique logic, content, or manual fixes created after refinement started. | MUST Cherry-pick. |
+| **Covered**     | Changes already present in refined history (renames, splits, formatting).    | Skip (User approval required). |
+| **Regenerative**| Auto-generated files (e.g., `README.md`, `agent-rules.md`) synced by CI.    | Skip (User approval required). |
 
 **Identifying Regenerative Files**:
 Check `.github/workflows/` or relevant scripts (e.g., `sync-rules.py`) to see if the file is a target of automated generation. If a commit ONLY modifies these files, it is **Regenerative**.
@@ -234,6 +249,7 @@ Check `.github/workflows/` or relevant scripts (e.g., `sync-rules.py`) to see if
 1. **Present Categorized List**: Present all remote commits, grouped by their assigned categories, to the user.
 2. **Mandatory Approval**: The user MUST explicitly approve the categorization and the decision to skip "Covered" or "Regenerative" commits.
 3. **Cherry-Pick**: Apply only approved "New" commits onto the refined HEAD.
+
    ```bash
    git cherry-pick <hash>
    ```
@@ -242,6 +258,7 @@ Check `.github/workflows/` or relevant scripts (e.g., `sync-rules.py`) to see if
 
 1. **Explicit Confirmation**: Request explicit user approval: "I understand that `origin/master` will be replaced. Proceed?"
 2. **Force with Lease**: Use the lease flag to prevent overwriting unexpected remote changes.
+
    ```bash
    git push --force-with-lease origin <branch>
    ```

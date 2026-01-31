@@ -1,6 +1,6 @@
 <!--
 title: Git Atomic Commit Construction
-description: Authoritative protocol for analyzing, grouping, and arranging changes into logical, independent atomic units before execution.
+description: Authoritative protocol for analysing, grouping, and arranging changes into logical, independent atomic units before execution.
 category: Git & Repository Management
 -->
 
@@ -18,6 +18,9 @@ Before staging any files, the agent MUST perform a dependency analysis of all mo
 
 - **Shared Identifiers**: Group changes that modify the same functions, classes, or constants across different files.
 - **Cross-File References**: If file A depends on a change in file B (e.g., an import or a link), they MUST be part of the same atomic commit.
+- **Untracked File Discovery**: The agent MUST explicitly check for untracked files (`git status`).
+  - **Implicit Tracking**: Any untracked file not excluded by `.gitignore` is a candidate for version control to ensure project completeness.
+  - **Mandatory Confirmation**: The agent MUST NOT stage or commit untracked files without explicit user confirmation, especially in repositories with minimal or default `.gitignore` files, to avoid accidentally committing private credentials, large binaries, or environment-specific files.
 - **Categorical Alignment**: Group changes by their architectural layer (e.g., UI, Logic, Docs) unless they are functionally coupled.
 - **Workflow-First Priority**: If changes involve CI/CD workflows (GitHub Actions, scripts), the agent **MUST** fix, test, and verify the workflow functionality *before* arranging or executing commits. Functional stability of the CI pipeline takes precedence over documentation or stylistic refinements.
 
@@ -94,6 +97,7 @@ To prevent stylistic changes from obscuring functional history, the agent MUST c
 Tool configurations and metadata must be atomically linked to the documentation or code they support.
 
 - **Functional Pairing**: Updates to `.vscode/settings.json` (e.g., cSpell words), `.lintrc`, or other configuration files MUST be staged and committed alongside the functional changes that necessitate them.
+- **IDE Project Files**: Shared IDE configuration files (e.g., `.idea/` core XMLs or `.vscode/` shared settings) that establish the project structure, SDKs, or common tooling MUST be tracked and committed to ensure environment parity. Workspace-specific or personal settings (e.g., `workspace.xml`) MUST remain ignored.
 - **Example**: If adding a new rule file introduces new technical terms, the cSpell update for those terms MUST be part of the same atomic unit as the rule file addition.
 
 ## 6. Phase 6: Submodule Synchronization Protocol
@@ -120,6 +124,9 @@ When a file (e.g., `.gitignore`) contains both standard API-generated content (e
 - **Anti-Repetition**: The commit body MUST NOT merely rephrase the title.
   - **Bad**: Title: `add vscode gitignore rules`. Body: `Add VisualStudioCode exclusion rules`.
   - **Good**: Title: `add vscode gitignore rules`. Body: `Sourced from gitignore.io to exclude editor artifacts`.
+- **Context Enrichment**: Ensure it explains the 'Why' behind the changes, especially for architectural or security-related decisions.
+- **Reflecting Atomic Logic**: The commit body MUST explicitly state the rationale for grouping these specific changes together. If multiple files are involved, explain their functional coupling (e.g., "Updates both the API endpoint and the matching UI handler to ensure type safety for the new status field").
+- **Constraint Documentation**: Mention any specific constraints or external dependencies that influenced the atomic grouping (e.g., "Includes the shared utility class to satisfy the compile-time dependency in the main logic").
 - **Contextual Accuracy**: Ensure terms usage is precise (e.g., "Supabase project-specific" instead of generic "project-specific").
 - **Body/Diff Congruence**: The commit message body **MUST** be a complete and accurate human-readable summary of all changes presented in the `Hunks/Preview` section of the commit plan. It is the AI's primary responsibility to make it easy for the user to confirm that the textual description perfectly matches the code modifications. Any discrepancy identified by the user requires an immediate and corrected preview.
 
@@ -134,6 +141,8 @@ When a file (e.g., `.gitignore`) contains both standard API-generated content (e
 - **Recovery**: If a mistake is made during staging, use `git reset <file>` to unstage, or `git checkout -p` to selectively discard. **WARNING**: Never use `git reset --hard` for synchronization; always prefer `git pull`.
 
 ***
+
+- **Opaque Content Analysis**: For files flagged as binary or large assets (LFS), the agent MUST verify the internal consistency of the commit by inspecting the file contents (e.g., via `cat -v` or hex dump) to ensure the commit message accurately reflects the data being stored.
 
 ## 10. The Commit Compass (GitKraken Philosophy)
 
@@ -174,8 +183,9 @@ Files managed by CI/CD automation MUST be excluded from manual edits during hist
 
 - **Exclusion List**: Maintain an explicit list of CI/CD managed files (e.g., `README.md`, `agent-rules.md`)
 - **Grep Exclusions**: When verifying link updates, use `--exclude` flags for these files:
+
   ```bash
   grep -r "old-name.md" . --exclude-dir=.git --exclude=README.md --exclude=agent-rules.md
   ```
-- **Commit Verification**: Before committing, run `git diff --cached` and verify no CI/CD managed files are staged unless the commit explicitly targets the source logic that generates them
 
+- **Commit Verification**: Before committing, run `git diff --cached` and verify no CI/CD managed files are staged unless the commit explicitly targets the source logic that generates them
