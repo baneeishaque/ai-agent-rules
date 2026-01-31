@@ -119,6 +119,7 @@ When a file (e.g., `.gitignore`) contains both standard API-generated content (e
   - **Bad**: Title: `add vscode gitignore rules`. Body: `Add VisualStudioCode exclusion rules`.
   - **Good**: Title: `add vscode gitignore rules`. Body: `Sourced from gitignore.io to exclude editor artifacts`.
 - **Contextual Accuracy**: Ensure terms usage is precise (e.g., "Supabase project-specific" instead of generic "project-specific").
+- **Body/Diff Congruence**: The commit message body **MUST** be a complete and accurate human-readable summary of all changes presented in the `Hunks/Preview` section of the commit plan. It is the AI's primary responsibility to make it easy for the user to confirm that the textual description perfectly matches the code modifications. Any discrepancy identified by the user requires an immediate and corrected preview.
 
 ***
 
