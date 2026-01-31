@@ -10,6 +10,16 @@ This document defines the mandatory protocol for creating "Arranged Commits"—l
 
 ***
 
+## 0. Phase 0: Establish Correct Repository Context
+
+Before any change analysis, the agent's first action is to confirm its operational context.
+
+- **Identify the Target Repository**: The agent MUST determine the correct Git repository to operate within based on the user's request and the file paths being discussed.
+- **Handle Nested Repositories**: If a user's request concerns changes within a nested repository (a sub-directory that is its own Git project), the agent **MUST** change its working directory into that sub-directory *before* proceeding to Phase 1 analysis. All subsequent `git` commands for the task must be executed from within that directory.
+- **Clarify Ambiguity**: If the workspace contains multiple repositories and the target is unclear, the agent must ask the user for clarification before proceeding (e.g., "Which repository should I be working in? `project-a/` or `project-b/`?").
+
+***
+
 ## 1. Phase 1: Deep Change Analysis
 
 Before staging any files, the agent MUST perform a dependency analysis of all modifications.
