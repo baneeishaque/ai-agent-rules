@@ -99,6 +99,10 @@ Follow the guidelines in:
 AI-Agent-Rules/
 ├── 📄 agent-rules.md                    # Central index (start here!)
 │
+├── 📖 Documentation & Standards
+│   ├── code-documentation-rules.md     # Deep-dive & Pedagogical standards
+│   └── markdown-generation-rules.md    # Lint-compliant formatting
+│
 ├── 🧠 Core Agent Rules
 │   ├── ai-agent-planning-rules.md               # Planning & workflow protocols
 │   ├── ai-tools-rules.md               # Tool execution guidelines
