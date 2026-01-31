@@ -6,9 +6,29 @@ category: Git & Repository Management
 
 # Git Operation Rules
 
-## 0. Phase 0: Establish Correct Repository Context
+## Phase -1: Environment & Prerequisite Validation
 
-Before any `git` command is executed, the agent's first action is to confirm its operational context. This is the foundational prerequisite for all subsequent rules.
+Before any Git commands are executed, the agent MUST perform the following pre-flight checks to ensure the environment is correctly configured.
+
+- **Authenticate Services**: The agent MUST verify authentication status for required services (e.g., GitHub CLI) within the correct shell environment. If authentication is missing, the agent MUST guide the user through the login process.
+  ```bash
+  # Example for GitHub CLI within a Nix shell
+  nix-shell -p github-cli --run "gh auth status"
+  
+  # If the above fails, guide the user to run:
+  nix-shell -p github-cli --run "gh auth login"
+  ```
+- **Verify Tool Permissions**: The agent MUST ensure that all necessary build tools have execute permissions.
+  ```bash
+  # Example for Gradle wrapper
+  chmod +x gradlew
+  ```
+
+***
+
+## Phase 0: Establish Correct Repository Context
+
+After ensuring the environment is valid, the agent's first action is to confirm its operational context.
 
 - **Identify the Target Repository**: The agent MUST determine the correct Git repository to operate within based on the user's request and the file paths being discussed.
 - **Handle Nested Repositories**: If a user's request concerns changes within a nested repository (a sub-directory that is its own Git project), the agent **MUST** change its working directory into that sub-directory *before* executing any `git` or `gh` commands.
@@ -44,10 +64,37 @@ Before any `git` command is executed, the agent's first action is to confirm its
     - **Timing**: Pull BEFORE making commits, not after.
     - **Explicit Confirmation**: Always ask user before pulling.
     - **Rebase Option**: `git pull --rebase` requires separate explicit confirmation.
+- **Discover Default Branch**: The agent MUST NOT assume the default branch name. It MUST be discovered programmatically before any checkout or rebase operation.
+  ```bash
+  # Discover remote branches to identify the default (e.g., 'master' or 'main')
+  git branch -r
+  ```
+
+#### 3.1. Full Synchronization Workflow (Stash, Fetch, Rebase)
+This is the mandatory workflow for updating a local branch against its remote counterpart.
+
+1.  **Stash Uncommitted Changes**: To prevent conflicts, stash any local modifications.
+    ```bash
+    git stash
+    ```
+2.  **Fetch Remote Updates**:
+    ```bash
+    git fetch
+    ```
+3.  **Rebase onto Default Branch**: Rebase the current working branch against its remote counterpart.
+    ```bash
+    git rebase origin/<remote-tracking-branch>
+    ```
+4.  **Pop Stash**: Re-apply the stashed changes.
+    ```bash
+    git stash pop
+    ```
+
 - **Push Protocol**:
     - **Explicit Request Required**: Do NOT execute `git push` unless the user **explicitly** requests it.
     - **No Auto-Pushes**: Even if a commit is requested, do not chain a push command unless specifically told to "commit and push".
     - **Offer, Don't Execute**: After commits, OFFER the user to push. Wait for explicit "yes" or "push" command.
+
 - **Safety First (High-Risk Operations)**:
     - **`git reset`**: Strictly forbidden for synchronization or resolving conflicts. If unstaging is needed, use `git reset <file>`. Hard resets require explicit user confirmation after explaining the data loss risk.
     - **`git rebase`**: Requires explicit user confirmation.
