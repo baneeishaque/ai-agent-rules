@@ -99,6 +99,11 @@ Follow the guidelines in:
 |-----------|---------|
 | [`zero-backend-sync-rules.md`](./zero-backend-sync-rules.md) | Architecture and implementation standards for background, invisible data synchronization using decentralized relays (Nostr), local-first storage (RxDB), and WASM hardening. |
 
+### Build-Management
+| Rule File | Purpose |
+|-----------|---------|
+| [`kmp-version-upgrade-rules.md`](./kmp-version-upgrade-rules.md) | A specific technical protocol for upgrading Kotlin, AGP, and related dependencies in a Kotlin Multiplatform project. |
+
 ### CI/CD & DevOps
 | Rule File | Purpose |
 |-----------|---------|
