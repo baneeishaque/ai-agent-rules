@@ -4,7 +4,6 @@ description: Protocol for documenting AI agent sessions or conversations as Mark
 category: Core Agent Behavior
 -->
 
-
 # AI Agent Session Documentation Rules (Sensitive Data & Relevance)
 
 ## 1. Core Principle
@@ -13,7 +12,6 @@ All significant AI agent sessions or conversations must be documented in Markdow
 
 **Sensitive Data & Relevance Principle:**
 Regardless of whether the document is public or private, do not include any unrelated documents, data, or session-irrelevant information. All sensitive data must be redacted or replaced with placeholders (e.g., `[REDACTED]`, `[PLACEHOLDER]`).
-
 
 ## 2. Documentation Protocol (Sensitive Data & Relevance)
 
@@ -24,8 +22,11 @@ Regardless of whether the document is public or private, do not include any unre
 - **Attachment References:** For every file referenced or attached, include the full path and a brief description in a dedicated section. Do not include attachments or references that are not directly relevant to the session.
 - **Structured Data:** Where possible, include structured data (tables, code blocks, configuration blocks, etc.) to summarize key points, requirements, or outcomes. Do not include unrelated or session-irrelevant data.
 - **Cross-References:** Link only to related rule files, previous sessions, or relevant documentation that is directly relevant to the session.
-- **Execution Confirmation:** Clearly log any commands run, their output, and the working directory, but only if directly relevant to the session objective. Omit unrelated execution details.
-- **Change Tracking:** If the session results in file changes, document the before/after state, the rationale, and the method used (e.g., `git mv`, two-step rename), but only for session-relevant changes.
+- **Execution Confirmation**: Clearly log any commands run, their output, and the working directory, but only if directly relevant to the session objective. Omit unrelated execution details.
+- **Git Hierarchy & LFS Graphing**: For sessions involving Git restructuring, the documentation MUST record:
+  - **Final Branch Graph**: The result of `git log --oneline --graph`.
+  - **LFS Retention**: Proof of binary asset integrity via `git lfs status`.
+- **Change Tracking**: If the session results in file changes, document the before/after state, the rationale, and the method used (e.g., `git mv`, two-step rename), but only for session-relevant changes.
 - **Rule References:** Explicitly list only the rules or protocols referenced or followed during the session.
 - **Summary Table:** At the end, provide a summary table of requirements, actions, and references, but only for session-relevant items.
 
