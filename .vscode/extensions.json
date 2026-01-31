@@ -1,15 +1,10 @@
 {
   "recommendations": [
-    "donjayamanne.githistory",
     "eamodio.gitlens",
     "github.vscode-pull-request-github",
     "hashhar.gitattributes",
-    "mhutchie.git-graph",
-    "moshfeu.compare-folders",
-    "moshfeu.diff-merge",
     "piotrpalarz.vscode-gitignore-generator",
     "pkief.material-icon-theme",
-    "ryu1kn.partial-diff",
     "semanticdiff.semanticdiff",
     "sleistner.vscode-fileutils",
     "vscode.configuration-editing",
@@ -27,11 +22,10 @@
   ],
   "onlyVscodeSupported": [
     "github.copilot",
-    "github.copilot-chat"
+    "github.copilot-chat",
+    "ryu1kn.partial-diff"
   ],
   "onlyGitpodSupported": [
-    "lang2hong.githd",
-    "solomonkinard.git-files"
   ],
   "additionalRecommendations": [
     "continue.continue",
