@@ -11,6 +11,7 @@ category: Git & Repository Management
 Before any Git commands are executed, the agent MUST perform the following pre-flight checks to ensure the environment is correctly configured.
 
 - **Authenticate Services**: The agent MUST verify authentication status for required services (e.g., GitHub CLI) within the correct shell environment. If authentication is missing, the agent MUST guide the user through the login process.
+
   ```bash
   # Example for GitHub CLI within a Nix shell
   nix-shell -p github-cli --run "gh auth status"
@@ -18,7 +19,9 @@ Before any Git commands are executed, the agent MUST perform the following pre-f
   # If the above fails, guide the user to run:
   nix-shell -p github-cli --run "gh auth login"
   ```
+
 - **Verify Tool Permissions**: The agent MUST ensure that all necessary build tools have execute permissions.
+
   ```bash
   # Example for Gradle wrapper
   chmod +x gradlew
@@ -44,6 +47,9 @@ After ensuring the environment is valid, the agent's first action is to confirm 
 - If the folder is a submodule, follow all submodule commit and branch management rules (see git-submodule-rules.md).
 - Don't manually scan or assume file changes; always rely on git for authoritative status. This includes untracked files not captured by `.gitignore`, which require explicit user confirmation before staging.
 - **Workflow-First Priority**: If changes involve CI/CD (workflows, scripts), fix and verify the logic **FIRST** before committing.
+- **Submodule Integrity**:
+  - **Dangling Pointer Check**: Before pushing changes that update a submodule, the agent MUST verify that the referenced submodule commit exists in the remote submodule repository.
+  - **Canonical Ancestry**: Ensure the new submodule pointer is a descendant of the codebase's previous submodule pointer if a linear history is expected.
 
 ## Version Control Operations
 
@@ -60,40 +66,49 @@ After ensuring the environment is valid, the agent's first action is to confirm 
 - **Status Check First**: Always run `git status` before any fetch, pull, or push operation to understand the current state.
 - **Remote Check**: Use `git fetch --dry-run` or `git ls-remote` to check for remote changes WITHOUT fetching. Requires user confirmation.
 - **Fetch Protocol**: Do NOT execute `git fetch` without explicit user confirmation.
-- **Pull Protocol**: 
-    - **Timing**: Pull BEFORE making commits, not after.
-    - **Explicit Confirmation**: Always ask user before pulling.
-    - **Rebase Option**: `git pull --rebase` requires separate explicit confirmation.
+- **Pull Protocol**:
+  - **Timing**: Pull BEFORE making commits, not after.
+  - **Explicit Confirmation**: Always ask user before pulling.
+  - **Rebase Option**: `git pull --rebase` requires separate explicit confirmation.
 - **Discover Default Branch**: The agent MUST NOT assume the default branch name. It MUST be discovered programmatically before any checkout or rebase operation.
+
   ```bash
   # Discover remote branches to identify the default (e.g., 'master' or 'main')
   git branch -r
   ```
 
 #### 3.1. Full Synchronization Workflow (Stash, Fetch, Rebase)
+
 This is the mandatory workflow for updating a local branch against its remote counterpart.
 
-1.  **Stash Uncommitted Changes**: To prevent conflicts, stash any local modifications.
+1. **Stash Uncommitted Changes**: To prevent conflicts, stash any local modifications.
+
     ```bash
     git stash
     ```
-2.  **Fetch Remote Updates**:
+
+2. **Fetch Remote Updates**:
+
     ```bash
     git fetch
     ```
-3.  **Rebase onto Default Branch**: Rebase the current working branch against its remote counterpart.
+
+3. **Rebase onto Default Branch**: Rebase the current working branch against its remote counterpart.
+
     ```bash
     git rebase origin/<remote-tracking-branch>
     ```
-4.  **Pop Stash**: Re-apply the stashed changes.
+
+4. **Pop Stash**: Re-apply the stashed changes.
+
     ```bash
     git stash pop
     ```
 
 - **Push Protocol**:
-    - **Explicit Request Required**: Do NOT execute `git push` unless the user **explicitly** requests it.
-    - **No Auto-Pushes**: Even if a commit is requested, do not chain a push command unless specifically told to "commit and push".
-    - **Offer, Don't Execute**: After commits, OFFER the user to push. Wait for explicit "yes" or "push" command.
+  - **Explicit Request Required**: Do NOT execute `git push` unless the user **explicitly** requests it.
+  - **No Auto-Pushes**: Even if a commit is requested, do not chain a push command unless specifically told to "commit and push".
+  - **Offer, Don't Execute**: After commits, OFFER the user to push. Wait for explicit "yes" or "push" command.
 
 - **Safety First (High-Risk Operations)**:
   - **`git reset`**: Strictly forbidden for synchronization or resolving conflicts. If unstaging is needed, use `git reset <file>`. Hard resets require explicit user confirmation after explaining the data loss risk.
