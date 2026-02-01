@@ -28,6 +28,7 @@ Regardless of whether the document is public or private, do not include any unre
   - **LFS Retention**: Proof of binary asset integrity via `git lfs status`.
 - **Change Tracking**: If the session results in file changes, document the before/after state, the rationale, and the method used (e.g., `git mv`, two-step rename), but only for session-relevant changes.
 - **Rule References:** Explicitly list only the rules or protocols referenced or followed during the session.
+- **Lint Check:** Ensure all generated Markdown complies with **[Markdown Generation Rules](./markdown-generation-rules.md)** to maintain consistency and lint readiness.
 - **Summary Table:** At the end, provide a summary table of requirements, actions, and references, but only for session-relevant items.
 
 ## 3. Advanced Best Practices (Sensitive Data & Relevance)

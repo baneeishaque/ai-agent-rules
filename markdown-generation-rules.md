@@ -37,19 +37,24 @@ The agent MUST ensure all generated Markdown passes standard linting rules.
 ### 1.5 Markdown Escapes
 
 - **Special Characters**: Always escape characters that have special meaning in Markdown if they are intended to be literal. This includes:
-    - Backslash: `\\`
-    - Backtick: `` \` ``
-    - Asterisk: `\*`
-    - Underscore: `\_`
-    - Braces: `\{ \}`
-    - Brackets: `\[ \]`
-    - Parentheses: `\( \)`
-    - Hashmark: `\#`
-    - Plus sign: `\+`
-    - Minus sign: `\-`
-    - Dot: `\.`
-    - Exclamation mark: `\!`
+  - Backslash: `\\`
+  - Backtick: `` \` ``
+  - Asterisk: `\*`
+  - Underscore: `\_`
+  - Braces: `\{ \}`
+  - Brackets: `\[ \]`
+  - Parentheses: `\( \)`
+  - Hashmark: `\#`
+  - Plus sign: `\+`
+  - Minus sign: `\-`
+  - Dot: `\.`
+  - Exclamation mark: `\!`
 - **Code Spans**: Inside inline code spans, escape backticks by using multiple backticks as delimiters (e.g., `` ` ``literal backtick`` ` ``).
+
+### 1.6 Styling & Emphasis (Industrial Standard)
+
+- **Key Terms in Lists**: Always bold the primary label or key term at the start of a list item (e.g., `1. **Term**: Definition`).
+- **Technical Literals**: Always use backticks for literal technical values, including commands (e.g., `` `git status` ``), file paths (e.g., `` `path/to/file` ``), and commit hashes.
 
 ***
 
@@ -92,6 +97,7 @@ Before finalizing any Markdown file, the agent MUST validate against the followi
 ### 3.2 Category Tags
 
 Use these tags to enable/disable groups of rules:
+
 - **`accessibility`**: `MD045` (alt text), `MD059` (descriptive link text)
 - **`blank_lines`**: `MD012`, `MD022`, `MD031`, `MD032`, `MD047`
 - **`code`**: `MD014`, `MD031`, `MD038`, `MD040`, `MD046`, `MD048`
