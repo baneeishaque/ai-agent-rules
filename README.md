@@ -156,6 +156,7 @@ Follow the guidelines in:
 | [`git-operation-rules.md`](./git-operation-rules.md) | Strict protocols for standard Git operations (commits & pushes), mandating explicit user requests and forbidding auto-actions. |
 | [`git-rebase-standardization-rules.md`](./git-rebase-standardization-rules.md) | Industrial protocol for hierarchical branch rebasing, cross-branch deduplication, and literal commit fidelity. |
 | [`git-repo-management-rules.md`](./git-repo-management-rules.md) | Comprehensive protocol for the repository lifecycle, including standardized creation, CLI-based cloning, submodule initialization, and auto-indexing. |
+| [`git-submodule-history-repair-rules.md`](./git-submodule-history-repair-rules.md) | Protocols for repairing broken submodule pointers caused by history rewrites in submodule repositories. |
 | [`git-submodule-rules.md`](./git-submodule-rules.md) | Protocols for managing submodules, preventing detached HEAD states, proper branch tracking, and descriptive parent commit messages. |
 | [`git-text-normalization-rules.md`](./git-text-normalization-rules.md) | Rules to ensure Git treats text files correctly across encodings and platforms, preventing binary diffs and EOL churn. |
 | [`github-pr-management-rules.md`](./github-pr-management-rules.md) | Sequential, CLI-first protocols for handling Pull Requests, emphasizing security for private repositories and explicit user handoff. |
