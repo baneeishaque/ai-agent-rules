@@ -95,14 +95,14 @@ function connectRelayMesh() {
     handleSyncIn();
   };
 
-  socket.onmessage = (event: MessageEvent<string>) => {
+  socket.onmessage = async (event: MessageEvent<string>) => {
     try {
       const nostrEvent = JSON.parse(event.data);
       // NIP-01: ["EVENT", <sub_id>, <event_object>]
       if (Array.isArray(nostrEvent) && nostrEvent[0] === 'EVENT') {
         const eventObj = nostrEvent[2];
         const encryptedContent = eventObj.content;
-        const plainData = decrypt(encryptedContent);
+        const plainData = await decrypt(encryptedContent);
 
         if (plainData) {
           self.postMessage({
