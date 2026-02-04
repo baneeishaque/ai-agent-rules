@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { SyncEngine } from '../services/sync/lib/engine';
-import { SyncData } from '../services/sync/lib/types';
+import { SyncEngine } from '../../../../lib/engine';
+import { SyncData } from '../../../../lib/types';
 
 /**
  * SyncManager: Pedogogical Component
@@ -13,7 +13,7 @@ export const SyncManager: React.FC = () => {
   useEffect(() => {
     // 1. Silent Context Discovery
     // Identify a stable identifier from the app session (e.g., email)
-    const currentUserEmail = 'user@example.com'; 
+    const currentUserEmail = 'user@example.com';
     const platformId = 'prod-v1';
     const compoundId = [currentUserEmail, platformId];
 
@@ -30,7 +30,7 @@ export const SyncManager: React.FC = () => {
   const handleUpdate = (key: string, value: any) => {
     const newState = { ...syncedState, [key]: value };
     setSyncedState(newState);
-    
+
     // 3. Push to Sync Mesh
     // This happens in the background via the Web Worker
     SyncEngine.pushUpdate(newState);
@@ -42,7 +42,7 @@ export const SyncManager: React.FC = () => {
     <div style={{ padding: '20px', border: '1px solid #ccc' }}>
       <h3>Sync Manager (Industrial)</h3>
       <p>Status: {isReady ? 'Live Bridge Connected' : 'Connecting...'}</p>
-      
+
       <div style={{ marginBottom: '10px' }}>
         <button onClick={() => handleUpdate('theme', 'dark')}>Set Dark Mode</button>
         <button onClick={() => handleUpdate('theme', 'light')}>Set Light Mode</button>
