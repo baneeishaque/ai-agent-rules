@@ -58,9 +58,11 @@ All adjacent markdown files (Patterns 1.2, 1.3, and 1.4) MUST meet the following
 - **Line-by-Line Mapping**: Every critical logic block MUST be explained with its corresponding line numbers or code snippets. For high-priority or complex logic, a **Deep Technical Breakdown Table** (Line, Logic, Pedagogical Rationale) is mandatory.
 - **The "Why" vs. "What"**: Do not simply restate the code. Explain the rationale behind implementation choices (e.g., "We use a preset name here to avoid UI clutter from redundant date strings").
 - **Use Case Scenarios**: Include a section for "Common Use Cases" and "Edge Cases" showing how the logic handles various input states.
+- **Inline Documentation (JSDoc/TSDoc)**: All exported interfaces, props, and components MUST have standard JSDoc/TSDoc comments. This ensures IDE intellisense works for consumers of the shared code.
 - **Relative Linking**: All documentation MUST use relative paths for internal references (siblings, parents, or session logs in the same repo). This ensures the folder remains a self-contained, portable unit.
 - **Anchor Stability**: When linking to specific sections, prioritize descriptive section headings over line numbers or section digits. Headings change rarely, while line numbers drift after every refactor.
 - **Zero Noise**: Avoid introductory fluff. Start directly with the technical breakdown.
+- **Architectural Decision Matrix**: If the component makes a specific architectural choice (e.g., "Using `sx` over `scss`" or "Using a specific Validation Library"), this MUST be documented with a comparison table explaining the "Why", "Pros", and "Cons".
 
 ***
 
