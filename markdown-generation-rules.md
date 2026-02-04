@@ -56,6 +56,28 @@ The agent MUST ensure all generated Markdown passes standard linting rules.
 - **Key Terms in Lists**: Always bold the primary label or key term at the start of a list item (e.g., `1. **Term**: Definition`).
 - **Technical Literals**: Always use backticks for literal technical values, including commands (e.g., `` `git status` ``), file paths (e.g., `` `path/to/file` ``), and commit hashes.
 
+### 1.7 Tables
+
+- **Format Style**: Use **compact style with aligned delimiters** for all tables:
+  - Cell content should have minimal padding (single space on each side of the pipe)
+  - Pipe delimiters (`|`) must align vertically across all rows
+  - Separator row should use minimal dashes with proper alignment
+- **Header Row**: Always include a header row followed by a separator row
+- **Separator Syntax**: Use hyphens (`-`) with optional colons (`:`) for alignment
+  - Left-aligned: `|---|` (default)
+  - Center-aligned: `|:---:|`
+  - Right-aligned: `|---:|`
+- **Spacing**: Ensure blank lines before and after tables
+
+**Example:**
+
+```markdown
+| Column A | Column B       | Column C    |
+|----------|----------------|-------------|
+| Value 1  | Longer value 2 | Value 3     |
+| Short    | V2             | Another val |
+```
+
 ***
 
 ## 2. Structural Requirements
@@ -93,6 +115,7 @@ Before finalizing any Markdown file, the agent MUST validate against the followi
 | **MD040** | `fenced-code-language` | Fenced code blocks must have a language |
 | **MD041** | `first-line-h1` | First line in a file should be a top-level heading |
 | **MD047** | `single-trailing-newline` | Files must end with a single newline |
+| **MD060** | `table-column-style` | Table columns must be consistently aligned |
 
 ### 3.2 Category Tags
 
