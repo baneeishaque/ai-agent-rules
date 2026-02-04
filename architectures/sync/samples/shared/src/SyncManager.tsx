@@ -40,30 +40,64 @@ export const SyncManager: React.FC = () => {
     SyncEngine.pushUpdate(fragment);
   };
 
+  const currentTheme = (syncedState.theme as string) || 'light';
+  const isDark = currentTheme === 'dark';
+
   return (
-    <div style={{ padding: '2rem', background: '#f9f9f9', borderRadius: '12px', border: '1px solid #eee' }}>
-      <h2>Zero-Backend Sync Manager</h2>
+    <div style={{
+      padding: '2rem',
+      background: isDark ? '#1e1e1e' : '#f9f9f9',
+      color: isDark ? '#ffffff' : '#000000',
+      borderRadius: '12px',
+      border: isDark ? '1px solid #333' : '1px solid #eee',
+      transition: 'all 0.3s ease',
+      fontSize: `${syncedState.fontSize || 14}px`
+    }}>
+      <h2 style={{ fontSize: '1.5em' }}>Zero-Backend Sync Manager</h2>
       <p>Status: {isReady ? '✅ Active (Decentralized Mesh Connected)' : '⏳ Initializing...'}</p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginTop: '1.5rem' }}>
         <button
-          onClick={() => handleUpdate('theme', syncedState.theme === 'dark' ? 'light' : 'dark')}
-          style={{ padding: '0.8rem', cursor: 'pointer', borderRadius: '8px', border: 'none', background: '#007bff', color: 'white' }}
+          onClick={() => handleUpdate('theme', isDark ? 'light' : 'dark')}
+          style={{
+            padding: '0.8rem',
+            cursor: 'pointer',
+            borderRadius: '8px',
+            border: 'none',
+            background: isDark ? '#444' : '#007bff',
+            color: 'white',
+            fontWeight: 'bold'
+          }}
         >
-          Toggle Theme ({(syncedState.theme as string) || 'light'})
+          Toggle Theme ({currentTheme})
         </button>
 
         <button
-          onClick={() => handleUpdate('fontSize', 16)}
-          style={{ padding: '0.8rem', cursor: 'pointer', borderRadius: '8px', border: 'none', background: '#6c757d', color: 'white' }}
+          onClick={() => handleUpdate('fontSize', (syncedState.fontSize as number || 14) + 2)}
+          style={{
+            padding: '0.8rem',
+            cursor: 'pointer',
+            borderRadius: '8px',
+            border: 'none',
+            background: '#6c757d',
+            color: 'white',
+            fontWeight: 'bold'
+          }}
         >
-          Reset Font Size
+          Increase Font Size
         </button>
       </div>
 
       <div style={{ marginTop: '2rem' }}>
-        <h4>Current Sync State:</h4>
-        <pre style={{ background: '#333', color: '#fff', padding: '1rem', borderRadius: '8px', overflowX: 'auto' }}>
+        <h4 style={{ fontSize: '1.1em' }}>Current Sync State:</h4>
+        <pre style={{
+          background: isDark ? '#000' : '#333',
+          color: '#fff',
+          padding: '1rem',
+          borderRadius: '8px',
+          overflowX: 'auto',
+          fontSize: '0.9em'
+        }}>
           {JSON.stringify(syncedState, null, 2)}
         </pre>
       </div>
