@@ -5,6 +5,7 @@
 
 import { generateSecretKey, getPublicKey, finalizeEvent } from 'nostr-tools';
 import { SyncMessageType, SyncMessage, SyncConfig, SyncPayload, InitPayload, SyncData } from '../types';
+import syncConfigJson from '../config.json';
 let config: SyncConfig;
 
 try {
@@ -33,7 +34,7 @@ self.onmessage = async (event: MessageEvent<SyncMessage<unknown>>) => {
   try {
     const data = event.data;
     if (!data || typeof data !== 'object') throw new Error('Invalid MessageEvent data');
-    
+
     const { type, payload } = data;
 
     switch (type) {
@@ -68,32 +69,32 @@ async function handleInit(identitySeed: string | string[]) {
 
   // Identity logic: seed can be a string (email) or array (compound identifier)
   const normalizedSeed = Array.isArray(identitySeed) ? identitySeed.join('|') : identitySeed;
-  
+
   // 1. WASM Hardened Key Derivation
   // PRODUCTION: import { deriveSeed } from './crypto.asm';
   // const seed = deriveSeed(normalizedSeed);
-  privateKey = generateSecretKey(); 
+  privateKey = generateSecretKey();
   publicKey = getPublicKey(privateKey);
-  
-  self.postMessage({ 
-    type: SyncMessageType.READY, 
-    payload: { publicKey } 
+
+  self.postMessage({
+    type: SyncMessageType.READY,
+    payload: { publicKey }
   });
-  
+
   connectRelayMesh();
 }
 
 function connectRelayMesh() {
-  const relay = config.relays[currentRelayIndex]; 
+  const relay = config.relays[currentRelayIndex];
   console.log(`[SyncWorker] Connecting to relay: ${relay}`);
-  
+
   socket = new WebSocket(relay);
-  
+
   socket.onopen = () => {
     console.log(`[SyncWorker] Connected to ${relay}`);
     handleSyncIn();
   };
-  
+
   socket.onmessage = (event: MessageEvent<string>) => {
     try {
       const nostrEvent = JSON.parse(event.data);
@@ -102,11 +103,11 @@ function connectRelayMesh() {
         const eventObj = nostrEvent[2];
         const encryptedContent = eventObj.content;
         const plainData = decrypt(encryptedContent);
-        
+
         if (plainData) {
-          self.postMessage({ 
-            type: SyncMessageType.SYNC_RECEIVED, 
-            payload: { data: plainData } 
+          self.postMessage({
+            type: SyncMessageType.SYNC_RECEIVED,
+            payload: { data: plainData }
           });
         }
       }
@@ -162,7 +163,7 @@ function handleSyncIn() {
     authors: [publicKey],
     '#d': [config.defaultDTag]
   };
-  
+
   socket.send(JSON.stringify(['REQ', subId, filter]));
   console.log(`[SyncWorker] Subscribed to buffer (d-tag: ${config.defaultDTag})`);
 }
@@ -174,19 +175,19 @@ async function encrypt(text: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(text);
   const iv = crypto.getRandomValues(new Uint8Array(12));
-  
+
   // Derive crypto key from private key bytes (Simplified for reference)
   const key = await crypto.subtle.importKey(
-    'raw', 
-    privateKey.slice(0, 32), 
-    { name: 'AES-GCM' }, 
-    false, 
+    'raw',
+    privateKey.slice(0, 32),
+    { name: 'AES-GCM' },
+    false,
     ['encrypt']
   );
 
   const ciphertext = await crypto.subtle.encrypt(
-    { name: 'AES-GCM', iv }, 
-    key, 
+    { name: 'AES-GCM', iv },
+    key,
     data
   );
 
@@ -205,16 +206,16 @@ async function decrypt(encoded: string): Promise<SyncData | null> {
     const ciphertext = combined.slice(12);
 
     const key = await crypto.subtle.importKey(
-      'raw', 
-      privateKey.slice(0, 32), 
-      { name: 'AES-GCM' }, 
-      false, 
+      'raw',
+      privateKey.slice(0, 32),
+      { name: 'AES-GCM' },
+      false,
       ['decrypt']
     );
 
     const decrypted = await crypto.subtle.decrypt(
-      { name: 'AES-GCM', iv }, 
-      key, 
+      { name: 'AES-GCM', iv },
+      key,
       ciphertext
     );
 

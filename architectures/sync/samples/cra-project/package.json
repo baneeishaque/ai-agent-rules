@@ -16,7 +16,6 @@
         "start": "craco start",
         "build": "craco build",
         "test": "craco test",
-        "eject": "react-scripts eject",
-        "asm:build": "npx asc src/services/sync/lib/worker/crypto.asm.ts -o src/services/sync/lib/worker/crypto.wasm"
+        "eject": "react-scripts eject"
     }
 }

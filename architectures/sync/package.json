@@ -7,6 +7,9 @@
         "packages/*",
         "samples/*"
     ],
+    "scripts": {
+        "asm:build": "npx asc packages/core/src/worker/crypto.asm.ts -o packages/core/src/worker/crypto.wasm"
+    },
     "devDependencies": {
         "assemblyscript": "^0.27.0",
         "typescript": "^5.0.0"
