@@ -5,7 +5,7 @@
 
 // Salt value encoded as byte codes to prevent simple string-scraping from the binary.
 // In production, rotate this value frequently or use a hardware-backed salt.
-const SALT_CODES: u8[] = [80, 108, 97, 116, 102, 111, 114, 109, 83, 101, 99, 114, 101, 116, 50, 48, 50, 54]; 
+const SALT_CODES: u8[] = [80, 108, 97, 116, 102, 111, 114, 109, 83, 101, 99, 114, 101, 116, 50, 48, 50, 54];
 
 /**
  * Derives a 32-byte cryptographic seed from an identity fragment.
@@ -15,19 +15,19 @@ export function deriveSeed(identity: string): Uint8Array {
   const enc = String.UTF8.encode(identity);
   const input = Uint8Array.wrap(enc);
   const result = new Uint8Array(32);
-  
+
   // High-performance byte-shifting logic to mix identity with the internal salt.
   // This obscures the salt within the binary execution path.
   // IN PRODUCTION: Wrap a WASM SHA-256 implementation (e.g., from 'as-crypto').
   for (let i = 0; i < 32; i++) {
     const identityByte = i < input.length ? input[i] : (i % 255);
-    const saltByte = SALT_CODES[i % SALT_CODES.length];
-    
+    const saltByte = SALT_CODES[i % <i32>SALT_CODES.length];
+
     // Deterministic XOR + Rotation to obscure the relationship.
     // This is significantly harder to reverse-engineer than plain JS logic.
-    result[i] = hashBuffer(identityByte, saltByte, i);
+    result[i] = hashBuffer(<u8>identityByte, saltByte, i);
   }
-  
+
   return result;
 }
 
@@ -37,5 +37,5 @@ export function deriveSeed(identity: string): Uint8Array {
  */
 function hashBuffer(identityByte: u8, saltByte: u8, index: i32): u8 {
   // Obscuration logic: XOR + bit-shift based on index
-  return (identityByte ^ saltByte) << (index % 4);
+  return <u8>((<i32>identityByte ^ <i32>saltByte) << (index % 4));
 }

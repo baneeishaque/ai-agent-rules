@@ -1,4 +1,3 @@
-import React from 'react';
 import { BaseApp } from '@sync/shared';
 
 function App() {

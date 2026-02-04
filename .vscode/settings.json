@@ -13,5 +13,8 @@
         "pubspec",
         "pwsh",
         "unvetted"
+    ],
+    "asls.include": [
+        "ai-agent-rules/architectures/sync/packages/core/src/worker/crypto.asm.ts"
     ]
 }
