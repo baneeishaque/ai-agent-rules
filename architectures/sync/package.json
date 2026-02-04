@@ -3,13 +3,12 @@
     "version": "1.0.0",
     "description": "Industrial Zero-Backend Sync Template",
     "private": true,
-    "dependencies": {
-        "rxdb": "^15.0.0",
-        "nostr-tools": "^2.0.0",
-        "rxjs": "^7.8.0"
-    },
+    "workspaces": [
+        "packages/*",
+        "samples/*"
+    ],
     "devDependencies": {
         "assemblyscript": "^0.27.0",
-        "@craco/craco": "^7.1.0"
+        "typescript": "^5.0.0"
     }
 }

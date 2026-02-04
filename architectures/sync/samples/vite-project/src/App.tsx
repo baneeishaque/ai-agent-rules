@@ -1,17 +1,8 @@
 import React from 'react';
-import { SyncManager } from './components/SyncManager';
+import { BaseApp } from '@sync/shared';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Zero-Backend Sync Industrial Sample (Vite)</h1>
-      </header>
-      <main>
-        <SyncManager />
-      </main>
-    </div>
-  );
+  return <BaseApp title="Zero-Backend Sync Industrial Sample (Vite)" />;
 }
 
 export default App;
