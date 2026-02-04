@@ -50,7 +50,7 @@ export const SyncManager: React.FC = () => {
           onClick={() => handleUpdate('theme', syncedState.theme === 'dark' ? 'light' : 'dark')}
           style={{ padding: '0.8rem', cursor: 'pointer', borderRadius: '8px', border: 'none', background: '#007bff', color: 'white' }}
         >
-          Toggle Theme ({syncedState.theme || 'light'})
+          Toggle Theme ({(syncedState.theme as string) || 'light'})
         </button>
 
         <button
