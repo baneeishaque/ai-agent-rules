@@ -19,13 +19,18 @@ npm install @craco/craco assemblyscript --save-dev
 
 ## 2. Industrial Folder Restructuring (SSOT)
 
-Copy the reference architecture `lib` into your project. Maintaining a shared logic folder is mandatory for multi-project parity:
+The sync engine is distributed as a monorepo package. Maintaining a shared logic folder is mandatory for multi-project parity:
+
+- **Core Logic**: Located in `packages/core/src`. Consumed via `@sync/core`.
+- **Shared UI**: Located in `samples/shared/src`. Consumed via `@sync/shared`.
+
+To use in your own project:
 
 ```bash
-mkdir -p src/services/sync/lib
-cp ai-agent-rules/architectures/sync/lib/*.ts src/services/sync/lib/
-cp ai-agent-rules/architectures/sync/lib/config.json src/services/sync/lib/
-cp -r ai-agent-rules/architectures/sync/lib/worker src/services/sync/lib/
+# Core engine
+cp -r ai-agent-rules/architectures/sync/packages/core/src/* src/services/sync/lib/
+# Shared UI
+cp ai-agent-rules/architectures/sync/samples/shared/src/SyncManager.tsx src/components/
 ```
 
 ## 3. Webpack Modification (CRACO)
@@ -93,7 +98,7 @@ For low-complexity applications (e.g., simple notes), you may replace **RxDB** w
 Integrate the engine into your root component. Inside your app entry point (e.g., `App.tsx`), implement silent discovery. This ensures "Zero User Intervention"—the sync starts silently when the user is identified:
 
 ```typescript
-import { SyncEngine } from './services/sync/lib/engine';
+import { SyncEngine } from '@sync/core';
 
 function App() {
   useEffect(() => {
