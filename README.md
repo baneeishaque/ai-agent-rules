@@ -94,6 +94,11 @@ Follow the guidelines in:
 |-----------|---------|
 | [`android-app-launch-rules.md`](./android-app-launch-rules.md) | Automated protocol for emulator setup and deployment, optimized for M2 machines, with architecture and device fallbacks. |
 
+### Architecture & Dependency Management
+| Rule File | Purpose |
+|-----------|---------|
+| [`strict-dependency-freezing-rules.md`](./strict-dependency-freezing-rules.md) | Industrial protocol for ensuring reproducible builds by pinning exact versions of all external dependencies in package-level configuration. |
+
 ### Architecture & Sync
 | Rule File | Purpose |
 |-----------|---------|

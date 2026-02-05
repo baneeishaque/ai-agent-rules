@@ -51,5 +51,6 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | Script Management Rules | [script-management-rules.md](./script-management-rules.md) | Script standards, folder usage, and safeguards for helper scripts. |
 | Shell Execution | [shell-execution-rules.md](./shell-execution-rules.md) | Guidelines for shell command execution, ensuring transparency, user control, and adherence to security protocols. |
 | ShellCheck Fixer Rules | [shellcheck-fixer-rules.md](./shellcheck-fixer-rules.md) | Specialized rules for repairing shell scripts to meet ShellCheck standards. |
+| Strict Dependency Freezing Rules | [strict-dependency-freezing-rules.md](./strict-dependency-freezing-rules.md) | Industrial protocol for ensuring reproducible builds by pinning exact versions of all external dependencies in package-level configuration. |
 | Warp Terminal AI Rules | [warp-terminal-ai-rules.md](./warp-terminal-ai-rules.md) | Backup and reference for Warp AI Agent specific configurations. |
 | Zero-Backend Auto-Sync Rules | [zero-backend-sync-rules.md](./zero-backend-sync-rules.md) | Architecture and implementation standards for background, invisible data synchronization using decentralized relays (Nostr), local-first storage (RxDB), and WASM hardening. |
