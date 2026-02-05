@@ -2,9 +2,10 @@
     "relays": [
         "wss://nos.lol",
         "wss://relay.damus.io",
-        "wss://relay.nostr.band"
+        "wss://relay.nostr.band",
+        "wss://relay.snort.social"
     ],
-    "platformSalt": "PlatformSecret2026",
+    "platformSalt": "v15-industrial-core-salt-2026",
     "nostrKind": 30078,
     "defaultDTag": "app_preferences"
 }

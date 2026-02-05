@@ -8,7 +8,7 @@
         "samples/*"
     ],
     "scripts": {
-        "asm:build": "npx asc packages/core/src/worker/crypto.asm.ts -o packages/core/src/worker/crypto.wasm"
+        "asm:build": "npx asc packages/core/src/worker/crypto.asm.ts -o packages/core/src/worker/crypto.wasm --optimize --use abort= --noExportMemory"
     },
     "devDependencies": {
         "assemblyscript": "^0.27.0",
