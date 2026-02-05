@@ -89,6 +89,7 @@ Implementations MUST follow the industrial folder structure to ensure maintainab
 - **Failover**: The client MUST automatically failover between relays if a connection drops.
 - **Schema Management**: Use strict schemas (e.g., RxDB JSON Schema) to prevent data corruption during cross-device merges.
 - **No Plaintext Fallback**: If encryption fails, the sync MUST fail securely rather than transmitting plaintext.
+- **Strict Dependency Management**: Follow the **[Strict Dependency Freezing Rules](./strict-dependency-freezing-rules.md)** to ensure reproducible builds. All external packages MUST be pinned to exact versions.
 
 ***
 
