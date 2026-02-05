@@ -173,6 +173,11 @@ Follow the guidelines in:
 |-----------|---------|
 | [`GitHub-Action-Creation-rules.md`](./GitHub-Action-Creation-rules.md) | Strict guidelines for creating, structuring, and publishing GitHub Composite Actions to the Marketplace. enforce "Industrial" standards. |
 
+### Languages & Stacks
+| Rule File | Purpose |
+|-----------|---------|
+| [`typescript-rules.md`](./typescript-rules.md) | Industrial standards for TypeScript configuration, strictness, and strict dependency freezing. |
+
 ### Mobile Development
 | Rule File | Purpose |
 |-----------|---------|
