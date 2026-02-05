@@ -189,3 +189,13 @@ Files managed by CI/CD automation MUST be excluded from manual edits during hist
   ```
 
 - **Commit Verification**: Before committing, run `git diff --cached` and verify no CI/CD managed files are staged unless the commit explicitly targets the source logic that generates them
+
+***
+
+## 12. Phase 12: User-Requested Coupling & Deviations
+
+The agent must strictly follow the atomic protocols defined above. However, if the user explicitly requests to couple unrelated changes or deviate from the rules, the following protocol applies:
+
+- **Warn First**: If a user request violates the Independence (Phase 2) or Configuration Coupling (Phase 5) rules, the agent MUST explicitly warn the user: "This coupling technically violates Rule [X] because [reason]."
+- **Explicit Override**: The agent accepts the coupling ONLY if the user re-confirms or explicitly approves the deviation after the warning.
+- **Documentation**: The deviation rationale MUST be documented in the commit message body (e.g., "Coupled with IDE updates per user request for atomic convenience").
