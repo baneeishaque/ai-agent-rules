@@ -14,11 +14,22 @@
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
         "module": "ESNext",
-        "moduleResolution": "Node",
+        "moduleResolution": "Bundler",
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
-        "jsx": "react-jsx"
+        "jsx": "react-jsx",
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "verbatimModuleSyntax": true,
+        "useUnknownInCatchVariables": true,
+        "noImplicitOverride": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "exactOptionalPropertyTypes": true,
+        "noUncheckedIndexedAccess": true,
+        "noImplicitReturns": true,
+        "allowUnreachableCode": false,
+        "checkJs": true
     },
     "exclude": [
         "**/*.asm.ts"

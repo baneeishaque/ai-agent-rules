@@ -1,5 +1,5 @@
-import { RxJsonSchema, RxCollection } from 'rxdb';
-import { SyncData } from './types';
+import type { RxJsonSchema, RxCollection } from 'rxdb';
+import type { SyncData } from './types';
 
 /**
  * Data Layer: RxDB Standard Implementation.
@@ -14,8 +14,8 @@ export interface PreferenceDoc {
    * Unique ID (Primary Key). 
    * length: 25-100 recommended for stability.
    */
-  id: string; 
-  
+  id: string;
+
   /** 
    * Complex value container (Objects, Arrays, Primitives).
    */
@@ -35,20 +35,20 @@ export const PreferenceSchema: RxJsonSchema<PreferenceDoc> = {
   type: 'object',
   properties: {
     id: { type: 'string', maxLength: 100 },
-    value: { 
+    value: {
       // Multi-type support for deeply nested structures
-      type: ['object', 'array', 'string', 'number', 'boolean', 'null'] 
-    }, 
-    updatedAt: { 
-      type: 'number', 
-      minimum: 0 
+      type: ['object', 'array', 'string', 'number', 'boolean', 'null']
+    },
+    updatedAt: {
+      type: 'number',
+      minimum: 0
     }
   },
   required: ['id', 'value', 'updatedAt']
 };
 
 export class SyncStorageHandler {
-  constructor(private collection: RxCollection<PreferenceDoc>) {}
+  constructor(private collection: RxCollection<PreferenceDoc>) { }
 
   /**
    * Persists data locally and triggers reactivity.
@@ -79,10 +79,10 @@ export class SyncStorageHandler {
       const doc = await this.collection.findOne(id).exec();
       // Industrial Standard: Manual cast with runtime null check
       if (!doc || !doc.value) return null;
-      
+
       // Defensive parsing/casting
       return doc.value as SyncData;
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('[SyncStorage] Query failed for id:', id, err);
       return null;
     }
