@@ -88,7 +88,10 @@ The content must balance conciseness with technical depth:
   - **Defensive Programming**: All network and I/O logic MUST implement defensive programming (e.g., try-catch, JSON validation, socket state checks) to prevent silent failures.
   - **Real Usage Samples**: Rules for frameworks (React/Vue) MUST include a real integration sample showing component/hook orchestration.
 - **Prohibited Behaviors**: Explicitly list actions the agent is forbidden from taking (e.g., "DO NOT hardcode keys", "DO NOT block UI"). These MUST be clear, non-ambiguous, and explained as the SSOT for what to avoid.
-- **Traceability Portability**: Permanent session logs MUST be stored in `ai-agent-rules/conversations/` to ensure the rule set remains a self-contained, portable unit.
+- **Traceability Portability**: Permanent records MUST be stored in the repository's permanent documentation directory (`ai-agent-rules/docs/`) using a structured hierarchy:
+  - **Implementation Plans**: `/docs/implementation-plans/YYYY-MM-DD-[slug].md` (For architectural changes).
+  - **Session Records**: `/docs/conversations/YYYY-MM-DD-[slug].md` (For notable context/discussions).
+  - **Precedence**: Copying files into these structured directories and using **Relative Links** MUST take precedence over using external Git commit links or referencing transient external artifacts.
 - **Mandatory Protocols**: Use clear, imperative language (e.g., "The agent MUST...", "The agent is BLOCKED from...").
 
 ***
