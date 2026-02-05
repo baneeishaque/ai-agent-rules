@@ -11,7 +11,7 @@
         "asm:build": "npx asc packages/core/src/worker/crypto.asm.ts -o packages/core/src/worker/crypto.wasm --optimize --use abort= --noExportMemory"
     },
     "devDependencies": {
-        "assemblyscript": "^0.27.0",
-        "typescript": "^5.0.0"
+        "assemblyscript": "0.27.37",
+        "typescript": "5.9.3"
     }
 }
