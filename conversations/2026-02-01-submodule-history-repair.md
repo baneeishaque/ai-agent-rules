@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD013 -->
+
 # Conversation Log: Submodule History Repair
 
 **Date:** 2026-02-01
@@ -9,8 +11,8 @@
 ## 1. Request
 
 > the ai-agents is a git repository. it has a sub module ai-agents-rules.
-> the ai-agents-rules is also evolved independently. the problem is that, it's git history is rewritten several times. now, some of the commits in ai-agents deosn't have the corresponding commit in ai-agent-rules
-> we need a plan. follow ai-agent-rules/ai-agent-planning-rules.md strictly. we need a rule for this, follow ai-agent-rules/ai-rule-standardization-rules.md strictly. we ahve to document our session, follow ai-agent-rules/ai-agent-session-documentation-rules.md strictly.
+> the ai-agents-rules is also evolved independently. the problem is that, it's git history is rewritten several times. now, some of the commits in ai-agents doesn't have the corresponding commit in ai-agent-rules
+> we need a plan. follow ai-agent-rules/ai-agent-planning-rules.md strictly. we need a rule for this, follow ai-agent-rules/ai-rule-standardization-rules.md strictly. we have to document our session, follow ai-agent-rules/ai-agent-session-documentation-rules.md strictly.
 
 ### Agent Response
 
@@ -43,8 +45,7 @@ A plan for rewriting the parent repository history using `git filter-repo` or a 
 
 | File/Artifact | Path | Description |
 | :--- | :--- | :--- |
-| Implementation Plan | [/Users/dk/.gemini/antigravity/brain/2a2b165f-b9d6-4de6-ab26-aa4334f85307/implementation_plan_v1.md](file:///Users/dk/.gemini/antigravity/brain/2a2b165f-b9d6-4de6-ab26-aa4334f85307/implementation_plan_v1.md) | Technical plan for repair. |
-| Submodule Repair Rule | [/Users/dk/Lab_Data/ai-agents/ai-agent-rules/git-submodule-history-repair-rules.md](file:///Users/dk/Lab_Data/ai-agents/ai-agent-rules/git-submodule-history-repair-rules.md) | Standard protocol for future occurrences. |
+| Submodule Repair Rule | [../git-submodule-history-repair-rules.md](../git-submodule-history-repair-rules.md) | Standard protocol for future occurrences. |
 
 - Related Rule: **[ai-agent-planning-rules.md](../ai-agent-planning-rules.md)**
 - Related Rule: **[ai-rule-standardization-rules.md](../ai-rule-standardization-rules.md)**

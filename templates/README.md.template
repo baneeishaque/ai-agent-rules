@@ -1,52 +1,49 @@
-<div align="center">
+# AI Agent Rules
 
-# 🤖 AI Agent Rules
+Establish trust, transparency, and consistency in AI-assisted development
 
-**A comprehensive, modular framework of rules and best practices for AI agents and development workflows**
+> A comprehensive framework of standardized rules for AI development workflows
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/Baneeishaque/AI-Agent-Rules)
 [![Markdown](https://img.shields.io/badge/Format-Markdown-lightgrey?logo=markdown)](https://daringfireball.net/projects/markdown/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Baneeishaque/AI-Agent-Rules/pulls)
 
-*Establish trust, transparency, and consistency in AI-assisted development*
+***
 
-</div>
+## Table of Contents
+
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Quick Start](#quick-start)
+- [Rule Categories](#rule-categories)
+- [Architecture](#architecture)
+- [Detailed Rule Reference](#detailed-rule-reference)
+- [Usage Examples](#usage-examples)
+- [Integration Guide](#integration-guide)
+- [Contributing](#contributing)
+- [Development Setup](#development-setup)
+- [License](#license)
 
 ***
 
-## 📋 Table of Contents
+## Overview
 
-- [Overview](#-overview)
-- [Key Features](#-key-features)
-- [Quick Start](#-quick-start)
-- [Rule Categories](#-rule-categories)
-- [Architecture](#-architecture)
-- [Detailed Rule Reference](#-detailed-rule-reference)
-- [Usage Examples](#-usage-examples)
-- [Integration Guide](#-integration-guide)
-- [Contributing](#-contributing)
-- [Development Setup](#-development-setup)
-- [License](#-license)
-
-***
-
-## 🎯 Overview
-
-**AI Agent Rules** is a comprehensive collection of standardized rules, best practices, and protocols designed to govern AI agent behavior in software development workflows. This framework ensures:
+**AI Agent Rules** is a collection of standardized protocols designed to govern AI agent behavior.
+This framework ensures:
 
 - **Transparency**: Every AI action is visible and auditable
 - **User Control**: Users maintain ultimate authority over all operations
 - **Consistency**: Standardized patterns across all development activities
 - **Security**: Principle of least privilege and explicit permission protocols
 
-The repository provides a modular, extensible rule system that can be adopted by AI coding assistants, development tools, and automated workflows to establish a trustworthy and effective interaction model.
+The repository provides a modular, extensible rule system for AI coding assistants and toolsets.
 
 ***
 
-## ✨ Key Features
+## Key Features
 
 | Feature | Description |
-|---------|-------------|
+| :--- | :--- |
 | 🎯 **Modular Architecture** | Each rule domain is maintained in a separate markdown file for easy management |
 | 📖 **Self-Documenting** | Rules are written in clear, unambiguous language with examples |
 | 🔗 **Cross-Referenced** | Rules reference each other to form a cohesive framework |
@@ -56,7 +53,7 @@ The repository provides a modular, extensible rule system that can be adopted by
 
 ***
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Clone the Repository
 
@@ -87,15 +84,15 @@ Follow the guidelines in:
 
 ***
 
-## 📚 Rule Categories
+## Rule Categories
 
 <!-- RULES_README -->
 
 ***
 
-## 🏗️ Architecture
+## Architecture
 
-```
+```bash
 AI-Agent-Rules/
 ├── 📄 agent-rules.md                    # Central index (start here!)
 │
@@ -148,7 +145,7 @@ AI-Agent-Rules/
 
 ***
 
-## 📖 Detailed Rule Reference
+## Detailed Rule Reference
 
 ### Core Planning Protocol (ai-agent-planning-rules.md)
 
@@ -163,6 +160,7 @@ The foundational rule that all agents must follow:
 ```
 
 **Key Principles:**
+
 - ✅ Always plan before acting
 - ✅ Plans must be explicit and actionable
 - ✅ Support iterative plan revisions
@@ -179,6 +177,7 @@ Core Principles:
 ```
 
 **Mandatory User Confirmation Required For:**
+
 - File write operations
 - GitHub CLI commands
 - Any destructive operations
@@ -195,6 +194,7 @@ Core Principles:
 ### Flutter Development (flutter-app-development-rules.md)
 
 **Environment Setup:**
+
 ```bash
 # Use Mise for version management
 mise install              # Install SDK versions from mise.toml
@@ -202,6 +202,7 @@ mise use flutter@3.x.x    # Pin Flutter version
 ```
 
 **Code Quality:**
+
 ```bash
 flutter analyze           # Lint with zero warnings
 dart format .             # Format all code
@@ -209,7 +210,8 @@ flutter test --coverage   # Run tests with coverage
 ```
 
 **Project Structure:**
-```
+
+```bash
 lib/
 ├── src/
 │   ├── features/         # Feature modules
@@ -225,6 +227,7 @@ lib/
 ### CI/CD Best Practices (ci-cd-rules.md)
 
 **GitHub Actions Optimization:**
+
 ```yaml
 - uses: actions/checkout@v3
   with:
@@ -233,13 +236,15 @@ lib/
 ```
 
 **Security:**
+
 - Use OIDC for cloud authentication
 - Never hardcode secrets
 - Protected branches required
 - Automated secret rotation
 
 **Deployment Orchestration:**
-```
+
+```bash
 Supabase → GitHub Actions → Render
    ↓            ↓              ↓
   Router     Executor      Runtime
@@ -247,7 +252,7 @@ Supabase → GitHub Actions → Render
 
 ***
 
-## 💡 Usage Examples
+## Usage Examples
 
 ### Example 1: Planning a Feature Implementation
 
@@ -297,7 +302,7 @@ brew upgrade --greedy --verbose gh node ollama discord@ptb postman
 
 ***
 
-## 🔌 Integration Guide
+## Integration Guide
 
 ### With Warp Terminal
 
@@ -361,13 +366,14 @@ jobs:
 
 ***
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please follow these guidelines:
 
 ### Adding New Rules
 
 1. **Create a new rule file**: `<Domain>-rules.md`
+
    ```markdown
    # Domain Name Rules
    
@@ -381,11 +387,13 @@ We welcome contributions! Please follow these guidelines:
    ```
 
 2. **Update the index**: Add entry to `agent-rules.md`
+
    ```markdown
    | Rule Domain | [Domain-rules.md](./Domain-rules.md) | Description |
    ```
 
 3. **Commit with conventional message**:
+
    ```bash
    git commit -m "feat: Add Domain-rules.md for X functionality"
    ```
@@ -396,6 +404,7 @@ We welcome contributions! Please follow these guidelines:
 2. Ensure cross-references remain valid
 3. Update `agent-rules.md` description if needed
 4. Use conventional commits:
+
    ```bash
    git commit -m "docs: Update flutter-app-development-rules.md with state management section"
    ```
@@ -418,11 +427,12 @@ We welcome contributions! Please follow these guidelines:
 
 ### Repository Topics
 
-Please tag your PR/Repository with relevant topics. See [GITHUB_TOPICS.md](./GITHUB_TOPICS.md) for the complete list and guidelines.
+Please tag your PR/Repository with relevant topics. See [GITHUB_TOPICS.md](./GITHUB_TOPICS.md) for the complete list and
+guidelines.
 
 ***
 
-## 🛠️ Development Setup
+## Development Setup
 
 ### Prerequisites
 
@@ -457,7 +467,7 @@ The repository includes pre-configured settings:
 ### File Organization
 
 | Path | Purpose |
-|------|---------|
+| ------ | --------- |
 | `*.md` | Rule documentation files |
 | `.vscode/settings.json` | Editor configuration |
 | `.vscode/extensions.json` | Recommended extensions |
@@ -465,10 +475,10 @@ The repository includes pre-configured settings:
 
 ***
 
-## 📊 Rule Statistics
+## Rule Statistics
 
 | Metric | Count |
-|--------|-------|
+| -------- | ------- |
 | Total Rule Files | 24 |
 | Fully Documented Rules | 17 |
 | Placeholder/Empty Rules | 4 |
@@ -482,7 +492,7 @@ The repository includes pre-configured settings:
 
 ***
 
-## 🔗 Related Resources
+## Related Resources
 
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
@@ -492,7 +502,7 @@ The repository includes pre-configured settings:
 
 ***
 
-## 📄 License
+## License
 
 This project is open source. License information will be added soon.
 
@@ -500,10 +510,10 @@ This project is open source. License information will be added soon.
 
 <div align="center">
 
-**Made with ❤️ for the AI-assisted development community**
+Made with ❤️ for the AI-assisted development community
 
-*Establish trust through transparency, consistency, and user control*
+Establish trust through transparency, consistency, and user control
 
-[⬆ Back to Top](#-ai-agent-rules)
+[⬆ Back to Top](#ai-agent-rules)
 
 </div>

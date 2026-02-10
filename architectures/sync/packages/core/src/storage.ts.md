@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD013 -->
+
 # Storage Logic Explainer (`storage.ts`)
 
 [View Source File](./storage.ts)
@@ -9,17 +11,17 @@ The storage layer utilizes **RxDB (Reactive Database)** over IndexedDB. This ens
 ## Code Breakdown
 
 - **PreferenceDoc (Interface)**:
-  - **id**: Primary Key. Length 25-100 is recommended to provide enough entropy for compound identifiers (e.g., `user:settings`) while remaining indexed-efficient.
-  - **value**: Flexible container. Supports **Arrays**, **Objects**, **Primitives**, and **Null**.
-  - **updatedAt**: Industrial standard numeric Epoch (milliseconds).
+    - **id**: Primary Key. Length 25-100 is recommended to provide enough entropy for compound identifiers (e.g., `user:settings`) while remaining indexed-efficient.
+    - **value**: Flexible container. Supports **Arrays**, **Objects**, **Primitives**, and **Null**.
+    - **updatedAt**: Industrial standard numeric Epoch (milliseconds).
     - **Why number?**: Native sorting in databases is significantly faster for numbers than string date formats. All modern JS `Date.now()` calls return this format.
 - **PreferenceSchema**:
-  - **type: ['object', 'array', ...]**: This is a multi-type schema definition. It ensures that the `value` field can store complex structures like a list of favourite items (`array`) or a deep settings object (`object`) with **runtime safety**. If you try to save a type not in this list, RxDB will throw an error before it touches the disk. This ensures both compile-time (TypeScript) and runtime (RxDB Schema) safety.
+    - **type: ['object', 'array', ...]**: This is a multi-type schema definition. It ensures that the `value` field can store complex structures like a list of favourite items (`array`) or a deep settings object (`object`) with **runtime safety**. If you try to save a type not in this list, RxDB will throw an error before it touches the disk. This ensures both compile-time (TypeScript) and runtime (RxDB Schema) safety.
 - **SyncStorageHandler**:
-  - **upsert()**: Atomic "Update or Insert". This is the engine of the sync process. When remote data arrives, we upsert it to the local store.
-  - **watchAllChanges()**:
+    - **upsert()**: Atomic "Update or Insert". This is the engine of the sync process. When remote data arrives, we upsert it to the local store.
+    - **watchAllChanges()**:
     - **Use Case**: This is for **Reactivity**. Your UI components can subscribe to this stream. If data changes in the background (via sync), the UI updates automatically without a page refresh or manual pull.
-  - **getById()**: Basic query for a specific preference scope.
+    - **getById()**: Basic query for a specific preference scope.
 
 ## Usage Scenario
 
@@ -35,19 +37,19 @@ If a user adds a new item to their "Favourites" array on Device A:
 ## Industrial Schema Design (`PreferenceSchema`)
 
 - **Primary Key (`id`)**:
-  - **Industrial Mandate**: A stable, unique ID is required to prevent duplicate records when merging data from multiple devices. Length 25-100 is recommended for compound identifiers.
+    - **Industrial Mandate**: A stable, unique ID is required to prevent duplicate records when merging data from multiple devices. Length 25-100 is recommended for compound identifiers.
 - **Value Container (`SyncData`)**:
-  - **type: ['object', 'array', ...]**: This is a multi-type schema definition. It ensures that the `value` field can store complex structures like a list of favourite items (`array`) or a deep settings object (`object`) with **runtime safety**. If you try to save a type not in this list, RxDB will throw an error before it touches the disk.
+    - **type: ['object', 'array', ...]**: This is a multi-type schema definition. It ensures that the `value` field can store complex structures like a list of favourite items (`array`) or a deep settings object (`object`) with **runtime safety**. If you try to save a type not in this list, RxDB will throw an error before it touches the disk.
 - **Atomic Timestamp (`updatedAt`)**:
-  - **Why number?**: Native sorting in databases is significantly faster for numbers than string date formats. We use `Date.now()` (milliseconds) for **Conflict Resolution (LWW - Last Write Wins)**.
+    - **Why number?**: Native sorting in databases is significantly faster for numbers than string date formats. We use `Date.now()` (milliseconds) for **Conflict Resolution (LWW - Last Write Wins)**.
 
 ## Reactive Data Layer (`SyncStorageHandler`)
 
 - **upsert()**:
-  - **Definition**: "Update or Insert." It effectively handles both new preferences and modifications to existing ones.
+    - **Definition**: "Update or Insert." It effectively handles both new preferences and modifications to existing ones.
 - **watchAllChanges() (The "Magic" of Reactivity)**:
-  - **How it works**: This method returns an observable stream. When the background sync worker updates the local database with data from another device, this stream automatically emits the new data.
-  - **UI Impact**: Your UI components can subscribe to this. The UI updates instantly (sub-millisecond) without the user ever clicking "Refresh."
+    - **How it works**: This method returns an observable stream. When the background sync worker updates the local database with data from another device, this stream automatically emits the new data.
+    - **UI Impact**: Your UI components can subscribe to this. The UI updates instantly (sub-millisecond) without the user ever clicking "Refresh."
 
 ## Pedagogical Note: Type vs. Runtime Safety
 

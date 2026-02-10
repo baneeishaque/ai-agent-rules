@@ -1,6 +1,7 @@
 # Strict Dependency Freezing: Implementation Record (2026-02-06)
 
-This document serves as the permanent record of the shift to strict dependency freezing across the Sync Architectural Template.
+This document serves as the permanent record of the shift to strict dependency freezing across the Sync Architectural
+Template.
 
 ***
 
@@ -8,7 +9,8 @@ This document serves as the permanent record of the shift to strict dependency f
 
 ### Goal
 
-Replace all loose dependency version ranges (using `^`, `~`, or `*`) with the exact versions currently resolved and stored in `package-lock.json`. This ensures reproducibility and compatibility with strict dependency management tools.
+Replace all loose dependency version ranges (using `^`, `~`, or `*`) with the exact versions currently resolved and
+stored in `package-lock.json`. This ensures reproducibility and compatibility with strict dependency management tools.
 
 ### Proposed Changes
 
@@ -42,13 +44,17 @@ All external dependency versions across the monorepo were pinned to their exact 
 
 The requirement was formalized into the global architectural rules:
 
-1. **[NEW] [strict-dependency-freezing-rules.md](../../strict-dependency-freezing-rules.md)**: Established a new global rule.
-2. **[MODIFY] [zero-backend-sync-rules.md](../../zero-backend-sync-rules.md)**: Updated architecture-specific rules to mandate the freezing standard.
+1. **[NEW] [strict-dependency-freezing-rules.md](../../strict-dependency-freezing-rules.md)**: Established a new global
+   rule.
+2. **[MODIFY] [zero-backend-sync-rules.md](../../zero-backend-sync-rules.md)**: Updated architecture-specific rules to
+   mandate the freezing standard.
 
 ### Industrial Standard for Workspace Packages
 >
 > [!IMPORTANT]
-> Internal workspace dependencies (`@sync/core`, `@sync/shared`) remain using `*`. This is the **industrial standard** for monorepos as it ensures that local samples always point to the local source code without requiring manual version bumps across all packages during development.
+> Internal workspace dependencies (`@sync/core`, `@sync/shared`) remain using `*`. This is the **industrial standard**
+> for monorepos as it ensures that local samples always point to the local source code without requiring manual version
+> bumps across all packages during development.
 
 ***
 
@@ -62,4 +68,5 @@ The requirement was formalized into the global architectural rules:
 ```bash
 # Verification command used to find loose versions (returned no matches)
 grep -rE '"[^"]+":\s*"[\^~\*]' . --include="package.json" --exclude-dir=node_modules | grep -v "@sync/"
+
 ```

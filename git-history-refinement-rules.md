@@ -1,34 +1,49 @@
 <!--
 title: Git History Refinement Rules
-description: Protocols for refining existing commit history using backup branches, jq for JSON atomicity, and tree parity verification.
+description: Protocols for refining existing commit history using backup branches,
+    jq for JSON atomicity, and tree parity
+    verification.
 category: Git & Repository Management
 -->
 
 # Git History Refinement Rules
 
-This document defines the mandatory protocol for refining or reconstructing existing git commit history. This is used when commits contain mixed concerns (e.g., non-atomic JSON changes) that need to be split or re-ordered while preserving history quality and tree integrity.
+This document defines the mandatory protocol for refining or reconstructing existing git commit history. This is used
+when commits contain mixed concerns (e.g., non-atomic JSON changes) that need to be split or re-ordered while
+preserving history quality and tree integrity.
 
 ***
 
 ## 1. Safety First: The Backup Protocol
 
-The agent **MUST** create a backup branch before performing any destructive history operations (`reset --hard`, `rebase`, etc.).
+The agent **MUST** create a backup branch before performing any destructive history operations (`reset --hard`,
+`rebase`, etc.).
 
 ### 1.1 Incremental Branch Naming
 
 To prevent overwriting existing backups and to maintain a trail of refinement attempts, use an incrementing suffix:
 
 1. **Prefix**: `backup/pre-settings-split-` (or descriptive equivalent).
-2. **Check**: Run `git branch --list "prefix*"` to see current versions.
-3. **Increment**: Select the first integer `n` that does NOT have a corresponding branch (e.g., if `-1` and `-2` exist, use `-3`).
-4. **Workspace Preservation**: Before creating the branch, stage all local changes and create a temporary "state preservation" commit. This ensures the backup captures the exact state of the workspace including uncommitted changes.
-5. **Creation**: Create the branch using `git branch <name>`. **DO NOT** use `-f` to force-move a branch.
+
+1. **Check**: Run `git branch --list "prefix*"` to see current versions.
+
+1. **Increment**: Select the first integer `n`that does NOT have a corresponding branch (e.g., if`-1`and`-2` exist,
+
+   use `-3`).
+
+1. **Workspace Preservation**: Before creating the branch, stage all local changes and create a temporary "state
+
+   preservation" commit. This ensures the backup captures the exact state of the workspace including uncommitted
+   changes.
+
+1. **Creation**: Create the branch using `git branch <name>`. **DO NOT** use`-f` to force-move a branch.
 
 ***
 
 ## 2. Methodology: Reconstruction via Extraction
 
-When splitting changes across existing commits, use the "Reset and Restore" strategy to reconstruct the history atop a clean baseline.
+When splitting changes across existing commits, use the "Reset and Restore" strategy to reconstruct the history atop a
+clean baseline.
 
 ### 2.1 The Baseline Reset
 
@@ -36,7 +51,8 @@ Reset the active branch (e.g., `master`) to the last known "clean" commit before
 
 ```bash
 git reset --hard <clean-commit-hash>
-```
+
+```bash
 
 #### 2.1.1 Root Commit Refinement
 
@@ -45,75 +61,102 @@ If the refinement involves the first commit (root) of the repository, use an orp
 ```bash
 git checkout --orphan temp-master
 git rm -rf .
-```
+
+```bash
 
 This allows reconstructing the history from scratch while preserving the repository's identity.
 
 ### 2.2 Atomic JSON Manipulation (jq)
 
-When a JSON file (like `.vscode/settings.json`) needs to be split across commits, use `jq` to extract exactly the relevant keys for the current atomic unit.
+When a JSON file (like `.vscode/settings.json`) needs to be split across commits, use`jq` to extract exactly the
+relevant keys for the current atomic unit.
 
 1. **Extract Original**: Fetch the final version from the backup.
 
     ```bash
     git show <backup-branch>:<path/to/file.json> > <file.json>.bak
-    ```
+    ```bash
 
-2. **Filter with jq**: Create a valid JSON containing only the commit-specific keys.
+1. **Filter with jq**: Create a valid JSON containing only the commit-specific keys.
 
     ```bash
     jq '{ "specific.key": .["specific.key"] }' <file.json>.bak > <file.json>
-    ```
+    ```bash
 
-3. **Verification**: The agent MUST verify the generated JSON is valid before staging.
+1. **Verification**: The agent MUST verify the generated JSON is valid before staging.
 
     ```bash
     jq . <file.json>
-    ```
+    ```bash
 
 #### 2.2.1 Canonical Sorting and Formatting
 
-When manipulating JSON arrays (e.g., `cSpell.words`), the agent **MUST** preserve or enforce the project's standard sort order to prevent history misalignment across commits.
+When manipulating JSON arrays (e.g., `cSpell.words`), the agent **MUST** preserve or enforce the project's standard
+sort order to prevent history misalignment across commits.
 
-1. **Inspection**: Examine neighboring commits to determine the expected sort order (e.g., ASCII vs. case-insensitive natural sort).
-2. **Consistency**: Ensure the sort order is applied identically at every stage of the reconstruction.
-3. **Tooling**: Prefer stable sorting tools or scripts (e.g., Python's `sorted(key=str.lower)`) over standard `jq` sort if case-insensitivity is required.
+1. **Inspection**: Examine neighboring commits to determine the expected sort order (e.g., ASCII vs. case-insensitive
+
+   natural sort).
+
+1. **Consistency**: Ensure the sort order is applied identically at every stage of the reconstruction.
+
+1. **Tooling**: Prefer stable sorting tools or scripts (e.g., Python's `sorted(key=str.lower)`) over standard`jq` sort
+
+   if case-insensitivity is required.
 
 ### 2.3 Metadata Preservation
 
-When re-creating commits that originally had specific messages and timestamps, use the original commit's hash to preserve metadata.
+When re-creating commits that originally had specific messages and timestamps, use the original commit's hash to
+preserve metadata.
 
 ```bash
 git commit -C <original-hash>
-```
+
+```bash
 
 ### 2.4 Sequential Integrity (Protocol Files)
 
-When refining history for documents containing numbered phases or state-dependent protocols (e.g., `git-atomic-commit-construction-rules.md`), the agent **MUST** maintain structural validity at *every* intermediate commit.
+When refining history for documents containing numbered phases or state-dependent protocols (e.g.,
+`git-atomic-commit-construction-rules.md`), the agent **MUST** maintain structural validity at *every* intermediate
+commit.
 
-- **The Valid-Sequence Rule**: Every commit in the refined history MUST result in a valid 1-N sequence of phases. No gaps, no duplicates, and no "broken" intermediate states.
-- **Micro-Renumbering**: If a commit adds Phases 4 and 5, and the original file already had a Phase 4 (now 6), the agent MUST renumber all subsequent phases within that same atomic unit to preserve immediate validity.
+- **The Valid-Sequence Rule**: Every commit in the refined history MUST result in a valid 1-N sequence of phases. No
+
+    gaps, no duplicates, and no "broken" intermediate states.
+
+- **Micro-Renumbering**: If a commit adds Phases 4 and 5, and the original file already had a Phase 4 (now 6), the
+
+    agent MUST renumber all subsequent phases within that same atomic unit to preserve immediate validity.
 
 ### 2.5 Remote Baseline Reconciliation
 
-Before starting any history refinement, the agent MUST synchronize with the remote source of truth to prevent divergence.
+Before starting any history refinement, the agent MUST synchronize with the remote source of truth to prevent
+divergence.
 
 1. **Mandatory Fetch**: `git fetch origin <branch>`
-2. **Reconciliation**: If `origin/<branch>` contains commits not present in the local branch, the agent MUST:
-   - Identify the latest remote commit as the new "Refinement Baseline".
-   - Re-execute the reconstruction atop this reconciled baseline.
-3. **Submodule Awareness**: This protocol applies recursively to submodules. Never begin a submodule refinement without a `git -C <path> pull` or fetch.
+
+1. **Reconciliation**: If `origin/<branch>` contains commits not present in the local branch, the agent MUST:
+ - Identify the latest remote commit as the new "Refinement Baseline".
+ - Re-execute the reconstruction atop this reconciled baseline.
+
+1. **Submodule Awareness**: This protocol applies recursively to submodules. Never begin a submodule refinement without
+
+   a `git -C <path> pull` or fetch.
 
 ### 2.6 Pre-Execution Analysis (Mandatory)
 
 Commit messages and change descriptions MUST be derived from actual file analysis, not assumptions.
 
 1. **Read Before Writing**: Before finalizing any commit message, the agent MUST:
-   - Read the current state of affected files (`git show <base-commit>:<file>`)
-   - Read the target state of affected files (from backup or target branch)
-   - Perform explicit `git diff` comparisons to identify exact changes
-2. **Evidence-Based Messages**: Commit messages must reflect ACTUAL changes observed, not planned or assumed changes.
-3. **No Placeholder Content**: Never use generic descriptions like "update metadata" without specifying which metadata fields were changed and how.
+ - Read the current state of affected files (`git show <base-commit>:<file>`)
+ - Read the target state of affected files (from backup or target branch)
+ - Perform explicit `git diff` comparisons to identify exact changes
+
+1. **Evidence-Based Messages**: Commit messages must reflect ACTUAL changes observed, not planned or assumed changes.
+
+1. **No Placeholder Content**: Never use generic descriptions like "update metadata" without specifying which metadata
+
+   fields were changed and how.
 
 ### 2.7 Link Verification (Mandatory)
 
@@ -123,15 +166,21 @@ For EVERY file rename operation, the agent MUST perform global link verification
 
    ```bash
    grep -r "Old-Filename.md" . --exclude-dir=.git
-   ```
+   ```bash
 
-2. **Update All References**: Use `sed` or manual edits to update ALL discovered references, including:
-   - Internal documentation links
-   - Template files (e.g., `templates/README.md.template`)
-   - Architecture documents
-   - Rule cross-references
-3. **Exclusion Protocol**: Exclude CI/CD-managed files (e.g., `README.md`, `agent-rules.md`) from manual edits if they are auto-generated.
-4. **Final Verification**: Before committing, re-run the grep check with `--exclude` flags for managed files to confirm cleanup.
+1. **Update All References**: Use `sed` or manual edits to update ALL discovered references, including:
+ - Internal documentation links
+ - Template files (e.g., `templates/README.md.template`)
+ - Architecture documents
+ - Rule cross-references
+
+1. **Exclusion Protocol**: Exclude CI/CD-managed files (e.g., `README.md`,`agent-rules.md`) from manual edits if they
+
+   are auto-generated.
+
+1. **Final Verification**: Before committing, re-run the grep check with `--exclude` flags for managed files to confirm
+
+   cleanup.
 
 ### 2.8 Preserving Dependent Commits (Cherry-Pick Protocol)
 
@@ -141,24 +190,29 @@ When splitting a commit that has subsequent commits built on top of it, the agen
 
     ```bash
     git log --oneline <split-commit>..HEAD
-    ```
+    ```bash
 
-2. **Sequential Cherry-Pick**: Reapply each dependent commit in chronological order:
+1. **Sequential Cherry-Pick**: Reapply each dependent commit in chronological order:
 
     ```bash
     git cherry-pick <commit-hash>
-    ```
+    ```bash
 
-3. **Conflict Resolution**: If conflicts arise:
-    - Resolve them while preserving the original commit's intent
-    - Use `git show <original-hash>` to reference the original changes
-    - Mark conflicts as resolved: `git add <file>`
-    - Continue: `git cherry-pick --continue`
-4. **Verification**: After all cherry-picks, verify the final tree state matches the pre-refinement state:
+1. **Conflict Resolution**: If conflicts arise:
+
+- Resolve them while preserving the original commit's intent
+
+- Use `git show <original-hash>` to reference the original changes
+
+- Mark conflicts as resolved: `git add <file>`
+
+- Continue: `git cherry-pick --continue`
+
+1. **Verification**: After all cherry-picks, verify the final tree state matches the pre-refinement state:
 
     ```bash
     git diff HEAD <backup-branch>
-    ```
+    ```bash
 
     Expected: Empty diff (tree parity maintained).
 
@@ -166,13 +220,15 @@ When splitting a commit that has subsequent commits built on top of it, the agen
 
 ## 2.9 Hierarchical Rebase Coordination
 
-For complex multi-branch operations or chain rebasing, the agent MUST follow the **[Git Rebase Standardization Rules](./git-rebase-standardization-rules.md)** to ensure graph integrity and eliminate cross-branch redundancies.
+For complex multi-branch operations or chain rebasing, the agent MUST follow the **[Git Rebase Standardization
+Rules](./git-rebase-standardization-rules.md)** to ensure graph integrity and eliminate cross-branch redundancies.
 
 ***
 
 ## 3. Verification & Parity
 
-The "Arranged Result" of the refined history MUST match the "Original Result" in final state (the code tree), even if the intermediate steps differ.
+The "Arranged Result" of the refined history MUST match the "Original Result" in final state (the code tree), even if
+the intermediate steps differ.
 
 ### 3.1 Content-Level Verification
 
@@ -180,7 +236,8 @@ After each commit in the reconstruction, use `git show` to confirm only the inte
 
 ```bash
 git show HEAD
-```
+
+```bash
 
 ### 3.2 Tree Parity Check (Mandatory)
 
@@ -188,7 +245,8 @@ After the final commit in the refinement process, the current branch MUST be com
 
 ```bash
 git diff <current-branch> <backup-branch>
-```
+
+```bash
 
 **Constraint**: The diff MUST be empty. Any discrepancy indicates a regression introduced during the refinement process.
 
@@ -199,7 +257,10 @@ git diff <current-branch> <backup-branch>
 The agent is **BLOCKED** from deleting backup branches automatically.
 
 - **Protocol**: Provide a walkthrough of the refined history.
-- **Authorization**: Request explicit user confirmation before deleting any backup branches created under Section 1. The agent is **PROHIBITED** from deleting these automatically.
+
+- **Authorization**: Request explicit user confirmation before deleting any backup branches created under Section 1.
+
+    The agent is **PROHIBITED** from deleting these automatically.
 
 ***
 
@@ -213,14 +274,16 @@ Before any destructive operation (force-push), the agent MUST create a backup of
 
 ```bash
 git branch backup/pre-force-push-<n> origin/<branch>
-```
+
+```bash
 
 1. **Naming**: Use incremental integers `<n>` to avoid overwriting existing backups.
-2. **Verification**: Confirm backup existence:
+
+1. **Verification**: Confirm backup existence:
 
    ```bash
    git branch --list "backup/pre-force-push-*"
-   ```
+   ```bash
 
 ### 2.9.2 Remote Divergence Analysis
 
@@ -229,7 +292,8 @@ Analyze the gap between the remote and the refined local history.
 ```bash
 git fetch origin <branch>
 git log <refinement-baseline>..origin/<branch> --oneline --graph --decorate
-```
+
+```bash
 
 ### 2.9.3 Commit Categorization Protocol
 
@@ -237,31 +301,39 @@ Assign every remote commit to exactly one category:
 
 | Category | Definition | Action |
 | :--- | :--- | :--- |
-| **New**         | Truly unique logic, content, or manual fixes created after refinement started. | MUST Cherry-pick. |
-| **Covered**     | Changes already present in refined history (renames, splits, formatting).    | Skip (User approval required). |
-| **Regenerative**| Auto-generated files (e.g., `README.md`, `agent-rules.md`) synced by CI.    | Skip (User approval required). |
+| **New** | Truly unique logic, content, or manual fixes created after refinement started. | MUST Cherry-pick. |
+| **Covered** | Changes already present in refined history (renames, splits, formatting). | Skip (User approval required). |
+| **Regenerative** | Auto-generated files (e.g., `README.md`, `agent-rules.md`) synced by CI. | Skip (User approval required). |
 
 **Identifying Regenerative Files**:
-Check `.github/workflows/` or relevant scripts (e.g., `sync-rules.py`) to see if the file is a target of automated generation. If a commit ONLY modifies these files, it is **Regenerative**.
+Check `.github/workflows/`or relevant scripts (e.g.,`sync-rules.py`) to see if the file is a target of automated
+generation. If a commit ONLY modifies these files, it is **Regenerative**.
 
 ### 2.9.4 Reconciliation Strategy
 
 1. **Present Categorized List**: Present all remote commits, grouped by their assigned categories, to the user.
-2. **Mandatory Approval**: The user MUST explicitly approve the categorization and the decision to skip "Covered" or "Regenerative" commits.
-3. **Cherry-Pick**: Apply only approved "New" commits onto the refined HEAD.
+
+1. **Mandatory Approval**: The user MUST explicitly approve the categorization and the decision to skip "Covered" or
+
+   "Regenerative" commits.
+
+1. **Cherry-Pick**: Apply only approved "New" commits onto the refined HEAD.
 
    ```bash
    git cherry-pick <hash>
-   ```
+   ```bash
 
 ### 2.9.5 Force Push Safety Protocol
 
-1. **Explicit Confirmation**: Request explicit user approval: "I understand that `origin/master` will be replaced. Proceed?"
-2. **Force with Lease**: Use the lease flag to prevent overwriting unexpected remote changes.
+1. **Explicit Confirmation**: Request explicit user approval: "I understand that `origin/master` will be replaced.
+
+   Proceed?"
+
+1. **Force with Lease**: Use the lease flag to prevent overwriting unexpected remote changes.
 
    ```bash
    git push --force-with-lease origin <branch>
-   ```
+   ```bash
 
 ### 2.9.6 Remote Rollback Procedure
 
@@ -269,16 +341,20 @@ If the remote state is incorrect after push, restore it from the backup:
 
 ```bash
 git push --force-with-lease origin backup/pre-force-push-<n>:<branch>
-```
+
+```bash
 
 ### 2.9.7 Backup Cleanup (After Verification)
 
-Once the user has manually verified the remote state is correct, the backup branch SHOULD be deleted to maintain repository hygiene.
+Once the user has manually verified the remote state is correct, the backup branch SHOULD be deleted to maintain
+repository hygiene.
 
 ```bash
 git branch -D backup/pre-force-push-<n>
-```
 
-**CRITICAL**: The agent is **PROHIBITED** from executing this step automatically. It MUST remain a manual instruction or require separate, explicit authorization.
+```bash
+
+**CRITICAL**: The agent is **PROHIBITED** from executing this step automatically. It MUST remain a manual instruction
+or require separate, explicit authorization.
 
 ***

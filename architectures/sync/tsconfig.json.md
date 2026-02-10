@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD013 -->
+
 # tsconfig.json Industrial Explainer
 
 This document provides a line-by-line pedagogical breakdown of the TypeScript configuration for the `sync` architecture.

@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD013 -->
+
 # WASM Crypto Explainer (`crypto.asm.ts`)
 
 [View Source File](./crypto.asm.ts)
@@ -14,23 +16,23 @@ In a frontend-only application, any JavaScript code can be easily read via "Insp
 ## Technical & Code Breakdown
 
 - **SALT_CODES**:
-  - **Purpose**: The Platform Salt stored as a numeric array of character codes (`u8`).
-  - **Byte Encoding**: We store the salt as an array of `u8` bytes (UTF-8 codes) rather than a string. This ensures the secret never appears in plaintext string searches of the compiled binary.
-  - **Security**: In WASM, this is baked into the binary bytecode as numeric constants.
+    - **Purpose**: The Platform Salt stored as a numeric array of character codes (`u8`).
+    - **Byte Encoding**: We store the salt as an array of `u8` bytes (UTF-8 codes) rather than a string. This ensures the secret never appears in plaintext string searches of the compiled binary.
+    - **Security**: In WASM, this is baked into the binary bytecode as numeric constants.
 
 - **deriveSeed(identity)**:
-  - **Purpose**: Takes a user's identifier (like an email) and stable-mixes it with the internal salt.
-  - **identity**: The raw identifier (e.g., Email).
-  - **Logic**:
+    - **Purpose**: Takes a user's identifier (like an email) and stable-mixes it with the internal salt.
+    - **identity**: The raw identifier (e.g., Email).
+    - **Logic**:
         1. Encodes the string to UTF-8.
         2. Combines it with the binary salt.
         3. Calls `hashBuffer` for each byte of the 32-byte seed, making it extremely difficult to guess the salt even if the input identity is known.
-  - **Why AssemblyScript?**: It allows developers to write high-performance, binary-destined logic using a syntax nearly identical to TypeScript.
+    - **Why AssemblyScript?**: It allows developers to write high-performance, binary-destined logic using a syntax nearly identical to TypeScript.
 
 - **hashBuffer(identityByte, saltByte, index)**:
-  - **Purpose**: A deterministic seed generator.
-  - **Logic**: XORs the identity byte with the salt byte and performs a bit-shift based on the index position. This obscures the simple relationship between input and output.
-  - **Industrial Recommendation**: In a production environment, you should replace this logic with a full WASM implementation of **SHA-256** (e.g., via the `as-crypto` library).
+    - **Purpose**: A deterministic seed generator.
+    - **Logic**: XORs the identity byte with the salt byte and performs a bit-shift based on the index position. This obscures the simple relationship between input and output.
+    - **Industrial Recommendation**: In a production environment, you should replace this logic with a full WASM implementation of **SHA-256** (e.g., via the `as-crypto` library).
 
 ## Usage Scenario
 
@@ -42,4 +44,5 @@ This file **MUST** be compiled using the AssemblyScript compiler (`asc`). The re
 
 ```bash
 npx asc src/services/sync/worker/crypto.asm.ts -o src/services/sync/worker/crypto.wasm
+
 ```

@@ -1,7 +1,14 @@
+<!-- markdownlint-disable MD013 -->
+
+<!--
+title: Strict Dependency Freezing & Rule Standardization
+description: Implementation of exact version pinning and documentation of high industrial standards.
+category: Conventions & Repository Management
+-->
+
 # Conversation Log: Strict Dependency Freezing & Rule Standardization
 
-**Date:** 2026-02-06  
-**Objective:** Pin all external dependency versions for reproducibility and formalize the practice into the global AI Agent Rules.
+**Date**: 2026-02-06
 
 ***
 
@@ -28,18 +35,18 @@ I analyzed the monorepo structure and the `package-lock.json` file, created an i
 ## 3. Execution
 
 - **Pinning external packages**:
-  - `assemblyscript`: `0.27.37`
-  - `typescript`: `5.9.3`
-  - `react`/`react-dom`: `18.3.1`
-  - `rxdb`: `15.39.0`
-  - (and other devDependencies/plugins)
+    - `assemblyscript`: `0.27.37`
+    - `typescript`: `5.9.3`
+    - `react`/`react-dom`: `18.3.1`
+    - `rxdb`: `15.39.0`
+    - (and other devDependencies/plugins)
 - **Rule Creation**:
-  - Created `strict-dependency-freezing-rules.md`.
-  - Updated `zero-backend-sync-rules.md` with a cross-reference.
+    - Created `strict-dependency-freezing-rules.md`.
+    - Updated `zero-backend-sync-rules.md` with a cross-reference.
 - **Standardization Updates**:
-  - Modified `ai-rule-standardization-rules.md` to mandate relative links and a structured `docs/` hierarchy.
+    - Modified `ai-rule-standardization-rules.md` to mandate relative links and a structured `docs/` hierarchy.
 - **Documentation Migration**:
-  - Created `docs/implementation-plans/` and moved the freezing implementation plan there.
+    - Created `docs/implementation-plans/` and moved the freezing implementation plan there.
 
 ***
 
@@ -54,11 +61,11 @@ I analyzed the monorepo structure and the `package-lock.json` file, created an i
 ## 5. Attachments & References
 
 | File/Artifact | Path | Description |
-|---------------|------|-------------|
-| **Strict Freezing Rules** | `./strict-dependency-freezing-rules.md` | New global rule for dependency management. |
-| **Standardization Rules** | `./ai-rule-standardization-rules.md` | Updated standards for relative links and hierarchy. |
-| **Implementation Plan** | `./docs/implementation-plans/2026-02-06-strict-dependency-freezing.md` | Formal record of the codebase changes. |
-| **Monorepo Root** | `./architectures/sync/package.json` | Sample of pinned root dependencies. |
+| :--- | :--- | :--- |
+| **Strict Freezing Rules** | [../../strict-dependency-freezing-rules.md](../../strict-dependency-freezing-rules.md) | New global rule for dependency management. |
+| **Standardization Rules** | [../../ai-rule-standardization-rules.md](../../ai-rule-standardization-rules.md) | Updated standards for relative links and hierarchy. |
+| **Implementation Plan** | [../implementation-plans/2026-02-06-strict-dependency-freezing.md](../implementation-plans/2026-02-06-strict-dependency-freezing.md) | Formal record of the codebase changes. |
+| **Monorepo Root** | [../../../architectures/sync/package.json](../../../architectures/sync/package.json) | Sample of pinned root dependencies. |
 
 - Related Rule: [Agent Planning Rules](./ai-agent-planning-rules.md)
 - Related Rule: [Rule Management Rules](./rule-management-rules.md)
@@ -70,7 +77,7 @@ I analyzed the monorepo structure and the `package-lock.json` file, created an i
 ### Change Summary Table
 
 | Category | Action | Rationale |
-|----------|--------|-----------|
+| :--- | :--- | :--- |
 | Codebase | Pinned 15+ external dependencies | Ensure 100% reproducible builds. |
 | Infrastructure | Kept workspace dependencies as `*` | Preserve monorepo symlink behavior. |
 | Rules | Created `strict-dependency-freezing-rules.md` | Formalize policy for future agents. |
