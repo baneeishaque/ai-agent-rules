@@ -20,11 +20,22 @@ def parse_metadata(content):
     
     meta_text = meta_match.group(1)
     metadata = {}
+    current_key = None
+    
     for line in meta_text.split('\n'):
         if ':' in line:
             key, value = line.split(':', 1)
-            metadata[key.strip()] = value.strip()
+            current_key = key.strip()
+            metadata[current_key] = value.strip()
+        elif current_key and line.strip():
+            metadata[current_key] += " " + line.strip()
     return metadata
+
+def escape_cell(text):
+    """Escapes pipe characters in table cells to prevent markdown breakage."""
+    if not text:
+        return ""
+    return text.replace("|", "\\|")
 
 def get_rule_files():
     """Retrieves all *-rules.md files in the current directory."""
@@ -43,32 +54,37 @@ def generate_readme_tables(rules_by_category):
             continue
             
         output.append(f"### {category}")
+        output.append("")
         output.append("| Rule File | Purpose |")
-        output.append("|-----------|---------|")
+        output.append("| :--- | :--- |")
         
         # Sort rules by filename
         sorted_rules = sorted(rules, key=lambda x: x['filename'])
         
         for rule in sorted_rules:
             link = f"[`{rule['filename']}`](./{rule['filename']})"
-            output.append(f"| {link} | {rule['description']} |")
+            desc = escape_cell(rule['description'])
+            output.append(f"| {link} | {desc} |")
         
-        output.append("") # Empty line after table
+        output.append("")
         
     return "\n".join(output)
 
 def generate_index_table(all_rules):
     """Generates the flat table for agent-rules.md."""
     output = []
+    output.append("") # Ensure blank line before table
     output.append("| Rule Domain | File Name | Description |")
-    output.append("|---|---|---|")
+    output.append("| :--- | :--- | :--- |")
     
     # Sort by Title (Rule Domain)
     sorted_rules = sorted(all_rules, key=lambda x: x['title'])
     
     for rule in sorted_rules:
         link = f"[{rule['filename']}](./{rule['filename']})"
-        output.append(f"| {rule['title']} | {link} | {rule['description']} |")
+        title = escape_cell(rule['title'])
+        desc = escape_cell(rule['description'])
+        output.append(f"| {title} | {link} | {desc} |")
         
     return "\n".join(output)
 
@@ -122,8 +138,8 @@ def main():
         rules_by_category[rule['category']].append(rule)
 
     # Generate Content
-    readme_content_block = generate_readme_tables(rules_by_category)
-    index_content_block = generate_index_table(valid_rules)
+    readme_content_block = generate_readme_tables(rules_by_category).strip()
+    index_content_block = generate_index_table(valid_rules).strip()
 
     # Write README.md
     try:

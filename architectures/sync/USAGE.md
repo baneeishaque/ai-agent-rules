@@ -15,6 +15,7 @@ Confirm your environment before implementation:
 ```bash
 npm install rxdb nostr-tools rxjs
 npm install @craco/craco assemblyscript --save-dev
+
 ```
 
 ## 2. Industrial Folder Restructuring (SSOT)
@@ -31,17 +32,19 @@ To use in your own project:
 cp -r ai-agent-rules/architectures/sync/packages/core/src/* src/services/sync/lib/
 # Shared UI
 cp ai-agent-rules/architectures/sync/samples/shared/src/SyncManager.tsx src/components/
+
 ```
 
 ## 3. Webpack Modification (CRACO)
 
 ### Mandatory for CRA users to support WASM and Workers
 
-Building `.wasm` in CRA requires a `craco.config.js` in your root. This allows you to inject Webpack's `wasm-loader` without ejecting:
+Building `.wasm` in CRA requires a `craco.config.js` in your root. This allows you to inject Webpack's `wasm-loader`
+without ejecting:
 
 ```javascript
 module.exports = {
-  webpack: {
+    webpack: {
     configure: (config) => {
       // Enable WASM and Worker Support
       config.experiments = { 
@@ -58,8 +61,9 @@ module.exports = {
 
       return config;
     }
-  }
+    }
 };
+
 ```
 
 **Important**: Update your `package.json` scripts to use `craco start`, `craco build`, etc.
@@ -68,26 +72,30 @@ module.exports = {
 
 To protect your identity salt, the `worker/crypto.asm.ts` must be compiled to a binary "Black Box."
 
-1. **Configuration**: Externalize all environmental parameters in `lib/config.json`. This allows for **Secret Rotation** and mesh updates without logic changes.
+1. **Configuration**: Externalize all environmental parameters in `lib/config.json`. This allows for **Secret Rotation**
+   and mesh updates without logic changes.
 
 ```json
 {
-  "relays": ["wss://nos.lol", "wss://relay.damus.io"],
-  "platformSalt": "INDUSTRIAL_SALT_VALUE_2026",
-  "nostrKind": 30078,
-  "defaultDTag": "my-app-v1"
+    "relays": ["wss://nos.lol", "wss://relay.damus.io"],
+    "platformSalt": "INDUSTRIAL_SALT_VALUE_2026",
+    "nostrKind": 30078,
+    "defaultDTag": "my-app-v1"
 }
+
 ```
 
 1. **Compile the ASM file**:
 
 ```bash
 npx asc src/services/sync/lib/worker/crypto.asm.ts -o src/services/sync/lib/worker/crypto.wasm
+
 ```
 
 ## 5. Simplified Fallback Strategy
 
-For low-complexity applications (e.g., simple notes), you may replace **RxDB** with a direct **IndexedDB** or **File-based** store.
+For low-complexity applications (e.g., simple notes), you may replace **RxDB** with a direct **IndexedDB** or
+**File-based** store.
 
 - **Requirement**: The `60 FPS` mandate still applies; sync logic MUST remain in a Web Worker to prevent UI blocking.
 - **Relay Fallback**: The worker must still implement the mesh failover loop provided in the `worker/index.ts` template.
@@ -95,13 +103,14 @@ For low-complexity applications (e.g., simple notes), you may replace **RxDB** w
 
 ## 6. UI Integration (Pedagogical Sample)
 
-Integrate the engine into your root component. Inside your app entry point (e.g., `App.tsx`), implement silent discovery. This ensures "Zero User Intervention"—the sync starts silently when the user is identified:
+Integrate the engine into your root component. Inside your app entry point (e.g., `App.tsx`), implement silent discovery.
+This ensures "Zero User Intervention"—the sync starts silently when the user is identified:
 
 ```typescript
 import { SyncEngine } from '@sync/core';
 
 function App() {
-  useEffect(() => {
+    useEffect(() => {
     // 1. Silent Context Discovery: Detect User Identifier
     // We use the session email. Support for Compound IDs (Email + Salt) is built-in.
     const userIdentifier = auth.session.user.email; 
@@ -114,10 +123,11 @@ function App() {
       // RxDB upsert triggers watchAllChanges() in your components automatically
       storageHandler.upsert(remoteData.key, remoteData.value);
     });
-  }, []);
+    }, []);
 
-  return <SyncManager />;
+    return <SyncManager />;
 }
+
 ```
 
 ## 7. Storage Layer (RxDB)
@@ -132,9 +142,11 @@ Initialize your RxDB collection using the schema in `storage.ts`.
 
 1. **Real-time Check**: Open two browsers. Change a setting in one. Verify the update appears in the second in **< 500ms**.
 2. **Persistence Check**: Close both browsers. Re-open. Verify state is recovered from the Nostr Mesh.
-3. **Security Check**: Inspect Network traffic. Verify all content is **encrypted** (ciphertext) and the **Salt** is absent from the JS bundle (**Hardened in WASM**).
+3. **Security Check**: Inspect Network traffic. Verify all content is **encrypted** (ciphertext) and the **Salt** is
+   absent from the JS bundle (**Hardened in WASM**).
 4. **Blind Vault Test**: Verify via Network tab that Nostr events (Kind 30078) contain only ciphertext.
 5. **WASM MIME Type**: Verify that your host serves `.wasm` files with the `application/wasm` header.
-6. **Relay Failover**: Manually block one relay in the dev tools (Network -> Request blocking) and verify the worker cycles to the next relay automatically.
+6. **Relay Failover**: Manually block one relay in the dev tools (Network -> Request blocking) and verify the worker
+   cycles to the next relay automatically.
 7. **60 FPS Check**: Perform heavy navigation while a sync is in progress; ensure no frame drops.
 8. **UTF-8 Check**: Verify that the salt is encoded as `u8` bytes in the WASM binary (prevents string scraping).

@@ -10,7 +10,7 @@ This document defines the rules and management procedures for the Warp AI Agent.
 
 ***
 
-### 1. Core Principles
+## 1. Core Principles
 
 - **Sync:** Rules are automatically synced with your Warp account to ensure consistency across devices.
 

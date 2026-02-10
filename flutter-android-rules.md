@@ -10,12 +10,14 @@ This document outlines specific rules for Android configuration in Flutter proje
 
 ***
 
-### 1. Versioning
+## 1. Versioning
 
 - **minSdkVersion**: Must be pinned (e.g., 21) in `android/app/build.gradle`.
+
 - **targetSdkVersion**: Must match the latest stable Android version.
 
 ### 2. Permissions
 
 - Explicitly declare permissions in `AndroidManifest.xml`.
+
 - Use the least privilege principle.

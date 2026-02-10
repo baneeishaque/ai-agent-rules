@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SyncEngine, SyncData } from '@sync/core';
+import { SyncEngine, type SyncData } from '@sync/core';
 
 /**
  * SyncManager (Industrial React Boilerplate)
@@ -40,7 +40,7 @@ export const SyncManager: React.FC = () => {
     SyncEngine.pushUpdate(fragment);
   };
 
-  const currentTheme = (syncedState.theme as string) || 'light';
+  const currentTheme = (syncedState['theme'] as string) || 'light';
   const isDark = currentTheme === 'dark';
 
   return (
@@ -51,7 +51,7 @@ export const SyncManager: React.FC = () => {
       borderRadius: '12px',
       border: isDark ? '1px solid #333' : '1px solid #eee',
       transition: 'all 0.3s ease',
-      fontSize: `${syncedState.fontSize || 14}px`
+      fontSize: `${syncedState['fontSize'] || 14}px`
     }}>
       <h2 style={{ fontSize: '1.5em' }}>Zero-Backend Sync Manager</h2>
       <p>Status: {isReady ? '✅ Active (Decentralized Mesh Connected)' : '⏳ Initializing...'}</p>
@@ -73,7 +73,7 @@ export const SyncManager: React.FC = () => {
         </button>
 
         <button
-          onClick={() => handleUpdate('fontSize', (syncedState.fontSize as number || 14) + 2)}
+          onClick={() => handleUpdate('fontSize', (syncedState['fontSize'] as number || 14) + 2)}
           style={{
             padding: '0.8rem',
             cursor: 'pointer',

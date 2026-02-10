@@ -10,9 +10,10 @@ This document provides guidelines for the integration of NestJS backends with Re
 
 ***
 
-### 1. API Contract
+## 1. API Contract
 
 - **OpenAPI**: Use Swagger/OpenAPI to document all endpoints.
+
 - **Type Generation**: Generate TypeScript client types directly from the OpenAPI spec to ensure type safety.
 
 ### 2. Project Structure
