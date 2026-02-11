@@ -9,19 +9,20 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | Rule Domain | File Name | Description |
 | :--- | :--- | :--- |
 | Rule Domain | File Name | Description |
-|---|---|---|
+| :--- | :--- | :--- |
 | AI Agent Rule Standardization Rules | [ai-rule-standardization-rules.md](./ai-rule-standardization-rules.md) | Craftsmanship standards for developing "Ultra-Lean Industrial" AI Agent Rules, ensuring consistent formatting, structural hierarchy, and pedagogical clarity. |
 | AI Agent Session Documentation Rules | [ai-agent-session-documentation-rules.md](./ai-agent-session-documentation-rules.md) | Protocol for documenting AI agent sessions or conversations as Markdown, including file attachment references, structured data, and traceability. |
 | AI Tools Output Visibility | [ai-tools-rules.md](./ai-tools-rules.md) | Comprehensive rules for AI tool usage, including mandates for output visibility, explicit user confirmation for file writes, and integration with agent planning and security protocols. |
 | Agent Planning | [ai-agent-planning-rules.md](./ai-agent-planning-rules.md) | Guidelines for agent planning, including the core directive to plan before acting and a protocol for iterative plan revisions. |
 | Android App Launch Rules | [android-app-launch-rules.md](./android-app-launch-rules.md) | Automated protocol for emulator setup and deployment, optimized for M2 machines, with architecture and device fallbacks. |
+| Bash Scripting Standards | [bash-scripting-rules.md](./bash-scripting-rules.md) | Industrial standards for bash script development, including dependency management patterns, alphabetical organization conventions, and idempotent function design. |
 | CI/CD Rules | [ci-cd-rules.md](./ci-cd-rules.md) | Principles and practices for CI/CD, including protected branches, security, observability, advanced deployment strategies, and automated rollbacks. |
 | Code Documentation & Pedagogical Explainer Rules | [code-documentation-rules.md](./code-documentation-rules.md) | Standards for deep-dive, pedagogical code documentation including adjacent markdown files and various folder patterns. |
 | Docker | [Docker-rules.md](./Docker-rules.md) | Guidelines for Docker containerization, best practices for Dockerfiles, and image optimization. |
 | Flutter Android Rules | [flutter-android-rules.md](./flutter-android-rules.md) | Specific guidelines for Android configurations within Flutter projects. |
 | Flutter App Development Rules | [flutter-app-development-rules.md](./flutter-app-development-rules.md) | Rules for Flutter app development, including version pinning with `mise`, dependency management, and mandatory documentation. |
 | Git .gitignore Handling Rules | [git-gitignore-handling-rules.md](./git-gitignore-handling-rules.md) | Protocols for generating, maintaining, and customizing .gitignore files using standard APIs. |
-| Git Atomic Commit Construction | [git-atomic-commit-construction-rules.md](./git-atomic-commit-construction-rules.md) | Authoritative protocol for analysing, grouping, and arranging changes into logical, independent atomic units before execution. |
+| Git Atomic Commit Construction | [git-atomic-commit-construction-rules.md](./git-atomic-commit-construction-rules.md) | Authoritative protocol for analyzing, grouping, and arranging changes into logical, independent atomic units before execution. |
 | Git Commit Message Generation | [git-commit-message-rules.md](./git-commit-message-rules.md) | Strict rules for generating git commit messages, enforcing Conventional Commits, contextual information in titles, and no redundancy between title and body. |
 | Git History Refinement Rules | [git-history-refinement-rules.md](./git-history-refinement-rules.md) | Protocols for refining existing commit history using backup branches, jq for JSON atomicity, and tree parity verification. |
 | Git Operation Rules | [git-operation-rules.md](./git-operation-rules.md) | Strict protocols for standard Git operations (commits & pushes), mandating explicit user requests and forbidding auto-actions. |
@@ -40,6 +41,7 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | KMP Version Upgrade Rules | [kmp-version-upgrade-rules.md](./kmp-version-upgrade-rules.md) | A specific technical protocol for upgrading Kotlin, AGP, and related dependencies in a Kotlin Multiplatform project. |
 | LinkedIn Contributor Call Rules | [linkedin-contributor-call-rules.md](./linkedin-contributor-call-rules.md) | Specialized protocol for drafting "Call for Contributors" posts to recruit developers for personal projects, focusing on mentorship, labor-rich stacks, and leadership. |
 | LinkedIn Post Creation | [linkedin-post-creation-rules.md](./linkedin-post-creation-rules.md) | Protocol for crafting viral, professional, and accessible LinkedIn posts customized for Banee Ishaque K's persona, emphasizing plain-text optimization and human storytelling. |
+| Manual Testing Protocol | [manual-testing-rules.md](./manual-testing-rules.md) | Authoritative protocol for designing, documenting, and executing manual verification plans. |
 | Markdown Generation Rules | [markdown-generation-rules.md](./markdown-generation-rules.md) | Standards for creating machine-parseable, lint-compliant markdown documents. |
 | Mise Plugin Backend Management Rules | [mise-plugin-backend-management-rules.md](./mise-plugin-backend-management-rules.md) | Intelligent backend selection for mise plugin installations with fallback handling and user prompts. |
 | NestJS React App Rules | [nestjs-react-app-rules.md](./nestjs-react-app-rules.md) | Guidelines for developing NestJS backends with React frontends. |

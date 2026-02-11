@@ -1,52 +1,49 @@
-<div align="center">
+# AI Agent Rules
 
-# 🤖 AI Agent Rules
+Establish trust, transparency, and consistency in AI-assisted development
 
-**A comprehensive, modular framework of rules and best practices for AI agents and development workflows**
+> A comprehensive framework of standardized rules for AI development workflows
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/Baneeishaque/AI-Agent-Rules)
 [![Markdown](https://img.shields.io/badge/Format-Markdown-lightgrey?logo=markdown)](https://daringfireball.net/projects/markdown/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Baneeishaque/AI-Agent-Rules/pulls)
 
-*Establish trust, transparency, and consistency in AI-assisted development*
+***
 
-</div>
+## Table of Contents
+
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Quick Start](#quick-start)
+- [Rule Categories](#rule-categories)
+- [Architecture](#architecture)
+- [Detailed Rule Reference](#detailed-rule-reference)
+- [Usage Examples](#usage-examples)
+- [Integration Guide](#integration-guide)
+- [Contributing](#contributing)
+- [Development Setup](#development-setup)
+- [License](#license)
 
 ***
 
-## 📋 Table of Contents
+## Overview
 
-- [Overview](#-overview)
-- [Key Features](#-key-features)
-- [Quick Start](#-quick-start)
-- [Rule Categories](#-rule-categories)
-- [Architecture](#-architecture)
-- [Detailed Rule Reference](#-detailed-rule-reference)
-- [Usage Examples](#-usage-examples)
-- [Integration Guide](#-integration-guide)
-- [Contributing](#-contributing)
-- [Development Setup](#-development-setup)
-- [License](#-license)
-
-***
-
-## 🎯 Overview
-
-**AI Agent Rules** is a comprehensive collection of standardized rules, best practices, and protocols designed to govern AI agent behavior in software development workflows. This framework ensures:
+**AI Agent Rules** is a collection of standardized protocols designed to govern AI agent behavior.
+This framework ensures:
 
 - **Transparency**: Every AI action is visible and auditable
 - **User Control**: Users maintain ultimate authority over all operations
 - **Consistency**: Standardized patterns across all development activities
 - **Security**: Principle of least privilege and explicit permission protocols
 
-The repository provides a modular, extensible rule system that can be adopted by AI coding assistants, development tools, and automated workflows to establish a trustworthy and effective interaction model.
+The repository provides a modular, extensible rule system for AI coding assistants and toolsets.
 
 ***
 
-## ✨ Key Features
+## Key Features
 
 | Feature | Description |
-|---------|-------------|
+| :--- | :--- |
 | 🎯 **Modular Architecture** | Each rule domain is maintained in a separate markdown file for easy management |
 | 📖 **Self-Documenting** | Rules are written in clear, unambiguous language with examples |
 | 🔗 **Cross-Referenced** | Rules reference each other to form a cohesive framework |
@@ -56,7 +53,7 @@ The repository provides a modular, extensible rule system that can be adopted by
 
 ***
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Clone the Repository
 
@@ -87,74 +84,81 @@ Follow the guidelines in:
 
 ***
 
-## 📚 Rule Categories
+## Rule Categories
 
 ### Android Development
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
 | [`android-app-launch-rules.md`](./android-app-launch-rules.md) | Automated protocol for emulator setup and deployment, optimized for M2 machines, with architecture and device fallbacks. |
 
 ### Architecture & Dependency Management
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
 | [`strict-dependency-freezing-rules.md`](./strict-dependency-freezing-rules.md) | Industrial protocol for ensuring reproducible builds by pinning exact versions of all external dependencies in package-level configuration. |
 
 ### Architecture & Sync
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
 | [`zero-backend-sync-rules.md`](./zero-backend-sync-rules.md) | Architecture and implementation standards for background, invisible data synchronization using decentralized relays (Nostr), local-first storage (RxDB), and WASM hardening. |
 
 ### Build-Management
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
 | [`kmp-version-upgrade-rules.md`](./kmp-version-upgrade-rules.md) | A specific technical protocol for upgrading Kotlin, AGP, and related dependencies in a Kotlin Multiplatform project. |
 
 ### CI/CD & DevOps
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
 | [`Docker-rules.md`](./Docker-rules.md) | Guidelines for Docker containerization, best practices for Dockerfiles, and image optimization. |
 | [`ci-cd-rules.md`](./ci-cd-rules.md) | Principles and practices for CI/CD, including protected branches, security, observability, advanced deployment strategies, and automated rollbacks. |
 | [`github-actions-workflow-rules.md`](./github-actions-workflow-rules.md) | Rules for GitHub Actions workflows, covering trigger preferences, security, performance, and integrations. |
 | [`render-deployment-rules.md`](./render-deployment-rules.md) | Deployment configurations for Render, including environment variables and custom domains. |
 
 ### Code Quality & Linting
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
 | [`shellcheck-fixer-rules.md`](./shellcheck-fixer-rules.md) | Specialized rules for repairing shell scripts to meet ShellCheck standards. |
 
 ### Core Agent Behavior
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
+| [`ai-agent-planning-rules.md`](./ai-agent-planning-rules.md) | Guidelines for agent planning, including the core directive to plan before acting and a protocol for iterative plan revisions. |
 | [`ai-agent-session-documentation-rules.md`](./ai-agent-session-documentation-rules.md) | Protocol for documenting AI agent sessions or conversations as Markdown, including file attachment references, structured data, and traceability. |
 | [`ai-tools-rules.md`](./ai-tools-rules.md) | Comprehensive rules for AI tool usage, including mandates for output visibility, explicit user confirmation for file writes, and integration with agent planning and security protocols. |
 | [`github-cli-permission-rules.md`](./github-cli-permission-rules.md) | Explicit permission protocol for running `gh` commands, ensuring user control and transparency. |
 | [`shell-execution-rules.md`](./shell-execution-rules.md) | Guidelines for shell command execution, ensuring transparency, user control, and adherence to security protocols. |
 
-### Core Agent Behaviour
-| Rule File | Purpose |
-|-----------|---------|
-| [`ai-agent-planning-rules.md`](./ai-agent-planning-rules.md) | Guidelines for agent planning, including the core directive to plan before acting and a protocol for iterative plan revisions. |
-
 ### Data Transfer & Cloud Storage
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
 | [`rclone-download-rules.md`](./rclone-download-rules.md) | Protocol for efficient, reliable, and user-controlled rclone downloads with progress tracking, size-based ordering, and integrity verification. |
 
 ### Development Frameworks
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
 | [`flutter-app-development-rules.md`](./flutter-app-development-rules.md) | Rules for Flutter app development, including version pinning with `mise`, dependency management, and mandatory documentation. |
 
 ### Documentation & Standards
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
 | [`code-documentation-rules.md`](./code-documentation-rules.md) | Standards for deep-dive, pedagogical code documentation including adjacent markdown files and various folder patterns. |
 | [`markdown-generation-rules.md`](./markdown-generation-rules.md) | Standards for creating machine-parseable, lint-compliant markdown documents. |
 
 ### Git & Repository Management
+
 | Rule File | Purpose |
-|-----------|---------|
-| [`git-atomic-commit-construction-rules.md`](./git-atomic-commit-construction-rules.md) | Authoritative protocol for analysing, grouping, and arranging changes into logical, independent atomic units before execution. |
+| :--- | :--- |
+| [`git-atomic-commit-construction-rules.md`](./git-atomic-commit-construction-rules.md) | Authoritative protocol for analyzing, grouping, and arranging changes into logical, independent atomic units before execution. |
 | [`git-commit-message-rules.md`](./git-commit-message-rules.md) | Strict rules for generating git commit messages, enforcing Conventional Commits, contextual information in titles, and no redundancy between title and body. |
 | [`git-gitignore-handling-rules.md`](./git-gitignore-handling-rules.md) | Protocols for generating, maintaining, and customizing .gitignore files using standard APIs. |
 | [`git-history-refinement-rules.md`](./git-history-refinement-rules.md) | Protocols for refining existing commit history using backup branches, jq for JSON atomicity, and tree parity verification. |
@@ -169,61 +173,81 @@ Follow the guidelines in:
 | [`repo-discovery-rules.md`](./repo-discovery-rules.md) | Multi-platform repository discovery and smart cloning workflows. |
 
 ### GitHub Actions
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
 | [`GitHub-Action-Creation-rules.md`](./GitHub-Action-Creation-rules.md) | Strict guidelines for creating, structuring, and publishing GitHub Composite Actions to the Marketplace. enforce "Industrial" standards. |
 
 ### Languages & Stacks
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
 | [`typescript-rules.md`](./typescript-rules.md) | Industrial standards for TypeScript configuration, strictness, and strict dependency freezing. |
 
 ### Mobile Development
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
 | [`flutter-android-rules.md`](./flutter-android-rules.md) | Specific guidelines for Android configurations within Flutter projects. |
 
 ### Package Management
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
 | [`brew-rules.md`](./brew-rules.md) | Comprehensive SSOT for Homebrew operations, including installation preferences, keg-only handling, and exclusion-based upgrade workflows. |
 | [`mise-plugin-backend-management-rules.md`](./mise-plugin-backend-management-rules.md) | Intelligent backend selection for mise plugin installations with fallback handling and user prompts. |
 
-### Rule-Management
+### Quality Assurance & Verification
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
+| [`manual-testing-rules.md`](./manual-testing-rules.md) | Authoritative protocol for designing, documenting, and executing manual verification plans. |
+
+### Rule-Management
+
+| Rule File | Purpose |
+| :--- | :--- |
 | [`ai-rule-standardization-rules.md`](./ai-rule-standardization-rules.md) | Craftsmanship standards for developing "Ultra-Lean Industrial" AI Agent Rules, ensuring consistent formatting, structural hierarchy, and pedagogical clarity. |
 
-### Social Media & Branding
+### Shell-Scripting
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
+| [`bash-scripting-rules.md`](./bash-scripting-rules.md) | Industrial standards for bash script development, including dependency management patterns, alphabetical organization conventions, and idempotent function design. |
+
+### Social Media & Branding
+
+| Rule File | Purpose |
+| :--- | :--- |
 | [`linkedin-contributor-call-rules.md`](./linkedin-contributor-call-rules.md) | Specialized protocol for drafting "Call for Contributors" posts to recruit developers for personal projects, focusing on mentorship, labor-rich stacks, and leadership. |
 | [`linkedin-post-creation-rules.md`](./linkedin-post-creation-rules.md) | Protocol for crafting viral, professional, and accessible LinkedIn posts customized for Banee Ishaque K's persona, emphasizing plain-text optimization and human storytelling. |
 
 ### Tech Stack
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
 | [`nestjs-react-app-rules.md`](./nestjs-react-app-rules.md) | Guidelines for developing NestJS backends with React frontends. |
 | [`nestjs-react-flutter-stack-rules.md`](./nestjs-react-flutter-stack-rules.md) | Full-stack guidelines for NestJS/React web apps with an accompanying Flutter mobile client. |
 
 ### Tooling & Workflows
+
 | Rule File | Purpose |
-|-----------|---------|
+| :--- | :--- |
 | [`rule-management-rules.md`](./rule-management-rules.md) | Documentation sync and update workflow, including metadata management for rule indexing. |
 | [`script-management-rules.md`](./script-management-rules.md) | Script standards, folder usage, and safeguards for helper scripts. |
 | [`warp-terminal-ai-rules.md`](./warp-terminal-ai-rules.md) | Backup and reference for Warp AI Agent specific configurations. |
 
 ### VCS-Integration
-| Rule File | Purpose |
-|-----------|---------|
-| [`github-atom-feed-rules.md`](./github-atom-feed-rules.md) | Protocol for generating and providing GitHub repository Atom feed URLs for commits and releases |
 
+| Rule File | Purpose |
+| :--- | :--- |
+| [`github-atom-feed-rules.md`](./github-atom-feed-rules.md) | Protocol for generating and providing GitHub repository Atom feed URLs for commits and releases |
 
 ***
 
-## 🏗️ Architecture
+## Architecture
 
-```
+```bash
 AI-Agent-Rules/
 ├── 📄 agent-rules.md                    # Central index (start here!)
 │
@@ -276,7 +300,7 @@ AI-Agent-Rules/
 
 ***
 
-## 📖 Detailed Rule Reference
+## Detailed Rule Reference
 
 ### Core Planning Protocol (ai-agent-planning-rules.md)
 
@@ -291,6 +315,7 @@ The foundational rule that all agents must follow:
 ```
 
 **Key Principles:**
+
 - ✅ Always plan before acting
 - ✅ Plans must be explicit and actionable
 - ✅ Support iterative plan revisions
@@ -307,6 +332,7 @@ Core Principles:
 ```
 
 **Mandatory User Confirmation Required For:**
+
 - File write operations
 - GitHub CLI commands
 - Any destructive operations
@@ -323,6 +349,7 @@ Core Principles:
 ### Flutter Development (flutter-app-development-rules.md)
 
 **Environment Setup:**
+
 ```bash
 # Use Mise for version management
 mise install              # Install SDK versions from mise.toml
@@ -330,6 +357,7 @@ mise use flutter@3.x.x    # Pin Flutter version
 ```
 
 **Code Quality:**
+
 ```bash
 flutter analyze           # Lint with zero warnings
 dart format .             # Format all code
@@ -337,7 +365,8 @@ flutter test --coverage   # Run tests with coverage
 ```
 
 **Project Structure:**
-```
+
+```bash
 lib/
 ├── src/
 │   ├── features/         # Feature modules
@@ -353,6 +382,7 @@ lib/
 ### CI/CD Best Practices (ci-cd-rules.md)
 
 **GitHub Actions Optimization:**
+
 ```yaml
 - uses: actions/checkout@v3
   with:
@@ -361,13 +391,15 @@ lib/
 ```
 
 **Security:**
+
 - Use OIDC for cloud authentication
 - Never hardcode secrets
 - Protected branches required
 - Automated secret rotation
 
 **Deployment Orchestration:**
-```
+
+```bash
 Supabase → GitHub Actions → Render
    ↓            ↓              ↓
   Router     Executor      Runtime
@@ -375,7 +407,7 @@ Supabase → GitHub Actions → Render
 
 ***
 
-## 💡 Usage Examples
+## Usage Examples
 
 ### Example 1: Planning a Feature Implementation
 
@@ -425,7 +457,7 @@ brew upgrade --greedy --verbose gh node ollama discord@ptb postman
 
 ***
 
-## 🔌 Integration Guide
+## Integration Guide
 
 ### With Warp Terminal
 
@@ -489,13 +521,14 @@ jobs:
 
 ***
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please follow these guidelines:
 
 ### Adding New Rules
 
 1. **Create a new rule file**: `<Domain>-rules.md`
+
    ```markdown
    # Domain Name Rules
    
@@ -509,11 +542,13 @@ We welcome contributions! Please follow these guidelines:
    ```
 
 2. **Update the index**: Add entry to `agent-rules.md`
+
    ```markdown
    | Rule Domain | [Domain-rules.md](./Domain-rules.md) | Description |
    ```
 
 3. **Commit with conventional message**:
+
    ```bash
    git commit -m "feat: Add Domain-rules.md for X functionality"
    ```
@@ -524,6 +559,7 @@ We welcome contributions! Please follow these guidelines:
 2. Ensure cross-references remain valid
 3. Update `agent-rules.md` description if needed
 4. Use conventional commits:
+
    ```bash
    git commit -m "docs: Update flutter-app-development-rules.md with state management section"
    ```
@@ -546,11 +582,12 @@ We welcome contributions! Please follow these guidelines:
 
 ### Repository Topics
 
-Please tag your PR/Repository with relevant topics. See [GITHUB_TOPICS.md](./GITHUB_TOPICS.md) for the complete list and guidelines.
+Please tag your PR/Repository with relevant topics. See [GITHUB_TOPICS.md](./GITHUB_TOPICS.md) for the complete list and
+guidelines.
 
 ***
 
-## 🛠️ Development Setup
+## Development Setup
 
 ### Prerequisites
 
@@ -585,7 +622,7 @@ The repository includes pre-configured settings:
 ### File Organization
 
 | Path | Purpose |
-|------|---------|
+| ------ | --------- |
 | `*.md` | Rule documentation files |
 | `.vscode/settings.json` | Editor configuration |
 | `.vscode/extensions.json` | Recommended extensions |
@@ -593,10 +630,10 @@ The repository includes pre-configured settings:
 
 ***
 
-## 📊 Rule Statistics
+## Rule Statistics
 
 | Metric | Count |
-|--------|-------|
+| -------- | ------- |
 | Total Rule Files | 24 |
 | Fully Documented Rules | 17 |
 | Placeholder/Empty Rules | 4 |
@@ -610,7 +647,7 @@ The repository includes pre-configured settings:
 
 ***
 
-## 🔗 Related Resources
+## Related Resources
 
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
@@ -620,7 +657,7 @@ The repository includes pre-configured settings:
 
 ***
 
-## 📄 License
+## License
 
 This project is open source. License information will be added soon.
 
@@ -628,10 +665,10 @@ This project is open source. License information will be added soon.
 
 <div align="center">
 
-**Made with ❤️ for the AI-assisted development community**
+Made with ❤️ for the AI-assisted development community
 
-*Establish trust through transparency, consistency, and user control*
+Establish trust through transparency, consistency, and user control
 
-[⬆ Back to Top](#-ai-agent-rules)
+[⬆ Back to Top](#ai-agent-rules)
 
 </div>
