@@ -7,6 +7,7 @@
 ## Summary
 
 The conversation established the industrial standards for bash script execution within the project. Key decisions include:
+
 1. **Subshell Execution (`bash script.sh`)**: Mandated for internal utilities to ensure robustness, isolation, and avoidance of permission/shebang issues.
 2. **Library Sourcing (`source`)**: Reserved strictly for loading functions and constants.
 3. **Prohibition of `eval`**: Strictly forbidden for script execution due to security risks and poor maintainability.

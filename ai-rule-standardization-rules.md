@@ -33,7 +33,18 @@ Before drafting a rule file, the agent MUST:
 
 ## 2. File Naming & Meta-Data
 
-All rule files must be stored in the `AI-Agent-Rules` directory.
+All rule files must be stored in the `AI-Agent-Rules` directory. However, for specific workflows,
+tasks, or capabilities, the system mandates a **Skill-First** architecture.
+
+- **Skill-First Architecture**: Any new, complex work process or agent-specific workflow
+  MUST be created as an **Agent Skill** instead of a flat rule file.
+- **Skill Directory**: Skills are housed in `.agent/skills/<skill-name>/`.
+- **Core Skill Files**:
+    - `SKILL.md`: The Single Source of Truth (SSOT). Contains active instructions following the **agentskills.io protocol**
+      (YAML frontmatter + Markdown body).
+    - `AGENTS.md`: The companion bridge. Provides "passive context" and refers tools back to the `SKILL.md`.
+- **Independence Mandate**: Every Skill MUST be self-contained. It MUST manage its own environmental verification,
+  dependencies, and execution logic independently.
 
 - **Fine Naming**: Use strictly lowercase, kebab-case ending in `-rules.md`(e.g.,`git-submodule-rules.md`).
 
@@ -103,8 +114,17 @@ The content must balance conciseness with technical depth:
     Rules](./code-documentation-rules.md)**.
 
 - **Relative Links**: Documentation and explainers MUST use **Relative Links** (not absolute paths) to ensure the
-
     rule set remains portable and functional in any local filesystem.
+
+- **Environmental & Dependency Mandate**: Every `SKILL.md` MUST include a dedicated section for "Environmental Setup"
+  or "Environment & Dependencies". This section MUST instruct the agent to autonomously verify required tools
+  (e.g., `rclone`, `diff`) and provide installation logic for standard package managers (`brew`, `apt`, `yum`).
+
+- **Artifact Linting Mandate**: All Markdown artifacts (Plans, Tasks, Walkthroughs) MUST be verified with `markdownlint-cli`
+  prior to user presentation. Any violations MUST be resolved.
+
+- **Status Traceability Mandate**: Plans used for rule-building or multi-phase tasks MUST mark completed steps with
+  `[DONE] [TIMESTAMP]` in the 'Proposed Changes' section to maintain execution context.
 
 - **Multi-Project SSOT**: When providing multiple samples (e.g., CRA and Vite), the core logic MUST be extracted into
 
@@ -121,7 +141,6 @@ The content must balance conciseness with technical depth:
     implementations according to the situation.
 
 - **Selection & Trade-offs**: Rules MUST clearly explain the options, trade-offs, and alternatives available for an
-
     architectural pattern. The assistant MUST iterate with the USER to present all options (sorted by priority) and
     discuss the best fit for the context before concluding with a final recommendation for approval.
 
@@ -190,8 +209,11 @@ The content must balance conciseness with technical depth:
     **[Markdown Generation Rules](./markdown-generation-rules.md)** and
     **[Markdown Generation Rules Additions](./markdown-generation-rules-additions.md)**.
 
-
 - **Mandatory Protocols**: Use clear, imperative language (e.g., "The agent MUST...", "The agent is BLOCKED from...").
+
+- **Deep Command Explanation Mandate**: Any shell command or CLI snippet provided in a Rule or Skill MUST include
+  a deep, flag-by-flag pedagogical breakdown. This ensures the agent (and user) understands the exact logic and
+  rationale behind every argument, preventing "magic command" execution.
 
 ***
 
@@ -203,7 +225,6 @@ Before finalizing a new rule:
 
 1. **Lint Check**: Ensure all content complies with **[Markdown Generation Rules](./markdown-generation-rules.md)** and
     **[Markdown Generation Rules Additions](./markdown-generation-rules-additions.md)**.
-
 
 1. **Sync Trigger**: Remind the user to trigger the `agent-rules.md` update workflow.
 

@@ -33,10 +33,10 @@ The agent implemented the **Fail-Fast** pattern by moving platform validation to
 
 ## 3. Execution
 
-1.  **Refactor**: Moved `validate_platform_support` to before `curl`/`sudo` in `installGitHubCli.bash`.
-2.  **Renaming**: System-wide rename of `dispatch_install_msg` to `validate_platform_support`.
-3.  **Optimization**: Removed redundant `updatePackageIndex.bash` call in the orchestrator script.
-4.  **Standards Update**: Modified `bash-scripting-rules.md` to include Fail-Fast and Redundancy policies.
+1. **Refactor**: Moved `validate_platform_support` to before `curl`/`sudo` in `installGitHubCli.bash`.
+2. **Renaming**: System-wide rename of `dispatch_install_msg` to `validate_platform_support`.
+3. **Optimization**: Removed redundant `updatePackageIndex.bash` call in the orchestrator script.
+4. **Standards Update**: Modified `bash-scripting-rules.md` to include Fail-Fast and Redundancy policies.
 
 ***
 

@@ -91,7 +91,7 @@ We have successfully completed the following tasks:
 
 ### ✅ Data & Metadata
 
-* **Audit**: Analyzed all 33 existing rule files against the current README.
+* **Audit**: Analysed all 33 existing rule files against the current README.
 * **Injection**: successfully injected metadata headers into ALL 33 files.
     * *Correction Reference*: Fixed an issue where `multi_replace` missed 5 core files (`AI-Tools`, `CI-CD`, etc.) by
       re-running targeted single-file replacements.

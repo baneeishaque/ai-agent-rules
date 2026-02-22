@@ -46,11 +46,11 @@ normalized the rule files to ensure explicit cross-references and absolute porta
 
 ## 3. Execution
 
-1.  **Refactor**: Alphabetically sorted `require_*` functions and `TOOL_*` constants in `utils.bash`.
-2.  **Documentation**: Created `bash-scripting-rules.md` documenting the Unconditional Require Pattern.
-3.  **Core Rule Update**: Modified `ai-rule-standardization-rules.md` and `ai-agent-planning-rules.md` to
+1. **Refactor**: Alphabetically sorted `require_*` functions and `TOOL_*` constants in `utils.bash`.
+2. **Documentation**: Created `bash-scripting-rules.md` documenting the Unconditional Require Pattern.
+3. **Core Rule Update**: Modified `ai-rule-standardization-rules.md` and `ai-agent-planning-rules.md` to
     explicitly mandate compliance with session and markdown standards.
-4.  **Normalization**: Moved ephemeral session records to permanent repository locations.
+4. **Normalization**: Moved ephemeral session records to permanent repository locations.
 
 ***
 

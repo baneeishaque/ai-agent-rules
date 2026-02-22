@@ -332,7 +332,7 @@ A systematic approach to debugging is essential for productivity:
 
 1. **Environment Check (`flutter doctor`):** Always begin by running`flutter doctor` to ensure the development
 
-   environment is correctly set up. This command is a powerful first line of defense against many common setup and
+   environment is correctly set up. This command is a powerful first line of defence against many common setup and
    configuration issues.
 
 1. **Real-time Logs (`flutter logs`):** Use`flutter logs` to view the live log stream from a running application. This

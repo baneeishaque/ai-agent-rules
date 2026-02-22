@@ -4,8 +4,12 @@ This file is a comprehensive, flat index of all rule files in this repository.
 
 > **Note**: For categorized views, usage examples, and architecture details, please see the [Main README](./README.md).
 
+## Agent Skills
+
+<!-- SKILLS_INDEX -->
+
+***
+
 ## Rule List
 
-| Rule Domain | File Name | Description |
-| :--- | :--- | :--- |
 <!-- RULES_INDEX -->

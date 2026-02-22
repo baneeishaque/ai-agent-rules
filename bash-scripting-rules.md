@@ -110,7 +110,7 @@ fi
 
 ## 2. Alphabetical Organization
 
-### 2.1 Constants: TOOL_* and SCRIPT_*
+### 2.1 Constants: TOOL_*and SCRIPT_*
 
 **All constant declarations MUST be sorted alphabetically by variable name.**
 
@@ -131,6 +131,7 @@ TOOL_ZIP="zip"
 ```
 
 **Rules:**
+
 - Sort by the portion after `TOOL_` (e.g., `TOOL_APT` before `TOOL_APT_GET`)
 - Consolidate all `TOOL_*` constants into a single block
 - No duplicate sections scattered throughout the file
@@ -145,7 +146,7 @@ SCRIPT_INSTALL_TREE="installTree.bash"
 SCRIPT_UPDATE_PACKAGE_INDEX="updatePackageIndex.bash"
 ```
 
-### 2.2 Functions: require_* and is_*_based()
+### 2.2 Functions: require_*and is_*_based()
 
 **All function definitions MUST be sorted alphabetically by function name.**
 
@@ -385,7 +386,7 @@ todo_msg() { ... }
 
 Redundant calls to `require_*` or `validate_platform_support` are **permitted and encouraged** if they enforce function independence.
 
-1. **Safety over Speed**: A 1ms check is better than a fragile dependency on a caller's state. 
+1. **Safety over Speed**: A 1ms check is better than a fragile dependency on a caller's state.
 2. **Implicit Documentation**: Seeing `require_sudo` inside a function immediately tells the reader that the function needs elevated privileges.
 
 ***

@@ -1,0 +1,657 @@
+# GENERATED FILE - DO NOT EDIT MANUALLY
+# Generated at Wed Feb 11 17:49:01 UTC 2026
+
+# --- Source: Parent .markdownlintignore ---
+**/node_modules
+.git
+
+ai-agent-rules/architectures/sync/samples/cra-project/build
+
+# --- Source: Parent .gitignore ---
+# File created using '.gitignore Generator' for Visual Studio Code: https://bit.ly/vscode-gig
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,macos,git,linux,windows
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,macos,git,linux,windows
+
+### Git ###
+# Created by git for backups. To disable backups in Git:
+# $ git config --global mergetool.keepBackup false
+*.orig
+
+# Created by git when using merge tools for conflicts
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*_BACKUP_*.txt
+*_BASE_*.txt
+*_LOCAL_*.txt
+*_REMOTE_*.txt
+
+### Linux ###
+*~
+
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+### macOS Patch ###
+# iCloud generated files
+*.icloud
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
+### Windows ###
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,macos,git,linux,windows
+
+# Custom rules (everything added below won't be overridden by 'Generate .gitignore File' if you use 'Update' option)
+
+
+# --- Source: Sub-repo .gitignore ---
+# File created using '.gitignore Generator' for Visual Studio Code: https://bit.ly/vscode-gig
+# Created by https://www.toptal.com/developers/gitignore/api/linux,macos,windows,visualstudiocode,intellij
+# Edit at https://www.toptal.com/developers/gitignore?templates=linux,macos,windows,visualstudiocode,intellij
+
+### Intellij ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# AWS User-specific
+.idea/**/aws.xml
+
+# Generated files
+.idea/**/contentModel.xml
+
+# Sensitive or high-churn files
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+
+# Gradle
+.idea/**/gradle.xml
+.idea/**/libraries
+
+# Gradle and Maven with auto-import
+# When using Gradle or Maven with auto-import, you should exclude module files,
+# since they will be recreated, and may cause churn.  Uncomment if using
+# auto-import.
+# .idea/artifacts
+# .idea/compiler.xml
+# .idea/jarRepositories.xml
+# .idea/modules.xml
+# .idea/*.iml
+# .idea/modules
+# *.iml
+# *.ipr
+
+# CMake
+cmake-build-*/
+
+# Mongo Explorer plugin
+.idea/**/mongoSettings.xml
+
+# File-based project format
+*.iws
+
+# IntelliJ
+out/
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Cursive Clojure plugin
+.idea/replstate.xml
+
+# SonarLint plugin
+.idea/sonarlint/
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# Editor-based Rest Client
+.idea/httpRequests
+
+# Android studio 3.1+ serialized cache file
+.idea/caches/build_file_checksums.ser
+
+### Intellij Patch ###
+# Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
+
+# *.iml
+# modules.xml
+# .idea/misc.xml
+# *.ipr
+
+# Sonarlint plugin
+# https://plugins.jetbrains.com/plugin/7973-sonarlint
+.idea/**/sonarlint/
+
+# SonarQube Plugin
+# https://plugins.jetbrains.com/plugin/7238-sonarqube-community-plugin
+.idea/**/sonarIssues.xml
+
+# Markdown Navigator plugin
+# https://plugins.jetbrains.com/plugin/7896-markdown-navigator-enhanced
+.idea/**/markdown-navigator.xml
+.idea/**/markdown-navigator-enh.xml
+.idea/**/markdown-navigator/
+
+# Cache file creation bug
+# See https://youtrack.jetbrains.com/issue/JBR-2257
+.idea/$CACHE_FILE$
+
+# CodeStream plugin
+# https://plugins.jetbrains.com/plugin/12206-codestream
+.idea/codestream.xml
+
+# Azure Toolkit for IntelliJ plugin
+# https://plugins.jetbrains.com/plugin/8053-azure-toolkit-for-intellij
+.idea/**/azureSettings.xml
+
+### Linux ###
+*~
+
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+### macOS Patch ###
+# iCloud generated files
+*.icloud
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
+### Windows ###
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# End of https://www.toptal.com/developers/gitignore/api/linux,macos,windows,visualstudiocode,intellij
+
+# Custom rules (everything added below won't be overridden by 'Generate .gitignore File' if you use 'Update' option)
+
+.last-sync
+firebase-debug.log
+
+# --- Source: Nested ./architectures/sync/samples/cra-project/.gitignore ---
+architectures/sync/samples/cra-project/.idea/**/workspace.xml
+architectures/sync/samples/cra-project/.idea/**/tasks.xml
+architectures/sync/samples/cra-project/.idea/**/usage.statistics.xml
+architectures/sync/samples/cra-project/.idea/**/dictionaries
+architectures/sync/samples/cra-project/.idea/**/shelf
+architectures/sync/samples/cra-project/.idea/**/aws.xml
+architectures/sync/samples/cra-project/.idea/**/contentModel.xml
+architectures/sync/samples/cra-project/.idea/**/dataSources/
+architectures/sync/samples/cra-project/.idea/**/dataSources.ids
+architectures/sync/samples/cra-project/.idea/**/dataSources.local.xml
+architectures/sync/samples/cra-project/.idea/**/sqlDataSources.xml
+architectures/sync/samples/cra-project/.idea/**/dynamic.xml
+architectures/sync/samples/cra-project/.idea/**/uiDesigner.xml
+architectures/sync/samples/cra-project/.idea/**/dbnavigator.xml
+architectures/sync/samples/cra-project/.idea/**/gradle.xml
+architectures/sync/samples/cra-project/.idea/**/libraries
+architectures/sync/samples/cra-project/cmake-build-*/
+architectures/sync/samples/cra-project/.idea/**/mongoSettings.xml
+architectures/sync/samples/cra-project/*.iws
+architectures/sync/samples/cra-project/out/
+architectures/sync/samples/cra-project/.idea_modules/
+architectures/sync/samples/cra-project/atlassian-ide-plugin.xml
+architectures/sync/samples/cra-project/.idea/replstate.xml
+architectures/sync/samples/cra-project/.idea/sonarlint/
+architectures/sync/samples/cra-project/com_crashlytics_export_strings.xml
+architectures/sync/samples/cra-project/crashlytics.properties
+architectures/sync/samples/cra-project/crashlytics-build.properties
+architectures/sync/samples/cra-project/fabric.properties
+architectures/sync/samples/cra-project/.idea/httpRequests
+architectures/sync/samples/cra-project/.idea/caches/build_file_checksums.ser
+architectures/sync/samples/cra-project/.idea/**/sonarlint/
+architectures/sync/samples/cra-project/.idea/**/sonarIssues.xml
+architectures/sync/samples/cra-project/.idea/**/markdown-navigator.xml
+architectures/sync/samples/cra-project/.idea/**/markdown-navigator-enh.xml
+architectures/sync/samples/cra-project/.idea/**/markdown-navigator/
+architectures/sync/samples/cra-project/.idea/$CACHE_FILE$
+architectures/sync/samples/cra-project/.idea/codestream.xml
+architectures/sync/samples/cra-project/.idea/**/azureSettings.xml
+architectures/sync/samples/cra-project/*~
+architectures/sync/samples/cra-project/.fuse_hidden*
+architectures/sync/samples/cra-project/.directory
+architectures/sync/samples/cra-project/.Trash-*
+architectures/sync/samples/cra-project/.nfs*
+architectures/sync/samples/cra-project/.DS_Store
+architectures/sync/samples/cra-project/.AppleDouble
+architectures/sync/samples/cra-project/.LSOverride
+architectures/sync/samples/cra-project/Icon
+architectures/sync/samples/cra-project/._*
+architectures/sync/samples/cra-project/.DocumentRevisions-V100
+architectures/sync/samples/cra-project/.fseventsd
+architectures/sync/samples/cra-project/.Spotlight-V100
+architectures/sync/samples/cra-project/.TemporaryItems
+architectures/sync/samples/cra-project/.Trashes
+architectures/sync/samples/cra-project/.VolumeIcon.icns
+architectures/sync/samples/cra-project/.com.apple.timemachine.donotpresent
+architectures/sync/samples/cra-project/.AppleDB
+architectures/sync/samples/cra-project/.AppleDesktop
+architectures/sync/samples/cra-project/Network Trash Folder
+architectures/sync/samples/cra-project/Temporary Items
+architectures/sync/samples/cra-project/.apdisk
+architectures/sync/samples/cra-project/*.icloud
+architectures/sync/samples/cra-project/logs
+architectures/sync/samples/cra-project/*.log
+architectures/sync/samples/cra-project/npm-debug.log*
+architectures/sync/samples/cra-project/yarn-debug.log*
+architectures/sync/samples/cra-project/yarn-error.log*
+architectures/sync/samples/cra-project/lerna-debug.log*
+architectures/sync/samples/cra-project/.pnpm-debug.log*
+architectures/sync/samples/cra-project/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+architectures/sync/samples/cra-project/pids
+architectures/sync/samples/cra-project/*.pid
+architectures/sync/samples/cra-project/*.seed
+architectures/sync/samples/cra-project/*.pid.lock
+architectures/sync/samples/cra-project/lib-cov
+architectures/sync/samples/cra-project/coverage
+architectures/sync/samples/cra-project/*.lcov
+architectures/sync/samples/cra-project/.nyc_output
+architectures/sync/samples/cra-project/.grunt
+architectures/sync/samples/cra-project/bower_components
+architectures/sync/samples/cra-project/.lock-wscript
+architectures/sync/samples/cra-project/build/Release
+architectures/sync/samples/cra-project/node_modules/
+architectures/sync/samples/cra-project/jspm_packages/
+architectures/sync/samples/cra-project/web_modules/
+architectures/sync/samples/cra-project/*.tsbuildinfo
+architectures/sync/samples/cra-project/.npm
+architectures/sync/samples/cra-project/.eslintcache
+architectures/sync/samples/cra-project/.stylelintcache
+architectures/sync/samples/cra-project/.rpt2_cache/
+architectures/sync/samples/cra-project/.rts2_cache_cjs/
+architectures/sync/samples/cra-project/.rts2_cache_es/
+architectures/sync/samples/cra-project/.rts2_cache_umd/
+architectures/sync/samples/cra-project/.node_repl_history
+architectures/sync/samples/cra-project/*.tgz
+architectures/sync/samples/cra-project/.yarn-integrity
+architectures/sync/samples/cra-project/.env
+architectures/sync/samples/cra-project/.env.development.local
+architectures/sync/samples/cra-project/.env.test.local
+architectures/sync/samples/cra-project/.env.production.local
+architectures/sync/samples/cra-project/.env.local
+architectures/sync/samples/cra-project/.cache
+architectures/sync/samples/cra-project/.parcel-cache
+architectures/sync/samples/cra-project/.next
+architectures/sync/samples/cra-project/out
+architectures/sync/samples/cra-project/.nuxt
+architectures/sync/samples/cra-project/dist
+architectures/sync/samples/cra-project/.cache/
+architectures/sync/samples/cra-project/.vuepress/dist
+architectures/sync/samples/cra-project/.temp
+architectures/sync/samples/cra-project/.docusaurus
+architectures/sync/samples/cra-project/.serverless/
+architectures/sync/samples/cra-project/.fusebox/
+architectures/sync/samples/cra-project/.dynamodb/
+architectures/sync/samples/cra-project/.tern-port
+architectures/sync/samples/cra-project/.vscode-test
+architectures/sync/samples/cra-project/.yarn/cache
+architectures/sync/samples/cra-project/.yarn/unplugged
+architectures/sync/samples/cra-project/.yarn/build-state.yml
+architectures/sync/samples/cra-project/.yarn/install-state.gz
+architectures/sync/samples/cra-project/.pnp.*
+architectures/sync/samples/cra-project/.webpack/
+architectures/sync/samples/cra-project/.svelte-kit
+architectures/sync/samples/cra-project/.DS_*
+architectures/sync/samples/cra-project/**/*.backup.*
+architectures/sync/samples/cra-project/**/*.back.*
+architectures/sync/samples/cra-project/node_modules
+architectures/sync/samples/cra-project/*.sublime*
+architectures/sync/samples/cra-project/psd
+architectures/sync/samples/cra-project/thumb
+architectures/sync/samples/cra-project/sketch
+architectures/sync/samples/cra-project/.vscode/*
+!architectures/sync/samples/cra-project/.vscode/settings.json
+!architectures/sync/samples/cra-project/.vscode/tasks.json
+!architectures/sync/samples/cra-project/.vscode/launch.json
+!architectures/sync/samples/cra-project/.vscode/extensions.json
+!architectures/sync/samples/cra-project/.vscode/*.code-snippets
+architectures/sync/samples/cra-project/.history/
+architectures/sync/samples/cra-project/*.vsix
+architectures/sync/samples/cra-project/.history
+architectures/sync/samples/cra-project/.ionide
+architectures/sync/samples/cra-project/Thumbs.db
+architectures/sync/samples/cra-project/Thumbs.db:encryptable
+architectures/sync/samples/cra-project/ehthumbs.db
+architectures/sync/samples/cra-project/ehthumbs_vista.db
+architectures/sync/samples/cra-project/*.stackdump
+architectures/sync/samples/cra-project/[Dd]esktop.ini
+architectures/sync/samples/cra-project/$RECYCLE.BIN/
+architectures/sync/samples/cra-project/*.cab
+architectures/sync/samples/cra-project/*.msi
+architectures/sync/samples/cra-project/*.msix
+architectures/sync/samples/cra-project/*.msm
+architectures/sync/samples/cra-project/*.msp
+architectures/sync/samples/cra-project/*.lnk
+architectures/sync/samples/cra-project/build
+
+# --- Source: Nested ./architectures/sync/.gitignore ---
+architectures/sync/.idea/**/workspace.xml
+architectures/sync/.idea/**/tasks.xml
+architectures/sync/.idea/**/usage.statistics.xml
+architectures/sync/.idea/**/dictionaries
+architectures/sync/.idea/**/shelf
+architectures/sync/.idea/**/aws.xml
+architectures/sync/.idea/**/contentModel.xml
+architectures/sync/.idea/**/dataSources/
+architectures/sync/.idea/**/dataSources.ids
+architectures/sync/.idea/**/dataSources.local.xml
+architectures/sync/.idea/**/sqlDataSources.xml
+architectures/sync/.idea/**/dynamic.xml
+architectures/sync/.idea/**/uiDesigner.xml
+architectures/sync/.idea/**/dbnavigator.xml
+architectures/sync/.idea/**/gradle.xml
+architectures/sync/.idea/**/libraries
+architectures/sync/cmake-build-*/
+architectures/sync/.idea/**/mongoSettings.xml
+architectures/sync/*.iws
+architectures/sync/out/
+architectures/sync/.idea_modules/
+architectures/sync/atlassian-ide-plugin.xml
+architectures/sync/.idea/replstate.xml
+architectures/sync/.idea/sonarlint/
+architectures/sync/com_crashlytics_export_strings.xml
+architectures/sync/crashlytics.properties
+architectures/sync/crashlytics-build.properties
+architectures/sync/fabric.properties
+architectures/sync/.idea/httpRequests
+architectures/sync/.idea/caches/build_file_checksums.ser
+architectures/sync/.idea/**/sonarlint/
+architectures/sync/.idea/**/sonarIssues.xml
+architectures/sync/.idea/**/markdown-navigator.xml
+architectures/sync/.idea/**/markdown-navigator-enh.xml
+architectures/sync/.idea/**/markdown-navigator/
+architectures/sync/.idea/$CACHE_FILE$
+architectures/sync/.idea/codestream.xml
+architectures/sync/.idea/**/azureSettings.xml
+architectures/sync/*~
+architectures/sync/.fuse_hidden*
+architectures/sync/.directory
+architectures/sync/.Trash-*
+architectures/sync/.nfs*
+architectures/sync/.DS_Store
+architectures/sync/.AppleDouble
+architectures/sync/.LSOverride
+architectures/sync/Icon
+architectures/sync/._*
+architectures/sync/.DocumentRevisions-V100
+architectures/sync/.fseventsd
+architectures/sync/.Spotlight-V100
+architectures/sync/.TemporaryItems
+architectures/sync/.Trashes
+architectures/sync/.VolumeIcon.icns
+architectures/sync/.com.apple.timemachine.donotpresent
+architectures/sync/.AppleDB
+architectures/sync/.AppleDesktop
+architectures/sync/Network Trash Folder
+architectures/sync/Temporary Items
+architectures/sync/.apdisk
+architectures/sync/*.icloud
+architectures/sync/logs
+architectures/sync/*.log
+architectures/sync/npm-debug.log*
+architectures/sync/yarn-debug.log*
+architectures/sync/yarn-error.log*
+architectures/sync/lerna-debug.log*
+architectures/sync/.pnpm-debug.log*
+architectures/sync/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+architectures/sync/pids
+architectures/sync/*.pid
+architectures/sync/*.seed
+architectures/sync/*.pid.lock
+architectures/sync/lib-cov
+architectures/sync/coverage
+architectures/sync/*.lcov
+architectures/sync/.nyc_output
+architectures/sync/.grunt
+architectures/sync/bower_components
+architectures/sync/.lock-wscript
+architectures/sync/build/Release
+architectures/sync/node_modules/
+architectures/sync/jspm_packages/
+architectures/sync/web_modules/
+architectures/sync/*.tsbuildinfo
+architectures/sync/.npm
+architectures/sync/.eslintcache
+architectures/sync/.stylelintcache
+architectures/sync/.rpt2_cache/
+architectures/sync/.rts2_cache_cjs/
+architectures/sync/.rts2_cache_es/
+architectures/sync/.rts2_cache_umd/
+architectures/sync/.node_repl_history
+architectures/sync/*.tgz
+architectures/sync/.yarn-integrity
+architectures/sync/.env
+architectures/sync/.env.development.local
+architectures/sync/.env.test.local
+architectures/sync/.env.production.local
+architectures/sync/.env.local
+architectures/sync/.cache
+architectures/sync/.parcel-cache
+architectures/sync/.next
+architectures/sync/out
+architectures/sync/.nuxt
+architectures/sync/dist
+architectures/sync/.cache/
+architectures/sync/.vuepress/dist
+architectures/sync/.temp
+architectures/sync/.docusaurus
+architectures/sync/.serverless/
+architectures/sync/.fusebox/
+architectures/sync/.dynamodb/
+architectures/sync/.tern-port
+architectures/sync/.vscode-test
+architectures/sync/.yarn/cache
+architectures/sync/.yarn/unplugged
+architectures/sync/.yarn/build-state.yml
+architectures/sync/.yarn/install-state.gz
+architectures/sync/.pnp.*
+architectures/sync/.webpack/
+architectures/sync/.svelte-kit
+architectures/sync/.DS_*
+architectures/sync/**/*.backup.*
+architectures/sync/**/*.back.*
+architectures/sync/node_modules
+architectures/sync/*.sublime*
+architectures/sync/psd
+architectures/sync/thumb
+architectures/sync/sketch
+architectures/sync/.vscode/*
+!architectures/sync/.vscode/settings.json
+!architectures/sync/.vscode/tasks.json
+!architectures/sync/.vscode/launch.json
+!architectures/sync/.vscode/extensions.json
+!architectures/sync/.vscode/*.code-snippets
+architectures/sync/.history/
+architectures/sync/*.vsix
+architectures/sync/.history
+architectures/sync/.ionide
+architectures/sync/Thumbs.db
+architectures/sync/Thumbs.db:encryptable
+architectures/sync/ehthumbs.db
+architectures/sync/ehthumbs_vista.db
+architectures/sync/*.stackdump
+architectures/sync/[Dd]esktop.ini
+architectures/sync/$RECYCLE.BIN/
+architectures/sync/*.cab
+architectures/sync/*.msi
+architectures/sync/*.msix
+architectures/sync/*.msm
+architectures/sync/*.msp
+architectures/sync/*.lnk
+architectures/sync/build
+architectures/sync/*.wasm
