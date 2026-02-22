@@ -4,10 +4,15 @@ This file is a comprehensive, flat index of all rule files in this repository.
 
 > **Note**: For categorized views, usage examples, and architecture details, please see the [Main README](./README.md).
 
-## Rule List
+## Agent Skills
 
 | Rule Domain | File Name | Description |
 | :--- | :--- | :--- |
+
+***
+
+## Rule List
+
 | Rule Domain | File Name | Description |
 | :--- | :--- | :--- |
 | AI Agent Rule Standardization Rules | [ai-rule-standardization-rules.md](./ai-rule-standardization-rules.md) | Craftsmanship standards for developing "Ultra-Lean Industrial" AI Agent Rules, ensuring consistent formatting, structural hierarchy, and pedagogical clarity. |
@@ -44,8 +49,11 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | Manual Testing Protocol | [manual-testing-rules.md](./manual-testing-rules.md) | Authoritative protocol for designing, documenting, and executing manual verification plans. |
 | Markdown Generation Rules | [markdown-generation-rules.md](./markdown-generation-rules.md) | Standards for creating machine-parseable, lint-compliant markdown documents. |
 | Mise Plugin Backend Management Rules | [mise-plugin-backend-management-rules.md](./mise-plugin-backend-management-rules.md) | Intelligent backend selection for mise plugin installations with fallback handling and user prompts. |
+| Moltbridge Discovery Rules | [moltbridge-discovery-rules.md](./moltbridge-discovery-rules.md) | Industrial standards for social graph broker discovery, trust threshold mandates, and cross-tool analysis traceability. |
 | NestJS React App Rules | [nestjs-react-app-rules.md](./nestjs-react-app-rules.md) | Guidelines for developing NestJS backends with React frontends. |
 | NestJS React Flutter Stack Rules | [nestjs-react-flutter-stack-rules.md](./nestjs-react-flutter-stack-rules.md) | Full-stack guidelines for NestJS/React web apps with an accompanying Flutter mobile client. |
+| Node Crypto & MCP Infrastructure Rules | [node-crypto-mcp-infrastructure-rules.md](./node-crypto-mcp-infrastructure-rules.md) | Industrial standards for Ed25519 reliability, Uint8Array sanitization, and Zero-Network MCP Server architecture. |
+| Postman MCP Server Rules | [postman-mcp-server-rules.md](./postman-mcp-server-rules.md) | Standards for configuring, using, and troubleshooting the Postman MCP Server in AI agent environments. |
 | Rclone Download Optimization Rules | [rclone-download-rules.md](./rclone-download-rules.md) | Protocol for efficient, reliable, and user-controlled rclone downloads with progress tracking, size-based ordering, and integrity verification. |
 | Render Deployment Rules | [render-deployment-rules.md](./render-deployment-rules.md) | Deployment configurations for Render, including environment variables and custom domains. |
 | Repo Discovery Rules | [repo-discovery-rules.md](./repo-discovery-rules.md) | Multi-platform repository discovery and smart cloning workflows. |
@@ -56,4 +64,5 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | Strict Dependency Freezing Rules | [strict-dependency-freezing-rules.md](./strict-dependency-freezing-rules.md) | Industrial protocol for ensuring reproducible builds by pinning exact versions of all external dependencies in package-level configuration. |
 | TypeScript Rules | [typescript-rules.md](./typescript-rules.md) | Industrial standards for TypeScript configuration, strictness, and strict dependency freezing. |
 | Warp Terminal AI Rules | [warp-terminal-ai-rules.md](./warp-terminal-ai-rules.md) | Backup and reference for Warp AI Agent specific configurations. |
+| Zero Data Loss Cloud Cleanup Rules | [zero-data-loss-cloud-cleanup-rules.md](./zero-data-loss-cloud-cleanup-rules.md) | Mandatory verification protocol before deleting cloud-synced local files to prevent data loss. |
 | Zero-Backend Auto-Sync Rules | [zero-backend-sync-rules.md](./zero-backend-sync-rules.md) | Architecture and implementation standards for background, invisible data synchronization using decentralized relays (Nostr), local-first storage (RxDB), and WASM hardening. |
