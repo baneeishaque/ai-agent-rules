@@ -51,6 +51,11 @@ The repository provides a modular, extensible rule system for AI coding assistan
 | 🔄 **CI/CD Ready** | Rules designed to integrate with GitHub Actions and deployment pipelines |
 | 📱 **Multi-Platform** | Covers Flutter, NestJS, React, Docker, and more |
 
+## Agent Skills
+
+| Rule Domain | File Name | Description |
+| :--- | :--- | :--- |
+
 ***
 
 ## Quick Start
@@ -133,7 +138,16 @@ Follow the guidelines in:
 | [`ai-agent-session-documentation-rules.md`](./ai-agent-session-documentation-rules.md) | Protocol for documenting AI agent sessions or conversations as Markdown, including file attachment references, structured data, and traceability. |
 | [`ai-tools-rules.md`](./ai-tools-rules.md) | Comprehensive rules for AI tool usage, including mandates for output visibility, explicit user confirmation for file writes, and integration with agent planning and security protocols. |
 | [`github-cli-permission-rules.md`](./github-cli-permission-rules.md) | Explicit permission protocol for running `gh` commands, ensuring user control and transparency. |
+| [`moltbridge-discovery-rules.md`](./moltbridge-discovery-rules.md) | Industrial standards for social graph broker discovery, trust threshold mandates, and cross-tool analysis traceability. |
+| [`node-crypto-mcp-infrastructure-rules.md`](./node-crypto-mcp-infrastructure-rules.md) | Industrial standards for Ed25519 reliability, Uint8Array sanitization, and Zero-Network MCP Server architecture. |
+| [`postman-mcp-server-rules.md`](./postman-mcp-server-rules.md) | Standards for configuring, using, and troubleshooting the Postman MCP Server in AI agent environments. |
 | [`shell-execution-rules.md`](./shell-execution-rules.md) | Guidelines for shell command execution, ensuring transparency, user control, and adherence to security protocols. |
+
+### Data Safety & Integrity
+
+| Rule File | Purpose |
+| :--- | :--- |
+| [`zero-data-loss-cloud-cleanup-rules.md`](./zero-data-loss-cloud-cleanup-rules.md) | Mandatory verification protocol before deleting cloud-synced local files to prevent data loss. |
 
 ### Data Transfer & Cloud Storage
 
@@ -219,7 +233,7 @@ Follow the guidelines in:
 
 | Rule File | Purpose |
 | :--- | :--- |
-| [`linkedin-contributor-call-rules.md`](./linkedin-contributor-call-rules.md) | Specialized protocol for drafting "Call for Contributors" posts to recruit developers for personal projects, focusing on mentorship, labor-rich stacks, and leadership. |
+| [`linkedin-contributor-call-rules.md`](./linkedin-contributor-call-rules.md) | Specialized protocol for drafting "Call for Contributors" posts to recruit developers for personal projects, focusing on mentorship, labour-rich stacks, and leadership. |
 | [`linkedin-post-creation-rules.md`](./linkedin-post-creation-rules.md) | Protocol for crafting viral, professional, and accessible LinkedIn posts customized for Banee Ishaque K's persona, emphasizing plain-text optimization and human storytelling. |
 
 ### Tech Stack
