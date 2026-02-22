@@ -11,10 +11,16 @@ README_TEMPLATE = os.path.join(TEMPLATES_DIR, "README.md.template")
 INDEX_TEMPLATE = os.path.join(TEMPLATES_DIR, "agent-rules.md.template")
 README_OUTPUT = "README.md"
 INDEX_OUTPUT = "agent-rules.md"
+SKILLS_DIR = "../.agent/skills"
 
 def parse_metadata(content):
-    """Extracts metadata from the markdown content."""
+    """Extracts metadata from the markdown content (supports <!-- --> and ---)."""
+    # Try XML-style comments (legacy rules)
     meta_match = re.search(r"^<!--\s*(.*?)\s*-->", content, re.DOTALL)
+    if not meta_match:
+        # Try YAML frontmatter (Agent Skills)
+        meta_match = re.search(r"^---\s*(.*?)\s*---", content, re.DOTALL)
+    
     if not meta_match:
         return None
     
@@ -29,6 +35,11 @@ def parse_metadata(content):
             metadata[current_key] = value.strip()
         elif current_key and line.strip():
             metadata[current_key] += " " + line.strip()
+            
+    # Normalize 'name' to 'title' for SKILL.md files
+    if 'name' in metadata and 'title' not in metadata:
+        metadata['title'] = metadata['name']
+        
     return metadata
 
 def escape_cell(text):
@@ -38,8 +49,21 @@ def escape_cell(text):
     return text.replace("|", "\\|")
 
 def get_rule_files():
-    """Retrieves all *-rules.md files in the current directory."""
-    return [f for f in os.listdir(RULES_DIR) if f.endswith("-rules.md") and f != "agent-rules.md" and f != "README.md"]
+    """Retrieves all *-rules.md files and SKILL.md files."""
+    files = []
+    # Current directory rules
+    files.extend([f for f in os.listdir(RULES_DIR) if f.endswith("-rules.md") and f not in [INDEX_OUTPUT, README_OUTPUT]])
+    
+    # Skills directory
+    if os.path.exists(SKILLS_DIR):
+        for skill_name in os.listdir(SKILLS_DIR):
+            skill_path = os.path.join(SKILLS_DIR, skill_name)
+            if os.path.isdir(skill_path):
+                skill_file = os.path.join(skill_path, "SKILL.md")
+                if os.path.isfile(skill_file):
+                    # Store relative path from RULES_DIR
+                    files.append(os.path.join(SKILLS_DIR, skill_name, "SKILL.md"))
+    return files
 
 def generate_readme_tables(rules_by_category):
     """Generates the markdown tables for README.md."""
@@ -132,21 +156,28 @@ def main():
 
     print("✅ All files validated successfully.")
 
-    # Group by Category for README
+    # Group by Category for README (Rules only)
+    rules_only = [r for r in valid_rules if not r['filename'].startswith(SKILLS_DIR)]
+    skills_only = [r for r in valid_rules if r['filename'].startswith(SKILLS_DIR)]
+
     rules_by_category = defaultdict(list)
-    for rule in valid_rules:
+    for rule in rules_only:
         rules_by_category[rule['category']].append(rule)
 
     # Generate Content
-    readme_content_block = generate_readme_tables(rules_by_category).strip()
-    index_content_block = generate_index_table(valid_rules).strip()
+    readme_rules_block = generate_readme_tables(rules_by_category).strip()
+    readme_skills_block = generate_index_table(skills_only).strip()
+    
+    index_rules_block = generate_index_table(rules_only).strip()
+    index_skills_block = generate_index_table(skills_only).strip()
 
     # Write README.md
     try:
         with open(README_TEMPLATE, 'r') as f:
             readme_template = f.read()
         
-        new_readme = readme_template.replace("<!-- RULES_README -->", readme_content_block)
+        new_readme = readme_template.replace("<!-- RULES_README -->", readme_rules_block)
+        new_readme = new_readme.replace("<!-- SKILLS_README -->", readme_skills_block)
         
         with open(README_OUTPUT, 'w') as f:
             f.write(new_readme)
@@ -161,7 +192,8 @@ def main():
         with open(INDEX_TEMPLATE, 'r') as f:
             index_template = f.read()
             
-        new_index = index_template.replace("<!-- RULES_INDEX -->", index_content_block)
+        new_index = index_template.replace("<!-- RULES_INDEX -->", index_rules_block)
+        new_index = new_index.replace("<!-- SKILLS_INDEX -->", index_skills_block)
         
         with open(INDEX_OUTPUT, 'w') as f:
             f.write(new_index)

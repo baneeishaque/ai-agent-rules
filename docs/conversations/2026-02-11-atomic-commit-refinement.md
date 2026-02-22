@@ -23,8 +23,8 @@ management.
 - Consolidate functional API changes into a single atomic unit.
 - Split Postman assets into three granular commits.
 - Update `git-atomic-commit-construction-rules.md` to include:
-  - Phase 2: Buildable State Priority.
-  - Section 10.1: External Tool Asset Granularity.
+    - Phase 2: Buildable State Priority.
+    - Section 10.1: External Tool Asset Granularity.
 - Add Traceability section with relative links.
 
 ## Outcome

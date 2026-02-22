@@ -55,7 +55,7 @@ mv AI-Agent-rules.md ai-agent-rules.md
 To rename files when only changing case on macOS (or Windows), specific strategies are needed:
 
 1. **Git Move**: `git mv OldName.md NewName.md` (Git usually handles this correctly).
-2. **Two-Step Rename**: `mv OldName.md temp.md` -> `mv temp.md newname.md`.
+2. **Two-Step Rename**: `mv OldName.md temp.md` -> `mv temp.md new-name.md`.
 
 ## 5. Current State
 

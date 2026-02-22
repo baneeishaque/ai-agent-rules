@@ -2,7 +2,7 @@
 title: LinkedIn Contributor Call Rules
 description: Specialized protocol for drafting "Call for Contributors" posts to recruit developers for personal projects,
     focusing on mentorship,
-    labor-rich stacks, and leadership.
+    labour-rich stacks, and leadership.
 category: Social Media & Branding
 -->
 

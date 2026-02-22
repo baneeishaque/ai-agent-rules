@@ -94,7 +94,7 @@ relevant keys for the current atomic unit.
 When manipulating JSON arrays (e.g., `cSpell.words`), the agent **MUST** preserve or enforce the project's standard
 sort order to prevent history misalignment across commits.
 
-1. **Inspection**: Examine neighboring commits to determine the expected sort order (e.g., ASCII vs. case-insensitive
+1. **Inspection**: Examine neighbouring commits to determine the expected sort order (e.g., ASCII vs. case-insensitive
 
    natural sort).
 

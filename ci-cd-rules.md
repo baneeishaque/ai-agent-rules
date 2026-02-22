@@ -223,7 +223,7 @@ streamlining the path from code commit to production.
 
 - **Static Analysis & Quality Gates:** Static analysis tools like SonarQube will be used to enforce quality gates. This
 
-    can be integrated by installing an organization/repository-level application or by running open-source analyzers
+    can be integrated by installing an organization/repository-level application or by running open-source analysers
     directly within the CI/CD pipeline.
 
 - **AI-Assisted Code Review:** An AI-powered job should run on every pull request to:

@@ -14,7 +14,18 @@ trustworthy, and effective interaction model.
 
 ---
 
-## 1. The Core Planning Directive
+## 1. Goal Description & Versioning
+
+All implementation plans MUST follow a strict naming and header convention to ensure traceability and version control.
+
+- **H1 Header Versioning**: Every implementation plan MUST use the format `# [Goal Description] (vN)`
+  as its primary H1 title (e.g., `# [Setup Authentication] (v1)`).
+- **Rule Compliance Reference**: A dedicated section titled `## Rule Compliance Reference` MUST immediately follow the H1 header.
+  It must contain a bulleted list of the specific industrial rules (with relative links) being followed in the current plan.
+
+---
+
+## 2. The Core Planning Directive
 
 All agents must present a clear, step-by-step plan before any implementation. The plan must be explicit,
 actionable, and tailored to the user’s request. **Only after the plan is approved or clarified should
@@ -24,9 +35,24 @@ This directive is not merely a formality; it is a critical safeguard. By externa
 agent minimizes the risk of misunderstanding, prevents "hallucination," and ensures complete alignment with the
 user's intent from the outset.
 
+### 1.1 Primary Goal Persistence Mandate
+
+The agent **MUST** carry over the original 'Starting Point' enquiry (the core objective) into every version of the
+implementation plan. This goal must remain the primary heading of the document. Any shift in focus or addition of
+sub-tasks MUST be explicitly documented as secondary or supporting actions to this primary goal, not as a replacement
+for it.
+
+### 1.2 Architectural Boundary Verification
+
+Before adding any execution step, the agent MUST verify it is not designated as 'CI/CD Managed' in project rules.
+Local execution of automated pipeline tasks is PROHIBITED. If a script is for CI/CD, the agent must only modify its
+templates or source metadata.
+
 ---
 
-## 2. Components of an Effective Plan
+---
+
+## 3. Components of an Effective Plan
 
 An effective plan is built on four key pillars:
 
@@ -49,7 +75,7 @@ An effective plan is built on four key pillars:
 
 ---
 
-## 3. The Agent Planning Workflow
+## 4. The Agent Planning Workflow
 
 A well-structured interaction with an agent should follow this five-step workflow:
 
@@ -79,7 +105,7 @@ A well-structured interaction with an agent should follow this five-step workflo
 
 ---
 
-## 4. Handling Edge Cases and Best Practices
+## 5. Handling Edge Cases and Best Practices
 
 - **Ambiguous Requests:** If the user's request is unclear or incomplete, the agent must include a clarification
 
@@ -97,7 +123,7 @@ A well-structured interaction with an agent should follow this five-step workflo
 
 ---
 
-## 5. Iterative Planning and Plan Versioning
+## 6. Iterative Planning and Plan Versioning
 
 The initial plan is a blueprint, not an unbreakable contract. For complex,
 
@@ -127,35 +153,37 @@ a change in direction. In these cases, the agent MUST NOT deviate from the origi
 
 ---
 
-## 5. Industrial Planning Mandates
+## 7. Industrial Planning Mandates
 
 - **Environment State Check**: Every plan involving runtime verification MUST include a prerequisite step to
     confirm the application is running and accessible (e.g., "Verify App is live at `http://localhost:3000`").
 - **Maximum Literal Detail**: Plans must be exhaustive and literal.
 
+### 5.1 Impact Scan Enhancement (Maximum Literal Detail)
+
+For every DELETION, RENAMING, or REFUNDAMENTAL change, the plan MUST include a dedicated 'Surface Area Scan' to identify
+and remediate all global references, internal links, and cross-file dependencies.
+
+### 5.2 Anti-Summarization & No-Truncation Guardrail
+
+Agents MUST NOT summarize or collapse previously established literal details (file lists, exact commands, logic
+branches) unless they are functionally obsolete or a mistake. Maximum clarity and non-ambiguity take precedence over
+brevity. **The 'Change History' table MUST NOT be truncated.** It must remain a complete and literal record of all plan
+versions (v1, v2, v3, ... vN) without omission.
+
 - **Files:** Explicitly list every file (absolute paths) to be created, modified, or deleted.
-
-- **Exact Commands:** CLI commands must be written exactly as they will be executed, including full
-
-    arguments and piped operations.
-
-- **Literal Payloads:** For operations like `git commit --amend -m "..."`, the plan must include the
-
-    **literal message string** within the execution step, not just a reference to it.
-
+- **Exact Commands:** CLI commands must be written exactly as they will be executed, including full arguments and piped
+    operations.
+- **Literal Payloads:** For operations like `git commit --amend -m "..."`, the plan must include the **literal message
+    string** within the execution step, not just a reference to it.
 - **Verifications:** Explicitly state the exact command or visual check used to verify each step.
-
-- **Guardrails**: Restate the literal logic for handling conflicts, empty commits, and safety checks in every
-
-    iteration.
-
-- **Pre-Plan Context Gathering:** Information gathering (reading files, `git diff`,`ls`) must happen **BEFORE**
-
+- **Guardrails**: Restate the literal logic for handling conflicts, empty commits, and safety checks in every iteration.
+- **Pre-Plan Context Gathering**: Information gathering (reading files, `git diff`,`ls`) must happen **BEFORE**
     the plan is finalized. A plan based on assumptions is a failed plan.
 
 ---
 
-## 6. Temporal Hygiene & Change History
+## 8. Temporal Hygiene & Change History
 
 To ensure absolute traceability and industrial reliability, all planning and verification artifacts MUST
 incorporate temporal data.
@@ -171,33 +199,38 @@ incorporate temporal data.
 
 ---
 
-## 7. Plan Versioning & SSOT Integrity (History Mandate)
+## 9. Plan Versioning & SSOT Integrity (History Mandate)
 
-(Updated to include Change History mandate)
+**Iterative Planning** is the process of updating a plan based on new findings or changes in a task's requirements. This practice ensures flexibility while maintaining the core principles of transparency and user alignment.
 
-**Iterative Planning** is the process of updating a plan based on new findings or changes in a task's requirements.
-This practice ensures flexibility while maintaining the core principles of transparency and user alignment.
-
-- **Plan Versioning**: All plans must be explicitly versioned (e.g., `implementation_plan_v1.md`,
-    `implementation_plan_v2.md`).
-- **History Mandate**: New versions MUST NOT overwrite old versions. Each new version MUST include the Change History
-    table documenting all previous revisions.
+- **Plan Versioning**: All plans must be explicitly versioned (e.g., `implementation_plan_v1.md`, `implementation_plan_v2.md`).
+- **History Mandate**: New versions MUST NOT overwrite old versions. Each new version MUST include the Change History table documenting all previous revisions.
 - **SSOT (Single Source of Truth)**: Each version MUST be self-contained, restating all valid context and guardrails.
-    Do not refer to previous versions for "missing details."
+  Do not refer to previous versions for "missing details."
 
-- **Propose a Plan Revision:** When a change is required, the agent must immediately pause execution and present
+### 7.1 Continuity Audit Mandate (CAM)
 
-    a revised plan to the user.
+Before presenting a new plan version, the agent **MUST** perform a literal line-by-line comparison against the previous
+version. Any dropped task, alert, or requirement MUST be either restored or explicitly listed in the 'Change History'
+with a rationale for its removal. **Summarizing integrated logic from sub-plans is a violation.**
 
+### 7.2 Sub-Plan Versioning & Integration Mandate
+
+All planning artifacts, including secondary or 'sub-plans,' MUST follow the versioning mandate (v1, v2, etc.). They
+MUST NOT be edited in place. Once a sub-plan is confirmed by the user, its content MUST be integrated into the next
+version of the main implementation plan while maintaining its full literal detail. **All subsequent updates MUST occur
+within the main plan.** **Integration MUST be via literal copy-paste of all confirmed mandates.** Any modification for
+'brevity' is prohibited. Once integrated, the sub-plan is retired and redundant versioning is forbidden.
+
+- **Propose a Plan Revision:** When a change is required, the agent must immediately pause execution
+  and present a revised plan to the user.
 - **Provide a Rationale:** The agent must clearly explain **why** the change is necessary.
-
-- **Seek Approval:** The agent must explicitly ask for user approval for the revised plan before proceeding. This
-
-    final check ensures the new direction aligns with the user's updated expectations.
+- **Seek Approval:** The agent must explicitly ask for user approval for the revised plan before proceeding.
+  This final check ensures the new direction aligns with the user's updated expectations.
 
 ---
 
-## 8. Task Artifact Synchronization
+## 10. Task Artifact Synchronization
 
 Follow the status markers and include timestamps:
 
@@ -206,11 +239,20 @@ Follow the status markers and include timestamps:
 - **Status Markers**: Use `[ ]` for pending, `[/]` for in-progress, and `[x]` for completed items `[YYYY-MM-DD HH:mm]`.
 - **Compliance Mandate**: Every generated artifact (task, implementation plan, walkthrough) MUST strictly comply
     with **[Markdown Generation Rules](./markdown-generation-rules.md)** and
-    **[Markdown Generation Rules Additions](./markdown-generation-rules-additions.md)**.
+    **[Markdown Generation Rules Additions](./markdown-generation-rules-additions.md)**. This includes mandatory verification using `markdownlint-cli` before finalizing any artifact.
 
 ---
 
-## 9. User Question Integration Mandate
+## 11. Status Traceability in Iterative Plans
+
+To ensure absolute clarity during multi-phase execution, iterative plans (v2+) MUST track the status of proposed changes.
+
+- **Marking Completed Steps**: If an implementation plan is updated during execution, any proposed change that has already been successfully implemented MUST be explicitly marked as `[DONE] [YYYY-MM-DD HH:mm]` or `[COMPLETED] [YYYY-MM-DD HH:mm]` within the 'Proposed Changes' section.
+- **Visual Distinction**: Completed steps should ideally remain in the plan (to maintain context) but be clearly demarcated to differentiate them from pending work.
+
+---
+
+## 11. User Question Integration Mandate
 
 To ensure maximum transparency and technical accuracy, the agent MUST explicitly address any technical or
 process-related questions raised by the user during the planning phase.
@@ -220,3 +262,13 @@ process-related questions raised by the user during the planning phase.
 - **Traceability**: This ensures that critical clarifications and course corrections are captured in the
     Single Source of Truth (SSOT), making them available for future reference and audits.
 - **Clarity**: Answers should be technically precise, referring to specific rules or protocols where applicable.
+
+---
+
+## 12. State-Dependent Phase Gating
+
+Plans involving future states (e.g., Git history after 3 phases of changes)
+**MUST NOT** predict or mock the result. They must instead define a **Protocol
+Gate**: a set of mandatory discovery commands (e.g., `git status`, `git diff`)
+and verification steps that the agent will run *at that time* to generate a
+fresh, accurate preview for user approval.
