@@ -21,12 +21,19 @@ protocols defined in [git-operation-rules.md](./git-operation-rules.md).
 Before staging any files, the agent MUST perform a dependency analysis of all
 modifications.
 
+- **Complete Scope (Critical)**: The analysis MUST cover ALL three change
+  categories — **staged**, **unstaged**, AND **untracked** — as a single
+  unified inventory from the very first step. Untracked files are first-class
+  members of the change scope, not a secondary check. Failing to include
+  untracked files in the initial analysis leads to incomplete commit plans and
+  files discovered only after execution.
 - **Shared Identifiers**: Group changes that modify the same functions,
   classes, or constants across different files.
 - **Cross-File References**: If file A depends on a change in file B (e.g., an
   import or a link), they MUST be part of the same atomic commit.
-- **Untracked File Discovery**: The agent MUST explicitly check for untracked
-  files (`git status`).
+- **Untracked File Discovery**: The agent MUST include untracked files
+  reported by `git status` in the initial change inventory. They MUST appear
+  in the same file table and grouping analysis as staged and unstaged changes.
 - **Implicit Tracking**: Any untracked file not excluded by `.gitignore` is a
   candidate for version control to ensure project completeness.
 - **Mandatory Confirmation**: The agent MUST NOT stage or commit untracked
