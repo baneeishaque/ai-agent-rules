@@ -306,7 +306,7 @@ Assign every remote commit to exactly one category:
 | **Regenerative** | Auto-generated files (e.g., `README.md`, `agent-rules.md`) synced by CI. | Skip (User approval required). |
 
 **Identifying Regenerative Files**:
-Check `.github/workflows/`or relevant scripts (e.g.,`sync-rules.py`) to see if the file is a target of automated
+Check `.github/workflows/`or relevant scripts (e.g.,`sync_rules.py`) to see if the file is a target of automated
 generation. If a commit ONLY modifies these files, it is **Regenerative**.
 
 ### 2.9.4 Reconciliation Strategy

@@ -62,7 +62,7 @@ The project was executed in four distinct phases:
     * Replace the hardcoded rule tables with dynamic markers: `<!-- RULES_README -->` and `<!-- RULES_INDEX -->`.
     * Save these as `templates/README.md.template` and `templates/agent-rules.md.template`.
 
-### Phase 3: Script Development (`sync-rules.py`)
+### Phase 3: Script Development (`sync_rules.py`)
 
 * **Goal**: Build the engine that drives the synchronization.
 * **Logic**:
@@ -104,7 +104,7 @@ We have successfully completed the following tasks:
 
 ### ✅ Scripting
 
-* Developed `scripts/sync-rules.py` in Python.
+* Developed `scripts/sync_rules.py` in Python.
 * **Features Implemented**:
     * Robust Regex parsing for `<!-- ... -->` blocks.
     * "Collect-Then-Fail" error handling: The script reports *all* missing metadata files at once before exiting,
@@ -145,7 +145,7 @@ We have successfully completed the following tasks:
 3. **Automation Trigger**: The developer pushes the commit.
 4. **GitHub Action**:
     * The `update-rules` workflow starts.
-    * `scripts/sync-rules.py` runs.
+    * `scripts/sync_rules.py` runs.
     * It sees `category: New Experimental Category`.
     * It generates a new section `### New Experimental Category` in `README.md`.
     * It adds the row to the table.
@@ -154,7 +154,7 @@ We have successfully completed the following tasks:
 
 ### Technical Components
 
-* **`scripts/sync-rules.py`**: The core logic. Validates presence of `title`, `description`, `category`.
+* **`scripts/sync_rules.py`**: The core logic. Validates presence of `title`, `description`, `category`.
     * *Sorting Logic*: `sorted(rules_by_category.keys())` ensures A-Z category sorting.
 * **`.github/workflows/update-rules.yml`**: Uses `continue-on-error: true` for the script execution step to allow the
   "Check Script Status" step to provide a clean, human-readable error message in the Action logs if validation fails.

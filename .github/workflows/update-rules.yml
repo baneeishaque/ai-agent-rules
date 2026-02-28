@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - '*-rules.md'
-      - 'scripts/sync-rules.py'
+      - 'scripts/sync_rules.py'
       - 'scripts/mise.toml'
       - 'scripts/verify-mise-tool.bash'
       - 'scripts/generate_commit_msg.py'
@@ -37,8 +37,8 @@ jobs:
       - name: Run Sync Script
         id: sync
         run: |
-          chmod +x scripts/sync-rules.py
-          mise exec -- ./scripts/sync-rules.py
+          chmod +x scripts/sync_rules.py
+          mise exec -- ./scripts/sync_rules.py
         continue-on-error: true
 
       - name: Check for Changes
