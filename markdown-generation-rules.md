@@ -293,7 +293,7 @@ permanent directories:
 #### 4.2.4 Artifact Reference Markers
 
 Follow the status markers defined in
-**[ai-agent-planning-rules.md](./ai-agent-planning-rules.md#75-task-artifact-synchronization)**
+**[ai-agent-planning-rules.md](./ai-agent-planning-rules.md#10-task-artifact-synchronization)**
 for task lists (`task.md`):
 
 - `[ ]`: Pending
@@ -379,12 +379,18 @@ and Walkthroughs).
 
 To ensure consistent and efficient validation:
 
-1. **Direct Execution**: Prefer the standalone binary (installed via `brew` or system package manager) over `npm`
-    wrappers to avoid dependency overhead, unless consistent environment cannot be guaranteed.
+1. **Direct Execution (NO NPX)**: Prefer the standalone binary (installed via `brew` or system package manager)
+    over `npm` wrappers to avoid dependency overhead.
     - **Command**: `markdownlint-cli2`
+    - **Forbidden**: NEVER use `npx markdownlint-cli2`. Relying on `npx` introduces unnecessary overhead and
+      bypasses the globally managed system tool. You must use the bare executable.
 
-2. **Auto-Fix First**: Always attempt to resolve formatting issues automatically before manual intervention.
+2. **Auto-Fix First (MANDATORY)**: The agent MUST NOT use manual string replacements
+    (e.g., `multi_replace_file_content`) to fix standard lint violations like list indentation (`MD007`), alignment,
+    or line-length (`MD013`). The agent MUST run the auto-fix command first.
     - **Command**: `markdownlint-cli2 --fix "**/*.md"`
+    - Manual fixes are strictly reserved for semantic structural errors or when the auto-fix explicitly fails to resolve
+      the issue. Do NOT start manually wrapping lines before attempting the auto-fix.
 
 3. **Project Root Execution (CRITICAL)**: ALWAYS run `markdownlint-cli2` from the project root directory where
     `.markdownlint.jsonc` is located. Running from subdirectories will use default settings (80-char line length)
