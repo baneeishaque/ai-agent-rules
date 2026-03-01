@@ -1,8 +1,9 @@
-<!--
+---
 title: Mise Plugin Backend Management Rules
 description: Intelligent backend selection for mise plugin installations with fallback handling and user prompts.
 category: Package Management
--->
+---
+
 
 # Mise Plugin Backend Management Rules
 

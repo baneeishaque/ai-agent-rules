@@ -1,11 +1,12 @@
-<!--
+---
 title: Git Submodule Management
 description: Protocols for managing submodules,
     preventing detached HEAD states, proper branch tracking, and
     descriptive parent
     commit messages.
 category: Git & Repository Management
--->
+---
+
 
 # Git Submodule Management Rules
 

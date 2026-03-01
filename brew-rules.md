@@ -1,10 +1,11 @@
-<!--
+---
 title: Homebrew Management Rules
 description: Comprehensive SSOT for Homebrew operations,
     including installation preferences, keg-only handling, and
     exclusion-based upgrade workflows.
 category: Package Management
--->
+---
+
 
 # Homebrew Management Rules
 

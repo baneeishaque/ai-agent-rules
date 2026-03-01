@@ -1,8 +1,9 @@
-<!--
+---
 title: Flutter Android Rules
 description: Specific guidelines for Android configurations within Flutter projects.
 category: Mobile Development
--->
+---
+
 
 # Flutter Android Rules
 

@@ -1,8 +1,9 @@
-<!--
+---
 title: Postman MCP Server Rules
 description: Standards for configuring, using, and troubleshooting the Postman MCP Server in AI agent environments.
 category: Core Agent Behavior
--->
+---
+
 
 # Postman MCP Server Rules
 

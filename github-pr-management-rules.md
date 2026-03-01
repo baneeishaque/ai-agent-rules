@@ -1,10 +1,11 @@
-<!--
+---
 title: GitHub PR Management Rules
 description: Sequential,
     CLI-first protocols for handling Pull Requests, emphasizing security for private repositories and
     explicit user handoff.
 category: Git & Repository Management
--->
+---
+
 
 # GitHub Pull Request Processing Rules
 

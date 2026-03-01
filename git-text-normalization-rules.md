@@ -1,10 +1,11 @@
-<!--
+---
 title: Git Text Normalization Rules
 description: Rules to ensure Git treats text files correctly across encodings and platforms,
     preventing binary diffs and EOL
     churn.
 category: Git & Repository Management
--->
+---
+
 
 # Git Text Normalization Rules
 

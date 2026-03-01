@@ -1,8 +1,9 @@
-<!--
+---
 title: GitHub Atom Feed URL Generation Rules
 description: Protocol for generating and providing GitHub repository Atom feed URLs for commits and releases
 category: VCS-Integration
--->
+---
+
 
 # GitHub Atom Feed URL Generation Rules
 

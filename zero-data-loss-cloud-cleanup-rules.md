@@ -1,8 +1,9 @@
-<!--
+---
 title: Zero Data Loss Cloud Cleanup Rules
 description: Mandatory verification protocol before deleting cloud-synced local files to prevent data loss.
 category: Data Safety & Integrity
--->
+---
+
 
 # Zero Data Loss Cloud Cleanup Rules
 

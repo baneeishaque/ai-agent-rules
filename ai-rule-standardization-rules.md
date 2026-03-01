@@ -1,10 +1,10 @@
-<!--
+---
 title: AI Agent Rule Standardization Rules
 description: Craftsmanship standards for developing "Ultra-Lean Industrial" AI Agent Rules,
     ensuring consistent formatting,
     structural hierarchy, and pedagogical clarity.
 category: Rule-Management
--->
+---
 
 # AI Agent Rule Standard Creation
 
@@ -51,12 +51,12 @@ tasks, or capabilities, the system mandates a **Skill-First** architecture.
 - **YAML Frontmatter**: Every file MUST start with the following metadata block:
 
     ```markdown
-    <!--
+    ---
     title: [Short, Impactful Title]
     description: [One-sentence summary of the rule's scope]
     category: [Existing or New Category]
-    -->
-    ```bash
+    ---
+    ```
 
 ***
 

@@ -1,8 +1,9 @@
-<!--
+---
 title: ShellCheck Fixer Rules
 description: Specialized rules for repairing shell scripts to meet ShellCheck standards.
 category: Code Quality & Linting
--->
+---
+
 
 # ShellCheck Fixer Agent Rules
 

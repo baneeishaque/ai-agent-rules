@@ -1,10 +1,11 @@
-<!--
+---
 title: Git Repository Management Rules
 description: Comprehensive protocol for the repository lifecycle,
     including standardized creation, CLI-based cloning, submodule
     initialization, and auto-indexing.
 category: Git & Repository Management
--->
+---
+
 
 # Git Repository Management Rules
 

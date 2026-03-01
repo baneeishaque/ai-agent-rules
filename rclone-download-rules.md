@@ -1,10 +1,11 @@
-<!--
+---
 title: Rclone Download Optimization Rules
 description: Protocol for efficient,
     reliable, and user-controlled rclone downloads with progress tracking,
              size-based ordering, and integrity verification.
 category: Data Transfer & Cloud Storage
--->
+---
+
 
 # Rclone Download Optimization Rules
 

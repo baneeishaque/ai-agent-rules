@@ -1,9 +1,10 @@
-<!--
+---
 title: Git Rebase Standardization Rules
 description: Industrial protocol for hierarchical branch rebasing,
     cross-branch deduplication, and literal commit fidelity.
 category: Git & Repository Management
--->
+---
+
 
 # Git Rebase Standardization Rules
 

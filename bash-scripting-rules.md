@@ -1,10 +1,11 @@
-<!--
+---
 title: Bash Scripting Standards
 description: Industrial standards for bash script development,
     including dependency management patterns,
     alphabetical organization conventions, and idempotent function design.
 category: Shell-Scripting
--->
+---
+
 
 # Bash Scripting Standards
 

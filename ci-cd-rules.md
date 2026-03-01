@@ -1,10 +1,11 @@
-<!--
+---
 title: CI/CD Rules
 description: Principles and practices for CI/CD,
     including protected branches, security, observability, advanced deployment
     strategies, and automated rollbacks.
 category: CI/CD & DevOps
--->
+---
+
 
 # CI/CD Rules and Best Practices
 

@@ -1,10 +1,11 @@
-<!--
+---
 title: Android App Launch Rules
 description: Automated protocol for emulator setup and deployment,
     optimized for M2 machines, with architecture and device
     fallbacks.
 category: Android Development
--->
+---
+
 
 # Android App Launch Rules
 

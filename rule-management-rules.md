@@ -1,8 +1,9 @@
-<!--
+---
 title: Rule Management Workflow
 description: Documentation sync and update workflow, including metadata management for rule indexing.
 category: Tooling & Workflows
--->
+---
+
 
 # Rule Management: Documentation Sync Workflow
 

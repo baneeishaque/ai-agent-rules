@@ -1,8 +1,9 @@
-<!--
+---
 title: Node Crypto & MCP Infrastructure Rules
 description: Industrial standards for Ed25519 reliability, Uint8Array sanitization, and Zero-Network MCP Server architecture.
 category: Core Agent Behavior
--->
+---
+
 
 # Node Crypto & MCP Infrastructure Rules
 

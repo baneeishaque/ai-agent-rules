@@ -1,10 +1,11 @@
-<!--
+---
 title: AI Tools Output Visibility
 description: Comprehensive rules for AI tool usage,
     including mandates for output visibility, explicit user
     confirmation for file writes, and integration with agent planning and security protocols.
 category: Core Agent Behavior
--->
+---
+
 
 # Enhanced AI Tool Usage Guidelines
 

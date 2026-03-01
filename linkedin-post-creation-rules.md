@@ -1,10 +1,11 @@
-<!--
+---
 title: LinkedIn Post Creation
 description: Protocol for crafting viral,
     professional, and accessible LinkedIn posts customized for Banee Ishaque K's persona,
     emphasizing plain-text optimization and human storytelling.
 category: Social Media & Branding
--->
+---
+
 
 # LinkedIn Post Creation Rules
 

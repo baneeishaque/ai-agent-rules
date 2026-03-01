@@ -1,10 +1,11 @@
-<!--
+---
 title: Flutter App Development Rules
 description: Rules for Flutter app development,
     including version pinning with `mise`, dependency management, and mandatory
     documentation.
 category: Development Frameworks
--->
+---
+
 
 # Flutter App Development Rules
 
