@@ -209,6 +209,7 @@ This practice ensures flexibility while maintaining the core principles of trans
 - **Plan Versioning**: All plans must be explicitly versioned (e.g., `implementation_plan_v1.md`, `implementation_plan_v2.md`).
 - **History Mandate**: New versions MUST NOT overwrite old versions. Each new version MUST include the Change History table documenting all previous revisions.
 - **SSOT (Single Source of Truth)**: Each version MUST be self-contained, restating all valid context and guardrails. Do not refer to previous versions for "missing details."
+- **Fresh Start Protocol**: When a "Fresh Start" version (vN) is declared, all subsequent plans (vN+1, vN+2, etc.) MUST reset the 'Change History' and 'User Questions & Answers' to only include items from the declared fresh start version onwards. This is a strict exception to the full history mandate.
 
 ### 7.1 Continuity Audit Mandate (CAM)
 
@@ -278,3 +279,26 @@ Plans involving future states (e.g., Git history after 3 phases of changes)
 Gate**: a set of mandatory discovery commands (e.g., `git status`, `git diff`)
 and verification steps that the agent will run *at that time* to generate a
 fresh, accurate preview for user approval.
+
+---
+
+## 13. Sequential Objective Protocol
+
+To ensure absolute precision and user control, the agent MUST adhere to a strict sequential focus:
+
+- **Single Objective Focus**: When instructed to perform a specific task (e.g., "update rules"), the agent MUST focus
+  solely on that objective.
+- **Deferment of Follow-ups**: The agent MUST NOT plan or prepare for follow-up actions (e.g., commit execution) in
+  the same plan unless explicitly asked.
+- **Verification Gates**: Follow-up instructions will be provided by the user *after* the current objective is
+  confirmed complete.
+- **Instructional Rationale**: When told to update rules, focus on updates ONLY. Do not jump to execution or
+  downstream tasks until explicitly directed.
+
+## 14. Single Source of Truth & Content Integrity
+
+The agent MUST strictly maintain the integrity of existing documentation:
+
+- **Anti-Duplication**: Please don't duplicate things. We always need SSOT.
+- **Audit Requirement**: When adding or updating something, the agent MUST read the file deeply and carefully. Only add what is missing.
+- **Blending Strategy**: Blend new information into the existing documentation, or enhance the existing information. We always need single source.
