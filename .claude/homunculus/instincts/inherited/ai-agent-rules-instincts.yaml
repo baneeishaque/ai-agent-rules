@@ -1,0 +1,518 @@
+# Instincts generated from https://github.com/Baneeishaque/ai-agent-rules
+# Generated: 2026-03-01T09:14:29.732Z
+# Version: 2.0
+
+---
+id: ai-agent-rules-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Commit Length
+
+## Action
+
+Keep commit messages concise (under 50 characters)
+
+## Evidence
+
+- Average commit message length: 49 chars
+- Based on 200 commits
+
+---
+id: ai-agent-rules-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Naming Files
+
+## Action
+
+Use kebab-case naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: kebab-case
+
+---
+id: ai-agent-rules-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: ai-agent-rules-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Export Style
+
+## Action
+
+Prefer mixed exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: mixed
+
+---
+id: ai-agent-rules-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: ai-agent-rules-workflow-feature-development
+trigger: "when implementing a new feature"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Workflow Feature Development
+
+## Action
+
+Follow the feature-development workflow:
+1. Add feature implementation
+2. Add tests for feature
+3. Update documentation
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~8x per month
+- Files: architectures/sync/samples/shared/src/*, **/*.test.*
+
+---
+id: ai-agent-rules-workflow-documentation-index-sync
+trigger: "when doing documentation index sync"
+confidence: 0.8
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Workflow Documentation Index Sync
+
+## Action
+
+Follow the documentation-index-sync workflow:
+1. Run sync script
+2. Update README.md with current rules list
+3. Update agent-rules.md with current rules list
+4. Commit with 'docs: sync rule indices' message
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~6x per month
+- Files: README.md, agent-rules.md, scripts/sync_rules.py
+
+---
+id: ai-agent-rules-workflow-single-rule-refinement
+trigger: "when doing single rule refinement"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Workflow Single Rule Refinement
+
+## Action
+
+Follow the single-rule-refinement workflow:
+1. Identify target rule file
+2. Make focused improvements
+3. Commit with descriptive message mentioning the specific rule type
+4. Optional: Update related templates or scripts
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~8x per month
+- Files: *-rules.md, git-atomic-commit-construction-rules.md, markdown-generation-rules.md
+
+---
+id: ai-agent-rules-workflow-mass-standardization-update
+trigger: "when doing mass standardization update"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Workflow Mass Standardization Update
+
+## Action
+
+Follow the mass-standardization-update workflow:
+1. Identify standardization pattern
+2. Apply changes to all affected rule files
+3. Update templates if needed
+4. Commit with descriptive message about the standardization type
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: Multiple *-rules.md files, templates/*.template, 40+ rule files in single commit
+
+---
+id: ai-agent-rules-workflow-session-documentation-archival
+trigger: "when doing session documentation archival"
+confidence: 0.65
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Workflow Session Documentation Archival
+
+## Action
+
+Follow the session-documentation-archival workflow:
+1. Create conversation log in docs/conversations/
+2. Create implementation plan in docs/implementation-plans/
+3. Create walkthrough in docs/walkthroughs/ if needed
+4. Commit with session archival message
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~3x per month
+- Files: docs/conversations/*.md, docs/implementation-plans/*.md, docs/walkthroughs/*.md
+
+---
+id: ai-agent-rules-workflow-git-rule-enhancement
+trigger: "when doing git rule enhancement"
+confidence: 0.7
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Workflow Git Rule Enhancement
+
+## Action
+
+Follow the git-rule-enhancement workflow:
+1. Identify specific git workflow issue
+2. Update relevant git-*-rules.md file
+3. Add new protocols or safety checks
+4. Commit with git rule enhancement message
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~4x per month
+- Files: git-atomic-commit-construction-rules.md, git-operation-rules.md, git-history-refinement-rules.md
+
+---
+id: ai-agent-rules-kebab-case-files
+trigger: "When creating new files"
+confidence: 0.85
+domain: code-style
+source: repo-analysis
+source_repo: Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Kebab Case Files
+
+## Action
+
+Use kebab-case naming convention
+
+## Evidence
+
+- git-atomic-commit-construction-rules.md
+- markdown-generation-rules.md
+- ai-agent-planning-rules.md
+
+---
+id: ai-agent-rules-camel-case-functions
+trigger: "When naming functions in TypeScript"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Camel Case Functions
+
+## Action
+
+Use camelCase naming convention
+
+## Evidence
+
+- TypeScript files in architectures/sync/
+- sync_rules.py modularization
+
+---
+id: ai-agent-rules-relative-imports
+trigger: "When importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Relative Imports
+
+## Action
+
+Use relative import paths
+
+## Evidence
+
+- architectures/sync/ structure
+- modularized scripts
+
+---
+id: ai-agent-rules-try-catch-errors
+trigger: "When handling errors"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Try Catch Errors
+
+## Action
+
+Use try-catch blocks for error handling
+
+## Evidence
+
+- refactor(scripts): modularize sync_rules.py for pylint compliance
+
+---
+id: ai-agent-rules-conventional-commits
+trigger: "When making commits"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Conventional Commits
+
+## Action
+
+Use conventional commit format with type(scope): description
+
+## Evidence
+
+- docs(rules): harden markdown linting
+- refactor(scripts): modularize sync_rules.py
+- rules(git): add phase 12
+
+---
+id: ai-agent-rules-49-char-commit-limit
+trigger: "When writing commit messages"
+confidence: 0.8
+domain: git
+source: repo-analysis
+source_repo: Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules 49 Char Commit Limit
+
+## Action
+
+Keep commit messages around 49 characters average
+
+## Evidence
+
+- Average commit length: 49 characters
+- Multiple commit examples follow this pattern
+
+---
+id: ai-agent-rules-sync-indices-after-changes
+trigger: "When rule files are added, removed, or modified"
+confidence: 0.95
+domain: workflow
+source: repo-analysis
+source_repo: Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Sync Indices After Changes
+
+## Action
+
+Run sync script and update README.md and agent-rules.md indices
+
+## Evidence
+
+- documentation-index-sync workflow
+- scripts/sync_rules.py
+- templates/*.template files
+
+---
+id: ai-agent-rules-focused-rule-improvements
+trigger: "When enhancing specific rules"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Focused Rule Improvements
+
+## Action
+
+Make focused changes to individual *-rules.md files with descriptive commits
+
+## Evidence
+
+- single-rule-refinement workflow
+- 8x/month frequency
+- commits mentioning specific rule types
+
+---
+id: ai-agent-rules-bulk-standardization
+trigger: "When applying formatting standards across multiple files"
+confidence: 0.88
+domain: workflow
+source: repo-analysis
+source_repo: Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Bulk Standardization
+
+## Action
+
+Update all affected rule files and templates in single commit
+
+## Evidence
+
+- mass-standardization-update workflow
+- 40+ rule files in single commit
+
+---
+id: ai-agent-rules-archive-sessions
+trigger: "When completing significant development sessions"
+confidence: 0.82
+domain: workflow
+source: repo-analysis
+source_repo: Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Archive Sessions
+
+## Action
+
+Create conversation logs in docs/conversations/ and implementation plans
+
+## Evidence
+
+- session-documentation-archival workflow
+- docs/conversations/*.md files
+
+---
+id: ai-agent-rules-enhance-git-workflows
+trigger: "When refining git operations or commit standards"
+confidence: 0.85
+domain: workflow
+source: repo-analysis
+source_repo: Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Enhance Git Workflows
+
+## Action
+
+Update relevant git-*-rules.md files with new protocols
+
+## Evidence
+
+- git-rule-enhancement workflow
+- git-atomic-commit-construction-rules.md
+- git-operation-rules.md
+
+---
+id: ai-agent-rules-separate-test-location
+trigger: "When organizing tests"
+confidence: 0.7
+domain: testing
+source: repo-analysis
+source_repo: Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Separate Test Location
+
+## Action
+
+Keep tests in separate location from source code
+
+## Evidence
+
+- testLocation: separate
+- architectures folder structure
+
+---
+id: ai-agent-rules-typescript-config-per-package
+trigger: "When setting up TypeScript projects"
+confidence: 0.8
+domain: architecture
+source: repo-analysis
+source_repo: Baneeishaque/ai-agent-rules
+---
+
+# Ai Agent Rules Typescript Config Per Package
+
+## Action
+
+Include tsconfig.json in each package and sample project
+
+## Evidence
+
+- Multiple tsconfig.json files
+- architectures/sync/packages/core/tsconfig.json
+- samples/*/tsconfig.json
+
