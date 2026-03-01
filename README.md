@@ -51,11 +51,6 @@ The repository provides a modular, extensible rule system for AI coding assistan
 | 🔄 **CI/CD Ready** | Rules designed to integrate with GitHub Actions and deployment pipelines |
 | 📱 **Multi-Platform** | Covers Flutter, NestJS, React, Docker, and more |
 
-## Agent Skills
-
-| Rule Domain | File Name | Description |
-| :--- | :--- | :--- |
-
 ***
 
 ## Quick Start
@@ -93,31 +88,31 @@ Follow the guidelines in:
 
 ### Android Development
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`android-app-launch-rules.md`](./android-app-launch-rules.md) | Automated protocol for emulator setup and deployment, optimized for M2 machines, with architecture and device fallbacks. |
 
 ### Architecture & Dependency Management
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`strict-dependency-freezing-rules.md`](./strict-dependency-freezing-rules.md) | Industrial protocol for ensuring reproducible builds by pinning exact versions of all external dependencies in package-level configuration. |
 
 ### Architecture & Sync
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`zero-backend-sync-rules.md`](./zero-backend-sync-rules.md) | Architecture and implementation standards for background, invisible data synchronization using decentralized relays (Nostr), local-first storage (RxDB), and WASM hardening. |
 
 ### Build-Management
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`kmp-version-upgrade-rules.md`](./kmp-version-upgrade-rules.md) | A specific technical protocol for upgrading Kotlin, AGP, and related dependencies in a Kotlin Multiplatform project. |
 
 ### CI/CD & DevOps
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`Docker-rules.md`](./Docker-rules.md) | Guidelines for Docker containerization, best practices for Dockerfiles, and image optimization. |
 | [`ci-cd-rules.md`](./ci-cd-rules.md) | Principles and practices for CI/CD, including protected branches, security, observability, advanced deployment strategies, and automated rollbacks. |
@@ -126,13 +121,13 @@ Follow the guidelines in:
 
 ### Code Quality & Linting
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`shellcheck-fixer-rules.md`](./shellcheck-fixer-rules.md) | Specialized rules for repairing shell scripts to meet ShellCheck standards. |
 
 ### Core Agent Behavior
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`ai-agent-planning-rules.md`](./ai-agent-planning-rules.md) | Guidelines for agent planning, including the core directive to plan before acting and a protocol for iterative plan revisions. |
 | [`ai-agent-session-documentation-rules.md`](./ai-agent-session-documentation-rules.md) | Protocol for documenting AI agent sessions or conversations as Markdown, including file attachment references, structured data, and traceability. |
@@ -145,32 +140,32 @@ Follow the guidelines in:
 
 ### Data Safety & Integrity
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`zero-data-loss-cloud-cleanup-rules.md`](./zero-data-loss-cloud-cleanup-rules.md) | Mandatory verification protocol before deleting cloud-synced local files to prevent data loss. |
 
 ### Data Transfer & Cloud Storage
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`rclone-download-rules.md`](./rclone-download-rules.md) | Protocol for efficient, reliable, and user-controlled rclone downloads with progress tracking, size-based ordering, and integrity verification. |
 
 ### Development Frameworks
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`flutter-app-development-rules.md`](./flutter-app-development-rules.md) | Rules for Flutter app development, including version pinning with `mise`, dependency management, and mandatory documentation. |
 
 ### Documentation & Standards
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`code-documentation-rules.md`](./code-documentation-rules.md) | Standards for deep-dive, pedagogical code documentation including adjacent markdown files and various folder patterns. |
 | [`markdown-generation-rules.md`](./markdown-generation-rules.md) | Standards for creating machine-parseable, lint-compliant markdown documents. |
 
 ### Git & Repository Management
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`git-atomic-commit-construction-rules.md`](./git-atomic-commit-construction-rules.md) | Authoritative protocol for analyzing, grouping, and arranging changes into logical, independent atomic units before execution. |
 | [`git-commit-message-rules.md`](./git-commit-message-rules.md) | Strict rules for generating git commit messages, enforcing Conventional Commits, contextual information in titles, and no redundancy between title and body. |
@@ -188,64 +183,64 @@ Follow the guidelines in:
 
 ### GitHub Actions
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`GitHub-Action-Creation-rules.md`](./GitHub-Action-Creation-rules.md) | Strict guidelines for creating, structuring, and publishing GitHub Composite Actions to the Marketplace. enforce "Industrial" standards. |
 
 ### Languages & Stacks
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`typescript-rules.md`](./typescript-rules.md) | Industrial standards for TypeScript configuration, strictness, and strict dependency freezing. |
 
 ### Mobile Development
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`flutter-android-rules.md`](./flutter-android-rules.md) | Specific guidelines for Android configurations within Flutter projects. |
 
 ### Package Management
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`brew-rules.md`](./brew-rules.md) | Comprehensive SSOT for Homebrew operations, including installation preferences, keg-only handling, and exclusion-based upgrade workflows. |
 | [`mise-plugin-backend-management-rules.md`](./mise-plugin-backend-management-rules.md) | Intelligent backend selection for mise plugin installations with fallback handling and user prompts. |
 
 ### Quality Assurance & Verification
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`manual-testing-rules.md`](./manual-testing-rules.md) | Authoritative protocol for designing, documenting, and executing manual verification plans. |
 
 ### Rule-Management
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`ai-rule-standardization-rules.md`](./ai-rule-standardization-rules.md) | Craftsmanship standards for developing "Ultra-Lean Industrial" AI Agent Rules, ensuring consistent formatting, structural hierarchy, and pedagogical clarity. |
 
 ### Shell-Scripting
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`bash-scripting-rules.md`](./bash-scripting-rules.md) | Industrial standards for bash script development, including dependency management patterns, alphabetical organization conventions, and idempotent function design. |
 
 ### Social Media & Branding
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`linkedin-contributor-call-rules.md`](./linkedin-contributor-call-rules.md) | Specialized protocol for drafting "Call for Contributors" posts to recruit developers for personal projects, focusing on mentorship, labour-rich stacks, and leadership. |
 | [`linkedin-post-creation-rules.md`](./linkedin-post-creation-rules.md) | Protocol for crafting viral, professional, and accessible LinkedIn posts customized for Banee Ishaque K's persona, emphasizing plain-text optimization and human storytelling. |
 
 ### Tech Stack
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`nestjs-react-app-rules.md`](./nestjs-react-app-rules.md) | Guidelines for developing NestJS backends with React frontends. |
 | [`nestjs-react-flutter-stack-rules.md`](./nestjs-react-flutter-stack-rules.md) | Full-stack guidelines for NestJS/React web apps with an accompanying Flutter mobile client. |
 
 ### Tooling & Workflows
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`rule-management-rules.md`](./rule-management-rules.md) | Documentation sync and update workflow, including metadata management for rule indexing. |
 | [`script-management-rules.md`](./script-management-rules.md) | Script standards, folder usage, and safeguards for helper scripts. |
@@ -253,9 +248,10 @@ Follow the guidelines in:
 
 ### VCS-Integration
 
-| Rule File | Purpose |
+| File | Purpose |
 | :--- | :--- |
 | [`github-atom-feed-rules.md`](./github-atom-feed-rules.md) | Protocol for generating and providing GitHub repository Atom feed URLs for commits and releases |
+
 
 ***
 
