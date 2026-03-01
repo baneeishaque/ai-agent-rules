@@ -21,8 +21,9 @@ All implementation plans MUST follow a strict naming and header convention to en
 
 - **H1 Header Versioning**: Every implementation plan MUST use the format `# [Goal Description] (vN)`
   as its primary H1 title (e.g., `# [Setup Authentication] (v1)`).
-- **Rule Compliance Reference**: A dedicated section titled `## Rule Compliance Reference` MUST immediately follow the H1 header.
-  It must contain a bulleted list of the specific industrial rules (with relative links) being followed in the current plan.
+- **Rule Compliance Reference**: A dedicated section titled `## Rule Compliance Reference` MUST immediately follow the
+  H1 header. It must contain a bulleted list of the specific industrial rules (with relative links) being followed in
+  the current plan.
 
 ---
 
@@ -202,12 +203,12 @@ incorporate temporal data.
 
 ## 9. Plan Versioning & SSOT Integrity (History Mandate)
 
-**Iterative Planning** is the process of updating a plan based on new findings or changes in a task's requirements. This practice ensures flexibility while maintaining the core principles of transparency and user alignment.
+**Iterative Planning** is the process of updating a plan based on new findings or changes in a task's requirements.
+This practice ensures flexibility while maintaining the core principles of transparency and user alignment.
 
 - **Plan Versioning**: All plans must be explicitly versioned (e.g., `implementation_plan_v1.md`, `implementation_plan_v2.md`).
 - **History Mandate**: New versions MUST NOT overwrite old versions. Each new version MUST include the Change History table documenting all previous revisions.
-- **SSOT (Single Source of Truth)**: Each version MUST be self-contained, restating all valid context and guardrails.
-  Do not refer to previous versions for "missing details."
+- **SSOT (Single Source of Truth)**: Each version MUST be self-contained, restating all valid context and guardrails. Do not refer to previous versions for "missing details."
 
 ### 7.1 Continuity Audit Mandate (CAM)
 
@@ -240,7 +241,8 @@ Follow the status markers and include timestamps:
 - **Status Markers**: Use `[ ]` for pending, `[/]` for in-progress, and `[x]` for completed items `[YYYY-MM-DD HH:mm]`.
 - **Compliance Mandate**: Every generated artifact (task, implementation plan, walkthrough) MUST strictly comply
     with **[Markdown Generation Rules](./markdown-generation-rules.md)** and
-    **[Markdown Generation Rules Additions](./markdown-generation-rules-additions.md)**. This includes mandatory verification using `markdownlint-cli` before finalizing any artifact.
+    **[Markdown Generation Rules Additions](./markdown-generation-rules-additions.md)**.
+    This includes mandatory verification using `markdownlint-cli` before finalizing any artifact.
 
 ---
 
@@ -248,8 +250,11 @@ Follow the status markers and include timestamps:
 
 To ensure absolute clarity during multi-phase execution, iterative plans (v2+) MUST track the status of proposed changes.
 
-- **Marking Completed Steps**: If an implementation plan is updated during execution, any proposed change that has already been successfully implemented MUST be explicitly marked as `[DONE] [YYYY-MM-DD HH:mm]` or `[COMPLETED] [YYYY-MM-DD HH:mm]` within the 'Proposed Changes' section.
-- **Visual Distinction**: Completed steps should ideally remain in the plan (to maintain context) but be clearly demarcated to differentiate them from pending work.
+- **Marking Completed Steps**: If an implementation plan is updated during execution, any proposed change that has
+  already been successfully implemented MUST be explicitly marked as `[DONE] [YYYY-MM-DD HH:mm]` or
+  `[COMPLETED] [YYYY-MM-DD HH:mm]` within the 'Proposed Changes' section.
+- **Visual Distinction**: Completed steps should ideally remain in the plan (to maintain context) but be clearly
+  demarcated to differentiate them from pending work.
 
 ---
 
