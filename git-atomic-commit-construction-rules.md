@@ -59,6 +59,35 @@ commits.
 - **Independence**: Each commit should be able to stand alone. If the
   repository were checked out at that commit, it should still build/function
   (or at least be logically coherent).
+
+### 2.5 Core Mandates & Process Discipline
+
+To ensure absolute precision and user control, the agent MUST adhere to these foundational mandates:
+
+- **Renaming & Reference Integrity (CRITICAL)**: When a file or symbol is
+  renamed or moved, the agent MUST stage both the old file (deletion/move source)
+  and the new file (addition/move target) together. ALL internal and external
+  references to that name (links, CI workflows, imports, configuration pointers)
+  MUST be updated within the SAME atomic commit.
+- **Relocation Integrity (CRITICAL)**: When moving files between directories
+  or repositories, the agent MUST update all internal relative paths within the
+  moved files AND update all external references in the codebase within the
+  SAME atomic commit.
+- **Automated Commit Prohibition (GLOBAL)**: The agent MUST NOT automatically
+  commit changes after performing any task (fixing errors, refactoring, moving
+  files) unless explicitly instructed by the user for that specific action.
+- **Staging Discipline & Git Status Analysis**: The agent MUST run `git status`
+  before every staging action and analyze the output (including user-staged
+  files). Only planned files/hunks for the CURRENT atomic unit should be staged.
+- **Serial Execution & Command Isolation**: Commits must be executed one by one.
+  Chaining commands (e.g., `&&`) is FORBIDDEN unless explicitly said by the user.
+- **Single-Linter Isolation**: Changes related to different linters (e.g.,
+  Harper vs. Pylint) MUST NOT be clubbed. Rationale: They serve different
+  technical purposes and should be committed separately to ensure maximum
+  atomicity and ease of review.
+- **Script Execution Prohibition**: The agent MUST NOT run any scripts during
+  commit preparation unless explicitly authorized.
+
 - **Atomic Principle**: Never commit half of a logical change. If a file
   contains two unrelated changes, use **Hunk-Based Staging**.
 - **Buildable State Priority**: While atomicity is the goal, maintaining a

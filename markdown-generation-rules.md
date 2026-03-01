@@ -821,6 +821,11 @@ markdownlint-cli2 --rules MD001,MD051 "**/*.md"
 - Respect line length limits (determined by project configuration)
 - Don't disable rules without understanding impact
 
+#### 5. Automated Fixes Without Review (CRITICAL)
+
+- **Commit Prohibition**: Refer to the **[Automated Commit Prohibition (GLOBAL)](./git-atomic-commit-construction-rules.md)**
+  mandate. The agent MUST NOT commit auto-fixes without explicit authorization.
+
 ***
 
 ## 8. Real-World Case Studies
