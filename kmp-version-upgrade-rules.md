@@ -1,10 +1,11 @@
-<!--
+---
 title: KMP Version Upgrade Rules
 description: A specific technical protocol for upgrading Kotlin,
     AGP, and related dependencies in a Kotlin Multiplatform
     project.
 category: Build-Management
--->
+---
+
 
 # KMP Version Upgrade Protocol
 

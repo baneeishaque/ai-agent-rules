@@ -1,9 +1,10 @@
-<!--
+---
 title: Moltbridge Discovery Rules
 description: Industrial standards for social graph broker discovery, trust threshold mandates, and
     cross-tool analysis traceability.
 category: Core Agent Behavior
--->
+---
+
 
 # Moltbridge Discovery Rules
 

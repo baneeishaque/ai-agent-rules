@@ -1,10 +1,11 @@
-<!--
+---
 title: GitHub Action Creation Rules
 description: Strict guidelines for creating,
     structuring, and publishing GitHub Composite Actions to the Marketplace. enforce
     "Industrial" standards.
 category: GitHub Actions
--->
+---
+
 
 # GitHub Action Creation Rules
 

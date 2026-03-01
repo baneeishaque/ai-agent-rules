@@ -1,8 +1,9 @@
-<!--
+---
 title: Repo Discovery Rules
 description: Multi-platform repository discovery and smart cloning workflows.
 category: Git & Repository Management
--->
+---
+
 
 # Repository Search: Multi-Platform Discovery and Smart Cloning
 

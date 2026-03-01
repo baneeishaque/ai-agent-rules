@@ -1,8 +1,9 @@
-<!--
+---
 title: TypeScript Rules
 description: Industrial standards for TypeScript configuration, strictness, and strict dependency freezing.
 category: Languages & Stacks
--->
+---
+
 
 # TypeScript Rules
 

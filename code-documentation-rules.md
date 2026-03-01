@@ -1,10 +1,11 @@
-<!--
+---
 title: Code Documentation & Pedagogical Explainer Rules
 description: Standards for deep-dive,
     pedagogical code documentation including adjacent markdown files and various folder
     patterns.
 category: Documentation & Standards
--->
+---
+
 
 # Code Documentation & Pedagogical Explainer Rules
 

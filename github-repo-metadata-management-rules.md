@@ -1,10 +1,11 @@
-<!--
+---
 title: GitHub Repo Metadata Management Rules
 description: Ultra-Lean Industrial protocols for Metadata-as-Code (MaC),
     using README.md as the absolute Single Source of Truth
     with visible markers for automation.
 category: Git & Repository Management
--->
+---
+
 
 # GitHub Repository Metadata Management Rules
 

@@ -1,8 +1,9 @@
-<!--
+---
 title: GitHub CLI Permission
 description: Explicit permission protocol for running `gh` commands, ensuring user control and transparency.
 category: Core Agent Behavior
--->
+---
+
 
 # Enhanced GitHub CLI Permission Rules
 

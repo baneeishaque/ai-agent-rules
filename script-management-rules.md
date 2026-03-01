@@ -1,8 +1,9 @@
-<!--
+---
 title: Script Management Rules
 description: Script standards, folder usage, and safeguards for helper scripts.
 category: Tooling & Workflows
--->
+---
+
 
 # Scripts: Management, Standards, and Execution (with Write-Message Safeguard)
 

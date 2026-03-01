@@ -1,9 +1,10 @@
-<!--
+---
 title: Strict Dependency Freezing Rules
 description: Industrial protocol for ensuring reproducible builds by pinning exact versions of all external dependencies
     in package-level configuration.
 category: Architecture & Dependency Management
--->
+---
+
 
 # Strict Dependency Freezing Rules
 

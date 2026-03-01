@@ -1,10 +1,11 @@
-<!--
+---
 title: Git Operation Rules
 description: Strict protocols for standard Git operations (commits & pushes),
     mandating explicit user requests and forbidding
     auto-actions.
 category: Git & Repository Management
--->
+---
+
 
 # Git Operation Rules
 

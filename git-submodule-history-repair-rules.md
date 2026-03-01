@@ -1,8 +1,9 @@
-<!--
+---
 title: Git Submodule History Repair Rules
 description: Protocols for repairing broken submodule pointers caused by history rewrites in submodule repositories.
 category: Git & Repository Management
--->
+---
+
 
 # Git Submodule History Repair Rules
 

@@ -1,10 +1,11 @@
-<!--
+---
 title: Agent Planning
 description: Guidelines for agent planning,
     including the core directive to plan before acting and a protocol for
     iterative plan revisions.
 category: Core Agent Behavior
--->
+---
+
 
 # Agent Planning Rule: Core Principles and Best Practices
 

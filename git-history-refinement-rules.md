@@ -1,10 +1,11 @@
-<!--
+---
 title: Git History Refinement Rules
 description: Protocols for refining existing commit history using backup branches,
     jq for JSON atomicity, and tree parity
     verification.
 category: Git & Repository Management
--->
+---
+
 
 # Git History Refinement Rules
 

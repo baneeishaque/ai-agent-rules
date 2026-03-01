@@ -1,10 +1,11 @@
-<!--
+---
 title: Zero-Backend Auto-Sync Rules
 description: Architecture and implementation standards for background,
     invisible data synchronization using
              decentralized relays (Nostr), local-first storage (RxDB), and WASM hardening.
 category: Architecture & Sync
--->
+---
+
 
 # Zero-Backend Auto-Sync Rules
 

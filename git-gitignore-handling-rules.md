@@ -1,8 +1,9 @@
-<!--
+---
 title: Git .gitignore Handling Rules
 description: Protocols for generating, maintaining, and customizing .gitignore files using standard APIs.
 category: Git & Repository Management
--->
+---
+
 
 # Git .gitignore Handling Rules
 

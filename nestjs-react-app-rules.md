@@ -1,8 +1,9 @@
-<!--
+---
 title: NestJS React App Rules
 description: Guidelines for developing NestJS backends with React frontends.
 category: Tech Stack
--->
+---
+
 
 # NestJS React App Rules
 

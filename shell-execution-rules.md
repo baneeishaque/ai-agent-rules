@@ -1,9 +1,10 @@
-<!--
+---
 title: Shell Execution
 description: Guidelines for shell command execution,
     ensuring transparency, user control, and adherence to security protocols.
 category: Core Agent Behavior
--->
+---
+
 
 # Enhanced Shell Execution Rules
 

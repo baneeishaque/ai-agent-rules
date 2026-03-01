@@ -1,8 +1,9 @@
-<!--
+---
 title: Manual Testing Protocol
 description: Authoritative protocol for designing, documenting, and executing manual verification plans.
 category: Quality Assurance & Verification
--->
+---
+
 
 # Manual Testing Protocol
 

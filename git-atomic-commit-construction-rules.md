@@ -1,9 +1,10 @@
-<!--
+---
 title: Git Atomic Commit Construction
 description: Authoritative protocol for analyzing, grouping, and arranging
     changes into logical, independent atomic units before execution.
 category: Git & Repository Management
--->
+---
+
 
 # Git Atomic Commit Construction Rules
 
