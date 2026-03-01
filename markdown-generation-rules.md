@@ -741,6 +741,16 @@ echo "World"
 
 **Example:** `README.md.template` with 20+ malformed fences caused 7 MD051 errors in generated `README.md`.
 
+### 6.11 Marker Links & Manual Workarounds
+
+Apply the following manual troubleshooting strategies during the generation phase or if `markdownlint-cli2 --fix`
+fails to resolve the violation:
+
+- **MD013 (Line Length)**: Use reference-style links for long URLs. Honor project-specific configuration (e.g., `.markdownlint.jsonc`) for line-length and wrapping.
+- **MD033 (Inline HTML)**: Wrap `<PLACEHOLDERS>` in backticks (e.g., `` `<PLACEHOLDER>` ``).
+- **MD051 (Links)**: Check for malformed code fences. Closing fences must be plain ` ``` `.
+- **Marker Links**: Escape bracketed markers like `[DONE]` with backticks: `` `[DONE]` ``.
+
 ***
 
 ## 7. Troubleshooting Workflow
@@ -808,7 +818,7 @@ markdownlint-cli2 --rules MD001,MD051 "**/*.md"
 #### 4. Ignoring Configuration
 
 - Check `.markdownlint.json` for project-specific rules
-- Respect line length limits (120 chars standard)
+- Respect line length limits (determined by project configuration)
 - Don't disable rules without understanding impact
 
 ***
