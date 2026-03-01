@@ -46,7 +46,7 @@ tasks, or capabilities, the system mandates a **Skill-First** architecture.
 - **Independence Mandate**: Every Skill MUST be self-contained. It MUST manage its own environmental verification,
   dependencies, and execution logic independently.
 
-- **Fine Naming**: Use strictly lowercase, kebab-case ending in `-rules.md`(e.g.,`git-submodule-rules.md`).
+- **File Naming**: Use strictly lowercase, kebab-case ending in `-rules.md` (e.g., `git-submodule-rules.md`).
 
 - **YAML Frontmatter**: Every file MUST start with the following metadata block:
 
@@ -203,11 +203,11 @@ The content must balance conciseness with technical depth:
     "DO NOT block UI"). These MUST be clear, non-ambiguous, and explained as the SSOT for what to avoid.
 
 - **Traceability Portability**: Permanent records MUST be stored in the repository's permanent documentation directory
-    (`ai-agent-rules/docs/`) using a structured hierarchy. All session or conversation logs MUST follow the protocols
-    defined in **[AI Agent Session Documentation Rules](./ai-agent-session-documentation-rules.md)**. For relative paths,
-    artifact permanence, and link references, follow the **File References** standards defined in
-    **[Markdown Generation Rules](./markdown-generation-rules.md)** and
-    **[Markdown Generation Rules Additions](./markdown-generation-rules-additions.md)**.
+    (`ai-agent-rules/docs/`) using a structured hierarchy.
+    - **Protocols**: All session or conversation logs MUST follow the protocols defined in
+      **[AI Agent Session Documentation Rules](./ai-agent-session-documentation-rules.md)**.
+    - **Relative Pathing**: For relative paths, artifact permanence, and link references, follow the
+      **File References** standards defined in **[Markdown Generation Rules](./markdown-generation-rules.md)**.
 
 - **Mandatory Protocols**: Use clear, imperative language (e.g., "The agent MUST...", "The agent is BLOCKED from...").
 
