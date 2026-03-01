@@ -18,17 +18,19 @@ high-fidelity package management with a focus on reliability and visibility.
 
 Before running any `brew` command, the agent MUST ensure maximum visibility and reliability:
 
-- **Sequential Downloads**: To maintain stability on limited bandwidth, always prefix commands with
+- **Sequential Downloads**: To maintain stability on limited bandwidth, always ensure
+    `HOMEBREW_DOWNLOAD_CONCURRENCY=1` is set for any download operation.
+    - For a single command, prefix it: `HOMEBREW_DOWNLOAD_CONCURRENCY=1 brew install ...`
+    - For a chained sequence, export it at the start:
+      `export HOMEBREW_DOWNLOAD_CONCURRENCY=1; brew upgrade ... && brew cleanup ...`
 
-    `HOMEBREW_DOWNLOAD_CONCURRENCY=1` if not already set in the environment.
+- **Verbose Logging**: Every `brew` command MUST include the `--verbose` flag.
 
-- **Verbose Logging**: Every command MUST include the `--verbose` flag.
-
-- **Example**:
+- **Example of Chained Command**:
 
     ```bash
-    HOMEBREW_DOWNLOAD_CONCURRENCY=1 brew install --verbose <package>
-    ```bash
+    export HOMEBREW_DOWNLOAD_CONCURRENCY=1; brew upgrade --verbose package1 && brew cleanup --verbose package1
+    ```
 
 ***
 
@@ -55,101 +57,55 @@ automatically.
 
 ## 3. Sequential Upgrade and Cleanup Workflow
 
-To ensure stability and provide clear, granular control, package upgrades MUST be performed sequentially.
+To ensure stability and provide clear, granular control, package upgrades MUST be performed sequentially as part of
+a single, chained command presented to the user.
 
 1. **Outdated Analysis**: Run `brew outdated --greedy` to identify all pending formula and cask updates.
 
-1. **Identify Targets & Exclusions**: Determine the final list of packages to upgrade based on user input (e.g.,
+2. **Identify Targets & Exclusions**: Determine the final list of packages to upgrade based on user input
+    (e.g., exclusions, specific targets).
 
-   exclusions, specific targets).
+3. **Resolve Package Types**: For each target package, determine if it is a **formula** or a **cask**.
+    This is critical for preventing ambiguity.
+    - Check `brew list --cask` and `brew list --formula` for installed packages.
+    - Use `brew info <package>` for uninstalled packages to determine type.
+    - Construct commands using the explicit type, e.g., `brew upgrade --cask visual-studio-code-insiders`.
 
-1. **Resolve Package Types**: For each target package, determine if it is a **formula** or a **cask**. This is critical
+4. **Construct Command Sequence**: For each package (respecting **Default Upgrade Priority** and user-specified order),
+    generate an upgrade command followed by a cleanup command, chained with `&&`.
+    - `brew upgrade --verbose [--cask|--formula] <package> && brew cleanup --verbose <package>`
 
-   for preventing ambiguity with names like `onedrive`.
+5. **Handle Mixed Operations**: For requests involving other operations like `fetch`, chain them appropriately
+    within the sequence.
 
-- Check `brew list --cask`and`brew list --formula` for installed packages.
+6. **Assemble Final Command**: Combine all operations into a single one-line command.
+    - **Prefix with `export`**: Start the entire command line with `export HOMEBREW_DOWNLOAD_CONCURRENCY=1;` to
+      ensure the download setting applies to all subsequent operations in the chain.
+    - **Add Final Cleanup**: Append a final, comprehensive cleanup to the very end of the chain:
+      `&& brew cleanup --prune=all --verbose`.
 
-- Use `brew info <package>` for uninstalled packages to determine type.
+7. **Present to User**: Present the full, final one-line command to the user in a code block for easy copy-pasting
+    and execution.
 
-- Construct commands using the explicit type, e.g., `brew upgrade --cask visual-studio-code-insiders`.
-
-1. **Generate Sequential Commands**: For each package (respecting the **Default Upgrade Priority** and user-specified
-
-   order), generate the following command sequence:
-
-    ```bash
-
-    # Upgrade a single package and perform immediate cleanup
-
-    HOMEBREW_DOWNLOAD_CONCURRENCY=1 brew upgrade --verbose [--cask|--formula] <package>
-    brew cleanup --verbose <package>
-    ```bash
-
-1. **Handle Mixed Operations**: For requests involving other operations like `fetch`, chain them appropriately after
-
-   the upgrade sequence.
-
-1. **Final Cleanup**: After all other operations are complete, perform a comprehensive cleanup:
+- **Example of Final Command Construction**:
 
     ```bash
-    brew cleanup --prune=all --verbose
-    ```bash
-
-1. **Manual Presentation**: Present the full, final sequence of commands to the user in a code block for easy
-
-   copy-pasting and execution.
-
-- **Example**:
-
-    ```bash
-
     # User: upgrade all, but exclude antigravity and whatsapp. Prioritize google-chrome and onedrive. Just download gemini-cli.
-
-    # Agent, applying priority and sequential rules, constructs:
-
-    # Upgrade prioritized packages one-by-one
-
-    HOMEBREW_DOWNLOAD_CONCURRENCY=1 brew upgrade --verbose --cask google-chrome
-    brew cleanup --verbose google-chrome
-    HOMEBREW_DOWNLOAD_CONCURRENCY=1 brew upgrade --verbose --cask onedrive
-    brew cleanup --verbose onedrive
-
-    # Upgrade remaining packages...
-
-    HOMEBREW_DOWNLOAD_CONCURRENCY=1 brew upgrade --verbose <other_upgradable_package_1>
-    brew cleanup --verbose <other_upgradable_package_1>
-
-    # ...
-
-    # Handle other operations
-
-    brew fetch --verbose gemini-cli
-
-    # Perform final system-wide cleanup
-
-    brew cleanup --prune=all --verbose
-    ```bash
+    # Agent, applying priority and sequential rules, constructs a single command:
+    export HOMEBREW_DOWNLOAD_CONCURRENCY=1; brew upgrade --verbose --cask google-chrome && brew cleanup --verbose google-chrome && brew upgrade --verbose --cask onedrive && brew cleanup --verbose onedrive && brew upgrade --verbose <other_package_1> && brew cleanup --verbose <other_package_1> && brew fetch --verbose gemini-cli && brew cleanup --prune=all --verbose
+    ```
 
 ### 3.1. Prioritized & Mixed-Operation Upgrades
 
-For complex scenarios involving specific upgrade orders, exclusions, and mixed operations (e.g., upgrade and download),
-the agent MUST extend the standard workflow:
+The workflow in Section 3 integrates the principles for handling complex scenarios. When constructing the final
+command, remember:
 
-1. **Identify Priorities**: Note any packages the user wants to upgrade first. These will be listed at the beginning of
-
-   the `brew upgrade` command.
-
-1. **Separate Operations**: Use `&&` to chain separate Homebrew commands. This is used to combine different actions,
-
-   such as `upgrade`and`fetch`.
-
-1. **Download-Only Requests**: For requests to "download" but not "install" a package, use the `brew fetch <package>`
-
-   command. This downloads the package to the local cache without installing or upgrading it.
-
-1. **Combine and Construct**: Assemble the final one-line command based on the priorities, exclusions, and mixed
-
-   operations.
+- **Priorities First**: Place user-specified or default priority packages at the beginning of the command chain.
+- **Chain with `&&`**: Ensure all individual operations are chained with `&&` to create a single, sequential flow that
+  stops if a command fails.
+- **`fetch` for Downloads**: Use `brew fetch <package>` for download-only requests within the chain.
+- **Assemble the One-Line Command**: The ultimate goal is a single, executable line that performs all requested
+  operations in the correct order.
 
 ***
 
