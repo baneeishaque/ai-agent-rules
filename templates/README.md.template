@@ -51,10 +51,6 @@ The repository provides a modular, extensible rule system for AI coding assistan
 | 🔄 **CI/CD Ready** | Rules designed to integrate with GitHub Actions and deployment pipelines |
 | 📱 **Multi-Platform** | Covers Flutter, NestJS, React, Docker, and more |
 
-## Agent Skills
-
-<!-- SKILLS_README -->
-
 ***
 
 ## Quick Start
