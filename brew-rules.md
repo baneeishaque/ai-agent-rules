@@ -84,8 +84,7 @@ a single, chained command presented to the user.
     - **Add Final Cleanup**: Append a final, comprehensive cleanup to the very end of the chain:
       `&& brew cleanup --prune=all --verbose`.
 
-7. **Present to User**: Present the full, final one-line command to the user in a code block for easy copy-pasting
-    and execution.
+7. **Present to User**: The agent's final action MUST be to output the complete command as a single line of text within a markdown code block. The agent MUST NOT execute the command itself. This allows the user to review, copy, and run the command manually.
 
 - **Example of Final Command Construction**:
 

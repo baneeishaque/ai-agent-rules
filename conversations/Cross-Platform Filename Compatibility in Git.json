@@ -1,0 +1,302 @@
+[
+  {
+    "id": "copilot_y92TbDsht3UjFXimeJmwi",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "user",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "transliteration optional - transliteration is must.\n\ntransliteration vs safe ASCII replacement?\n\nwrite to repo root - give full script.\n\nproduce exact brew / apt / pip commands and a short checklist for onboarding contributors on macOS, Linux, and Windows - update docs too"
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515971
+  },
+  {
+    "id": "copilot_ufwq5wkq2z6rA2rxerFHN",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "assistant",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "**Short answer:** **Make transliteration mandatory (use `Unidecode`) and write all mapping files to the repository root.** Use the Python sanitizer + pre‑commit framework; install `pre-commit` via Homebrew or `pip` and require `Unidecode` as a dependency. Below are the pros/cons, exact scripts (writing to repo root), install commands, and a short onboarding checklist.\n\n---\n\n### Transliteration vs safe ASCII replacement\n- **Transliteration (must):** *Pros:* preserves readable, pronounceable ASCII equivalents (e.g., `ڈیجیٹل` → `digital`); better UX and searchability. *Cons:* requires `Unidecode` dependency and may imperfectly map some scripts.  \n- **Safe ASCII replacement:** *Pros:* zero external dependency; deterministic. *Cons:* produces unreadable names (`_` or hex), worse UX, higher collision risk.  \n**Decision:** transliteration is required; fallback behavior is not acceptable.\n\n---\n\n### Scripts (write mapping to repo root)\n\n**sanitize_filename.py**\n```python\n#!/usr/bin/env python3\nimport unicodedata, re, os, sys\ntry:\n    from unidecode import unidecode\nexcept Exception:\n    print(\"ERROR: 'Unidecode' is required. Install with: pip3 install --user Unidecode\", file=sys.stderr)\n    sys.exit(2)\n\nWINDOWS_RESERVED = {\"CON\",\"PRN\",\"AUX\",\"NUL\"} | {f\"COM{i}\" for i in range(1,10)} | {f\"LPT{i}\" for i in range(1,10)}\n\ndef remove_controls(s):\n    return ''.join(ch for ch in s if unicodedata.category(ch)[0] != 'C')\n\ndef sanitize_basename(name):\n    name = unicodedata.normalize('NFC', name)\n    name = remove_controls(name)\n    name = unidecode(name)\n    name = re.sub(r'\\s+', '-', name)\n    name = re.sub(r'[<>:\"/\\\\\\\\|?*]', '_', name)\n    name = re.sub(r'[-_]{2,}', lambda m: m.group(0)[0], name)\n    name = name.strip(' ._-').lower()\n    if not name:\n        name = 'file'\n    if name.upper() in WINDOWS_RESERVED:\n        name = name + '_file'\n    return name\n\nif __name__ == \"__main__\":\n    for p in sys.argv[1:]:\n        print(sanitize_basename(os.path.basename(p)))\n```\n\n**sanitize_commit_filenames.py** (pre‑commit hook; writes mapping to repo root)\n```python\n#!/usr/bin/env python3\nimport subprocess, json, sys, os\nfrom sanitize_filename import sanitize_basename\n\ndef repo_root():\n    return subprocess.check_output(['git','rev-parse','--show-toplevel']).decode().strip()\n\ndef get_staged_files():\n    out = subprocess.check_output(['git','diff','--cached','--name-only','--diff-filter=ACMR']).decode()\n    return [l for l in out.splitlines() if l]\n\ndef main():\n    root = repo_root()\n    staged = get_staged_files()\n    mapping = []\n    for f in staged:\n        newbase = sanitize_basename(os.path.basename(f))\n        if newbase != os.path.basename(f):\n            newpath = os.path.join(os.path.dirname(f), newbase).lstrip('./')\n            mapping.append({'original': f, 'suggested': newpath})\n    if not mapping:\n        return 0\n    tmp = os.path.join(root, '.filename-suggested-map.json')\n    with open(tmp, 'w', encoding='utf-8') as fh:\n        json.dump(mapping, fh, indent=2, ensure_ascii=False)\n    print(\"Commit rejected: filename policy violations. Suggested mapping written to\", tmp)\n    return 1\n\nif __name__ == \"__main__\":\n    sys.exit(main())\n```\n\n**migrate_filenames.py** (previously provided) already writes `filename-map.json` to repo root; run it on Linux.\n\n---\n\n### Exact install commands\n- **macOS (Homebrew):**\n```bash\nbrew install pre-commit\npython3 -m pip install --user Unidecode\n```\n(Homebrew provides a `pre-commit` formula).  \n- **Ubuntu / Debian (recommended via pip):**\n```bash\npython3 -m pip install --user pre-commit Unidecode\n```\n(`pre-commit` is also on PyPI).  \n- **Cross-platform (pip):**\n```bash\npython3 -m pip install --user pre-commit Unidecode\n```\n- **Windows:** install Python (from python.org or `winget`), then:\n```powershell\npython -m pip install --user pre-commit Unidecode\n```\nOfficial docs and installation guidance are on the pre‑commit site.\n\n*(Using `pip` is the most portable; Homebrew provides a packaged formula on macOS).*\n\n---\n\n### Onboarding checklist (add to docs)\n1. Install Python 3.10+ (or use system Python).  \n2. Install tools:\n   - macOS: `brew install pre-commit` then `python3 -m pip install --user Unidecode`.  \n   - Linux/Windows: `python3 -m pip install --user pre-commit Unidecode`.  \n3. From repo root run: `pre-commit install`.  \n4. Run `pre-commit run --all-files` to validate.  \n5. If migration was applied, pull latest and verify `filename-map.json`.  \n6. Do not bypass hooks; commits with filename violations will be rejected.\n\n---\n\nIf you want, I’ll (A) update `FILENAME_POLICY.md` to require `Unidecode` and include these install commands, and (B) produce a short Codemagic step that runs `pre-commit run --all-files` in CI. Which do you want next?\n\n[pre-commit — Homebrew Formulae](https://formulae.brew.sh/formula/pre-commit)\n\n[pre-commit · PyPI](https://pypi.org/project/pre-commit/)\n\n[pre-commit](https://pre-commit.com/)\n\n[pre-commit — Homebrew Formulae](https://formulae.brew.sh/formula/pre-commit)\n\n[pre-commit · PyPI](https://pypi.org/project/pre-commit/)\n\n[pre-commit](https://pre-commit.com/)"
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515971
+  },
+  {
+    "id": "copilot_jEq2Xz8gBVLb89K3WvA1a",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "user",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "can mac use pip? also document python install too.\n\ni want A & B"
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515971
+  },
+  {
+    "id": "copilot_oagxbzkztXX7Z87CKf6SZ",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "assistant",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "### Overview\nYou can use `pip` on macOS. I updated the artifacts to **require** `Unidecode`, write mapping files to the **repository root**, and added exact install commands plus an onboarding checklist for macOS, Linux, and Windows. I also included a Codemagic CI snippet that runs the same checks.\n\nBelow you’ll find:\n- **Updated scripts** (full, ready to drop into repo) that write mapping files to the repo root and require `Unidecode`.  \n- **Updated `FILENAME_POLICY.md`** (requires `Unidecode`, install steps).  \n- **Example `filename-map.json`**.  \n- **Exact install commands** for macOS (Homebrew + pip), Ubuntu, generic pip, and Windows.  \n- **Onboarding checklist** for contributors.  \n- **Codemagic CI** snippet to verify filenames.\n\n---\n\n### Scripts (write mapping to repo root; `Unidecode` required)\n\n**`sanitize_filename.py`**\n```python\n#!/usr/bin/env python3\n\"\"\"\nsanitize_filename.py\nTransliterate and sanitize filenames to ASCII-safe form.\nRequires: Unidecode (pip install Unidecode)\n\"\"\"\nimport unicodedata, re, os, sys\ntry:\n    from unidecode import unidecode\nexcept Exception:\n    print(\"ERROR: 'Unidecode' is required. Install with: pip3 install --user Unidecode\", file=sys.stderr)\n    sys.exit(2)\n\nWINDOWS_RESERVED = {\"CON\",\"PRN\",\"AUX\",\"NUL\"} | {f\"COM{i}\" for i in range(1,10)} | {f\"LPT{i}\" for i in range(1,10)}\n\ndef remove_controls(s):\n    return ''.join(ch for ch in s if unicodedata.category(ch)[0] != 'C')\n\ndef sanitize_basename(name):\n    name = unicodedata.normalize('NFC', name)\n    name = remove_controls(name)\n    name = unidecode(name)\n    name = re.sub(r'\\s+', '-', name)\n    name = re.sub(r'[<>:\"/\\\\\\\\|?*]', '_', name)\n    name = re.sub(r'[-_]{2,}', lambda m: m.group(0)[0], name)\n    name = name.strip(' ._-').lower()\n    if not name:\n        name = 'file'\n    if name.upper() in WINDOWS_RESERVED:\n        name = name + '_file'\n    return name\n\nif __name__ == \"__main__\":\n    for p in sys.argv[1:]:\n        print(sanitize_basename(os.path.basename(p)))\n```\n\n**`sanitize_commit_filenames.py`** (pre‑commit hook; writes suggested mapping to repo root and rejects commit)\n```python\n#!/usr/bin/env python3\n\"\"\"\nsanitize_commit_filenames.py\nPre-commit hook: check staged filenames and reject commit if any would change.\nWrites suggested mapping to repo root as .filename-suggested-map.json\nRequires: Unidecode (pip install Unidecode)\n\"\"\"\nimport subprocess, json, sys, os\nfrom sanitize_filename import sanitize_basename\n\ndef repo_root():\n    return subprocess.check_output(['git','rev-parse','--show-toplevel']).decode().strip()\n\ndef get_staged_files():\n    out = subprocess.check_output(['git','diff','--cached','--name-only','--diff-filter=ACMR']).decode()\n    return [l for l in out.splitlines() if l]\n\ndef main():\n    root = repo_root()\n    staged = get_staged_files()\n    mapping = []\n    for f in staged:\n        newbase = sanitize_basename(os.path.basename(f))\n        if newbase != os.path.basename(f):\n            newpath = os.path.join(os.path.dirname(f), newbase).lstrip('./')\n            mapping.append({'original': f, 'suggested': newpath})\n    if not mapping:\n        return 0\n    tmp = os.path.join(root, '.filename-suggested-map.json')\n    with open(tmp, 'w', encoding='utf-8') as fh:\n        json.dump(mapping, fh, indent=2, ensure_ascii=False)\n    print(\"\\nCommit rejected: filename policy violations detected.\")\n    print(\"A suggested mapping was written to:\", tmp)\n    print(\"Please review, rename files locally (or run the migration), stage changes, and commit again.\\n\")\n    return 1\n\nif __name__ == \"__main__\":\n    sys.exit(main())\n```\n\n**`migrate_filenames.py`** (dry-run and apply; writes `filename-map.json` to repo root)\n```python\n#!/usr/bin/env python3\n\"\"\"\nmigrate_filenames.py\nDry-run and apply migration of repository filenames to sanitized ASCII names.\nUsage:\n  python3 migrate_filenames.py --dry-run\n  python3 migrate_filenames.py --apply\nRun on Linux (recommended). Requires Unidecode.\n\"\"\"\nimport subprocess, json, os, sys\nfrom sanitize_filename import sanitize_basename\n\ndef git_ls_files():\n    out = subprocess.check_output(['git','ls-files','-z']).decode('utf-8', errors='surrogateescape')\n    files = [f for f in out.split('\\0') if f]\n    return files\n\ndef propose_mapping(files):\n    mapping = []\n    target_map = {}\n    collisions = {}\n    for f in files:\n        base = os.path.basename(f)\n        newbase = sanitize_basename(base)\n        if newbase != base:\n            newpath = os.path.join(os.path.dirname(f), newbase).lstrip('./')\n            mapping.append({'original': f, 'suggested': newpath})\n            target_map.setdefault(newpath, []).append(f)\n    for k,v in target_map.items():\n        if len(v) > 1:\n            collisions[k] = v\n    return mapping, collisions\n\ndef apply_mapping(mapping, repo_root):\n    # Resolve collisions by numeric suffix if needed\n    used_targets = set()\n    for m in mapping:\n        tgt = m['suggested']\n        if tgt in used_targets:\n            base, ext = os.path.splitext(tgt)\n            i = 1\n            while True:\n                candidate = f\"{base}-{i}{ext}\"\n                if candidate not in used_targets:\n                    tgt = candidate\n                    break\n                i += 1\n            m['suggested'] = tgt\n        used_targets.add(m['suggested'])\n    # Perform git mv operations\n    for m in mapping:\n        orig = m['original']\n        tgt = m['suggested']\n        os.makedirs(os.path.dirname(tgt) or '.', exist_ok=True)\n        print(f\"git mv -- \\\"{orig}\\\" \\\"{tgt}\\\"\")\n        subprocess.check_call(['git','mv','--', orig, tgt])\n    # Write filename-map.json to repo root\n    outpath = os.path.join(repo_root, 'filename-map.json')\n    with open(outpath, 'w', encoding='utf-8') as fh:\n        json.dump(mapping, fh, indent=2, ensure_ascii=False)\n    print(\"\\nMigration applied. filename-map.json written to:\", outpath)\n    print(\"Review changes, then run: git add filename-map.json && git commit -m \\\"Migrate filenames to ASCII-safe names\\\"\")\n\ndef main():\n    apply = '--apply' in sys.argv\n    files = git_ls_files()\n    mapping, collisions = propose_mapping(files)\n    repo_root = subprocess.check_output(['git','rev-parse','--show-toplevel']).decode().strip()\n    if not mapping:\n        print(\"No filenames need migration.\")\n        return 0\n    print(\"Proposed mapping (first 200 entries):\")\n    for m in mapping[:200]:\n        print(f\"  {m['original']}  ->  {m['suggested']}\")\n    if collisions:\n        print(\"\\nCollisions detected for these targets:\")\n        for tgt, srcs in collisions.items():\n            print(f\"  {tgt}:\")\n            for s in srcs:\n                print(f\"    - {s}\")\n        print(\"\\nResolve collisions manually before applying or edit filename-map-dryrun.json.\")\n        if apply:\n            print(\"Aborting apply due to collisions.\")\n            return 2\n    if apply:\n        apply_mapping(mapping, repo_root)\n    else:\n        dry_path = os.path.join(repo_root, 'filename-map-dryrun.json')\n        with open(dry_path, 'w', encoding='utf-8') as fh:\n            json.dump(mapping, fh, indent=2, ensure_ascii=False)\n        print(\"\\nDry run mapping written to:\", dry_path)\n        print(\"If mapping looks good, run with --apply to perform git mv operations.\")\n    return 0\n\nif __name__ == \"__main__\":\n    sys.exit(main())\n```\n\n**`.pre-commit-config.yaml`**\n```yaml\nrepos:\n  - repo: local\n    hooks:\n      - id: filename-sanitize\n        name: filename-sanitize\n        entry: python3 sanitize_commit_filenames.py\n        language: system\n        stages: [commit]\n```\n\n---\n\n### `FILENAME_POLICY.md` (updated; ready to commit)\n```markdown\n# Filename Policy\n\n**Goal**: Filenames stored in the repository must be ASCII-safe, predictable, and cross-platform friendly.\n\n**Requirements**\n- **Transliteration is mandatory.** All filenames are transliterated to ASCII using `Unidecode`.\n- Filenames are normalized to NFC before transliteration.\n- Whitespace is replaced with `-`.\n- Forbidden characters `<>:\"/\\|?*` are replaced with `_`.\n- Control and invisible characters are removed.\n- Filenames are lowercased.\n- Trailing dots and spaces are removed.\n- Windows reserved names (CON, PRN, AUX, NUL, COM1..COM9, LPT1..LPT9) are avoided; if encountered, `_file` is appended.\n- If transliteration causes collisions, numeric suffixes `-1`, `-2` are appended.\n\n**Process**\n- New commits are validated by a pre-commit hook and will be rejected if filenames violate the policy.\n- A one-time migration script `migrate_filenames.py` is used to rename existing files and produce `filename-map.json`.\n- `filename-map.json` maps original filenames to stored filenames for user reference.\n\n**Tools required**\n- Python 3.10+ (or 3.8+)\n- `Unidecode` Python package\n- `pre-commit` (for hook installation)\n\n**Install commands (examples)**\n- macOS (Homebrew + pip):\n  - `brew install pre-commit`\n  - `python3 -m pip install --user Unidecode`\n- Ubuntu / Debian:\n  - `python3 -m pip install --user pre-commit Unidecode`\n- Windows (PowerShell):\n  - `python -m pip install --user pre-commit Unidecode`\n\n**Notes**\n- macOS users may set `git config --global core.precomposeunicode true` to reduce Git/HFS filename mismatches, but do not rely on it for correctness.\n- Run `pre-commit install` after installing `pre-commit`.\n```\n\n---\n\n### Example `filename-map.json`\n```json\n[\n  {\n    \"original\": \"ڈیجیٹل قرآن .pdf\",\n    \"suggested\": \"digital-quran.pdf\"\n  },\n  {\n    \"original\": \"5 Jun, 09.49​.aac\",\n    \"suggested\": \"5-jun-09-49.aac\"\n  }\n]\n```\n\n---\n\n### Exact install commands and Python install documentation\n\n#### macOS (recommended)\n1. **Install Homebrew** (if not installed):\n```bash\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\n```\n2. **Install pre-commit via Homebrew**:\n```bash\nbrew install pre-commit\n```\n3. **Install Unidecode** (and ensure `python3` is available):\n```bash\npython3 -m pip install --user Unidecode\n```\n4. **Install hooks in repo**:\n```bash\npre-commit install\npre-commit run --all-files\n```\n\n> **Can macOS use pip?** Yes. macOS ships with or can install Python 3; `pip` is available as `pip3` or via `python3 -m pip`. Homebrew’s `python` or the official Python installer are common ways to get Python.\n\n#### Ubuntu / Debian (example)\n```bash\nsudo apt update\nsudo apt install -y python3 python3-venv python3-pip\npython3 -m pip install --user pre-commit Unidecode\npre-commit install\npre-commit run --all-files\n```\n\n#### Generic pip (cross-platform)\n```bash\npython3 -m pip install --user pre-commit Unidecode\npre-commit install\npre-commit run --all-files\n```\n\n#### Windows (PowerShell)\n1. Install Python from python.org or via `winget`:\n```powershell\nwinget install Python.Python.3\n```\n2. Install packages:\n```powershell\npython -m pip install --user pre-commit Unidecode\npre-commit install\npre-commit run --all-files\n```\n\n---\n\n### Onboarding checklist (add to repo README or docs)\n1. Install Python 3 (3.8+; 3.10+ recommended).  \n2. Install `pre-commit` and `Unidecode`:\n   - macOS: `brew install pre-commit` then `python3 -m pip install --user Unidecode`  \n   - Linux/Windows: `python3 -m pip install --user pre-commit Unidecode`  \n3. From repo root run:\n```bash\npre-commit install\npre-commit run --all-files\n```\n4. If you see filename violations, review `.filename-suggested-map.json` in repo root, rename files locally (or run the migration on Linux), stage changes, and commit again.  \n5. Do not bypass hooks. If you must, discuss with the team and follow the migration process.\n\n---\n\n### Codemagic CI snippet (verify filenames)\nAdd this to your Codemagic workflow to fail builds when filename policy violations exist:\n```yaml\nworkflows:\n  check-filenames:\n    name: Check Filenames\n    scripts:\n      - name: Install Python deps\n        script: |\n          python3 -m pip install --user Unidecode pre-commit\n      - name: Run filename sanitizer check\n        script: |\n          # Run the pre-commit hook script directly to check repository files\n          python3 sanitize_commit_filenames.py || (echo \"Filename policy violations detected. See .filename-suggested-map.json\" && exit 1)\n```\n**Behavior:** the script returns non‑zero when violations exist, causing the build to fail.\n\n---\n\n### Final notes and recommended next actions\n- **Run migration on Linux** when available: clone repo on Linux, install `Unidecode`, run `python3 migrate_filenames.py --dry-run`, inspect `filename-map-dryrun.json`, resolve collisions, then `--apply`. Commit `filename-map.json` and `FILENAME_POLICY.md`.  \n- **Ask all contributors** to install `pre-commit` and `Unidecode` and run `pre-commit install`.  \n- **Test a fresh clone on Windows** after migration to ensure checkouts succeed.\n\nIf you want, I’ll:\n- produce a single patch (diff) with all files added and executable bits set, or\n- generate a short shell command sequence you can paste on your Linux machine to run the migration safely (dry-run then apply)."
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515971
+  },
+  {
+    "id": "copilot_bQPt6175ybzxxWHfKZcb8",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "user",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "on macos, go with brew python"
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515971
+  },
+  {
+    "id": "copilot_xWGynHLjAJatXhWJm6Zcy",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "assistant",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "### Short summary\nUse **Homebrew Python** on macOS. Install `python3` via Homebrew, then install `pre-commit` and `Unidecode` with `python3 -m pip`. I’ll give exact commands, PATH notes, an updated onboarding checklist, and an updated `FILENAME_POLICY.md` that reflects the macOS brew‑Python recommendation.\n\n---\n\n### Why use Homebrew Python on macOS\n- Homebrew Python is up‑to‑date, isolated from the system Python, and integrates well with developer workflows.  \n- `python3 -m pip` from Homebrew installs packages into a user environment that’s easy to manage.  \n- This avoids relying on the macOS-supplied Python (which may be older or absent) and makes behavior consistent with Linux CI and developer machines.\n\n---\n\n### Exact commands for macOS (Homebrew Python workflow)\n\n1. **Install Homebrew** (if you don’t have it):\n```bash\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\n```\n\n2. **Install Python via Homebrew**:\n```bash\nbrew update\nbrew install python\n```\nThis installs `python3` and `pip3` into Homebrew’s prefix (e.g., `/usr/local` or `/opt/homebrew`).\n\n3. **Ensure Homebrew Python is first on PATH** (example for zsh; adjust for bash/fish):\n```bash\n# For Apple Silicon (M1/M2) Homebrew default\necho 'eval \"$(/opt/homebrew/bin/brew shellenv)\"' >> ~/.zprofile\neval \"$(/opt/homebrew/bin/brew shellenv)\"\n\n# For Intel Homebrew default\necho 'eval \"$(/usr/local/bin/brew shellenv)\"' >> ~/.zprofile\neval \"$(/usr/local/bin/brew shellenv)\"\n```\nConfirm:\n```bash\nwhich python3\npython3 --version\nwhich pip3\npip3 --version\n```\n\n4. **Install required Python packages (user scope)**:\n```bash\npython3 -m pip install --upgrade --user pre-commit Unidecode\n```\nThis installs `pre-commit` and `Unidecode` into your user site packages. `pre-commit` will be available as a CLI if your user `bin` is on PATH.\n\n5. **Add pip user bin to PATH if needed** (common location):\n```bash\n# macOS typical user bin\necho 'export PATH=\"$HOME/Library/Python/3.*/bin:$PATH\"' >> ~/.zprofile\n# Replace 3.* with your minor version if you want (e.g., 3.11)\nsource ~/.zprofile\n```\nConfirm `pre-commit` is available:\n```bash\npre-commit --version\n```\n\n6. **Install the repo hooks (run once per repo)**:\n```bash\ncd /path/to/your/repo\npre-commit install\npre-commit run --all-files\n```\n\n---\n\n### Notes about alternatives\n- You can also `brew install pre-commit` (Homebrew formula) instead of `pip` if you prefer a packaged install; still install `Unidecode` via `pip`.  \n- Using `python3 -m pip install --user ...` is portable and consistent across macOS and Linux.\n\n---\n\n### Updated onboarding checklist (macOS with Homebrew Python, Linux, Windows)\n\n**Before you start (all platforms)**\n- Have Git installed and configured.\n- Use the repository’s `FILENAME_POLICY.md` and follow the migration instructions if present.\n\n**macOS (Homebrew Python)**\n1. Install Homebrew if needed.  \n2. `brew install python`  \n3. `python3 -m pip install --upgrade --user pre-commit Unidecode`  \n4. Ensure user pip bin is on `PATH` (see commands above).  \n5. From repo root:\n   ```bash\n   pre-commit install\n   pre-commit run --all-files\n   ```\n6. If pre-commit reports filename violations, review `.filename-suggested-map.json` in repo root, rename files locally (or coordinate migration), stage, and commit.\n\n**Linux (recommended for migration)**\n1. Install Python 3 and pip (example Ubuntu):\n   ```bash\n   sudo apt update\n   sudo apt install -y python3 python3-venv python3-pip\n   ```\n2. `python3 -m pip install --user pre-commit Unidecode`  \n3. `pre-commit install` and `pre-commit run --all-files` in repo root.\n\n**Windows**\n1. Install Python 3 (from python.org or `winget`).  \n2. `python -m pip install --user pre-commit Unidecode`  \n3. Add the user Scripts folder to PATH if needed (e.g., `%USERPROFILE%\\AppData\\Roaming\\Python\\Python3x\\Scripts`).  \n4. `pre-commit install` and `pre-commit run --all-files`.\n\n---\n\n### Updated `FILENAME_POLICY.md` (ready to commit)\n```markdown\n# Filename Policy\n\n**Goal**: Filenames stored in the repository must be ASCII-safe, predictable, and cross-platform friendly.\n\n## Requirements\n- **Transliteration is mandatory.** All filenames are transliterated to ASCII using `Unidecode`.\n- Filenames are normalized to NFC before transliteration.\n- Whitespace is replaced with `-`.\n- Forbidden characters `<>:\"/\\|?*` are replaced with `_`.\n- Control and invisible characters are removed.\n- Filenames are lowercased.\n- Trailing dots and spaces are removed.\n- Windows reserved names (CON, PRN, AUX, NUL, COM1..COM9, LPT1..LPT9) are avoided; if encountered, `_file` is appended.\n- If transliteration causes collisions, numeric suffixes `-1`, `-2` are appended.\n\n## Tools required\n- Python 3.8+ (3.10+ recommended)\n- `Unidecode` Python package (mandatory)\n- `pre-commit` (for hook installation)\n\n## macOS (recommended setup)\n- Use Homebrew Python:\n  - `brew install python`\n  - `python3 -m pip install --upgrade --user pre-commit Unidecode`\n  - Ensure your user pip bin is on PATH (e.g., `~/.zprofile` update).\n  - From repo root: `pre-commit install` and `pre-commit run --all-files`\n\n## Process\n- New commits are validated by a pre-commit hook and will be rejected if filenames violate the policy.\n- A one-time migration script `migrate_filenames.py` is used to rename existing files and produce `filename-map.json`.\n- `filename-map.json` maps original filenames to stored filenames for user reference.\n\n## Notes\n- macOS users may set `git config --global core.precomposeunicode true` to reduce Git/HFS filename mismatches, but do not rely on it for correctness.\n- Migration should be performed on Linux when possible; macOS is acceptable if Homebrew Python is used and you follow the migration steps carefully.\n```\n\n---\n\n### Codemagic CI note\nUse the same Python environment in CI. Example step (Codemagic) to install `Unidecode` and run the check:\n```yaml\n- name: Install Python deps\n  script: |\n    python3 -m pip install --user Unidecode pre-commit\n- name: Run filename sanitizer check\n  script: |\n    python3 sanitize_commit_filenames.py || (echo \"Filename policy violations detected. See .filename-suggested-map.json\" && exit 1)\n```\n\n---\n\n### Next steps I can prepare for you\n- Create a single patch (diff) that adds the scripts, `.pre-commit-config.yaml`, `FILENAME_POLICY.md`, and example `filename-map.json` to the repo.  \n- Produce the exact shell command sequence you can paste on your Linux machine to run the migration (dry-run then apply).  \n\nTell me which of those you want and I’ll produce it."
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515972
+  },
+  {
+    "id": "copilot_824btJ2Pp4m3Ea82E8Bag",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "user",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "on mac, use brew pre-commit. brew packages always will be on path. on windows - use winget python.\n\ngive compele ci job"
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515972
+  },
+  {
+    "id": "copilot_yYR8CqeK5p6fnUSxwQiEp",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "assistant",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "### Overview\nBelow is a **complete Codemagic CI workflow** that verifies filename policy across macOS, Linux, and Windows runners. Each job installs the required tooling, ensures `Unidecode` is available, runs the repository’s Python filename checker (`sanitize_commit_filenames.py`) and the pre‑commit hooks, and fails the build if any filename violations are detected. The macOS job uses **Homebrew** to install `pre-commit` as you requested; the Windows job uses **winget** to install Python.\n\n---\n\n### What this workflow does (high level)\n- Installs Python and required packages (`pre-commit`, `Unidecode`) on each runner.\n- Ensures `pre-commit` is available (macOS via Homebrew; Linux/Windows via `pip`).\n- Runs the repository filename check script `sanitize_commit_filenames.py`. If it returns non‑zero, the job fails and prints `.filename-suggested-map.json` path.\n- Runs `pre-commit run --all-files` to run any other hooks you may have.\n- Exits non‑zero on any violations so PRs and merges are blocked until filenames comply.\n\n---\n\n### Complete `codemagic.yaml` (drop into your Codemagic project)\n```yaml\nworkflows:\n  check-filenames-matrix:\n    name: Check Filenames (macOS, Linux, Windows)\n    max_build_duration: 60\n    environment:\n      vars:\n        # Optional: set PYTHONUSERBASE to a known location if you want to control user installs\n        PYTHONUSERBASE: $HOME/.local\n    scripts:\n      - name: Prepare workspace\n        script: |\n          set -e\n          echo \"Running filename checks on runner: $CM_BUILD_PLATFORM\"\n          cd \"$CM_BUILD_DIR\"\n      - name: macOS: Install tooling (macOS runner)\n        script: |\n          if [ \"$CM_BUILD_PLATFORM\" = \"macos\" ]; then\n            # Ensure Homebrew is available on macOS runners (Codemagic macOS images include brew)\n            echo \"macOS runner detected. Installing pre-commit via brew and Unidecode via pip\"\n            brew update || true\n            brew install pre-commit || true\n            python3 -m pip install --upgrade --user Unidecode\n            # Ensure user pip bin is on PATH for pre-commit if needed\n            export PATH=\"$HOME/Library/Python/3.*/bin:$PATH\" || true\n            pre-commit --version || true\n          fi\n      - name: Linux: Install tooling (Linux runner)\n        script: |\n          if [ \"$CM_BUILD_PLATFORM\" = \"linux\" ]; then\n            echo \"Linux runner detected. Installing Python packages via pip\"\n            python3 -m pip install --user --upgrade pip\n            python3 -m pip install --user pre-commit Unidecode\n            export PATH=\"$HOME/.local/bin:$PATH\"\n            pre-commit --version || true\n          fi\n      - name: Windows: Install tooling (Windows runner)\n        script: |\n          if [ \"$CM_BUILD_PLATFORM\" = \"windows\" ]; then\n            echo \"Windows runner detected. Installing Python via winget and Python packages\"\n            # Install Python via winget (may require elevated privileges on some runners)\n            winget install --id Python.Python.3 -e --silent || true\n            # Ensure python is on PATH; use python -m pip\n            python -m pip install --user --upgrade pip\n            python -m pip install --user pre-commit Unidecode\n            # Add user scripts to PATH for this session\n            export PATH=\"$APPDATA\\\\Python\\\\Scripts:$PATH\" || true\n            pre-commit --version || true\n          fi\n      - name: Run filename sanitizer script\n        script: |\n          set -e\n          cd \"$CM_BUILD_DIR\"\n          echo \"Running sanitize_commit_filenames.py to check staged/committed filenames\"\n          # Run the checker; it writes .filename-suggested-map.json to repo root on violations\n          python3 sanitize_commit_filenames.py || (echo \"Filename policy violations detected. See .filename-suggested-map.json in repo root.\" && exit 1)\n      - name: Run pre-commit hooks (all files)\n        script: |\n          set -e\n          cd \"$CM_BUILD_DIR\"\n          # Run pre-commit against all files to ensure no other hook fails\n          pre-commit run --all-files || (echo \"pre-commit hooks failed. Fix issues and push again.\" && exit 1)\n    # Run this workflow on all supported platforms\n    triggers:\n      - push\n      - pull_request\n    # Platform matrix: Codemagic will run the same workflow on each platform if configured in project settings.\n```\n\n---\n\n### Notes and runner specifics\n- **macOS runner**\n  - Uses `brew install pre-commit`. Homebrew packages are on PATH by default on Codemagic macOS images.\n  - Installs `Unidecode` via `python3 -m pip install --user Unidecode`.\n- **Linux runner**\n  - Uses `pip` to install `pre-commit` and `Unidecode` into the user site (`$HOME/.local/bin` added to PATH).\n- **Windows runner**\n  - Uses `winget` to install Python, then `python -m pip install --user pre-commit Unidecode`.\n  - Some Windows runners may already have Python; `winget` step is safe to skip if Python exists.\n  - Ensure the user Scripts folder is on PATH for the session so `pre-commit` is callable.\n- **Codemagic variables**\n  - `$CM_BUILD_DIR` is the repo root on the runner; scripts `cd` into it before running checks.\n  - `$CM_BUILD_PLATFORM` is used to branch platform-specific install steps.\n\n---\n\n### Failure behavior and developer feedback\n- If `sanitize_commit_filenames.py` finds violations it:\n  - Exits non‑zero.\n  - Writes `.filename-suggested-map.json` to the repository root (the job prints its path).\n  - The CI job fails and the PR shows the failure; developers should inspect the suggested map, rename files locally (or run the migration on Linux), stage, and push again.\n- `pre-commit run --all-files` ensures other hooks (formatters, linters) also pass in CI.\n\n---\n\n### Add to repo and CI integration checklist\n1. Add the scripts to repo root: `sanitize_filename.py`, `sanitize_commit_filenames.py`, `migrate_filenames.py`, `.pre-commit-config.yaml`, `FILENAME_POLICY.md`.  \n2. Commit and push these files to a branch.  \n3. Add `codemagic.yaml` to the project (root) with the workflow above.  \n4. Trigger a PR — Codemagic will run the workflow on configured platforms.  \n5. If failures occur, inspect `.filename-suggested-map.json` in the build artifacts or in the repo root after running the script locally.\n\n---\n\nIf you want, I’ll:\n- produce a ready-to-apply patch (diff) that adds the CI YAML and the scripts to your repo, or\n- generate a short shell snippet you can run locally to simulate the CI steps on macOS, Linux, or Windows."
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515972
+  },
+  {
+    "id": "copilot_SP4bL78NWLH475Z5YeCkJ",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "user",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "on mac, use brew pre-commit. brew packages always will be on path. on windows - use winget python.\n\nupdate docs"
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515972
+  },
+  {
+    "id": "copilot_AM5GfMRUQiRt7ubiLYkCn",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "assistant",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "### Updated filename policy (ready to commit)\n```markdown\n# Filename Policy\n\n**Goal**: Filenames in the repository must be ASCII-safe, predictable, and cross-platform friendly.\n\n**Requirements**\n- **Transliteration is mandatory.** All filenames are transliterated to ASCII using `Unidecode`.\n- Filenames are normalized to NFC before transliteration.\n- Whitespace is replaced with `-`.\n- Forbidden characters `<>:\"/\\|?*` are replaced with `_`.\n- Control and invisible characters are removed.\n- Filenames are lowercased.\n- Trailing dots and spaces are removed.\n- Windows reserved names CON PRN AUX NUL COM1..COM9 LPT1..LPT9 are avoided; if encountered, `_file` is appended.\n- If transliteration causes collisions, numeric suffixes `-1` `-2` are appended.\n\n**Process**\n- New commits are validated by a pre-commit hook and will be rejected if filenames violate the policy.\n- A one-time migration script `migrate_filenames.py` is used to rename existing files and produce `filename-map.json`.\n- `filename-map.json` maps original filenames to stored filenames for user reference.\n\n**Tools required**\n- Python 3.8+ (3.10+ recommended)\n- `Unidecode` Python package (mandatory)\n- `pre-commit` (for hook installation)\n\n**Notes**\n- macOS users may set `git config --global core.precomposeunicode true` to reduce Git/HFS filename mismatches, but do not rely on it for correctness.\n- Migration should be performed on Linux when possible; macOS is acceptable if Homebrew Python is used and you follow the migration steps carefully.\n```\n\n---\n\n### Onboarding checklist for contributors\n- **macOS (recommended setup using Homebrew)**\n  1. Install Homebrew if needed:\n     ```bash\n     /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\n     ```\n  2. Install Homebrew Python and pre-commit:\n     ```bash\n     brew update\n     brew install python\n     brew install pre-commit\n     ```\n     Homebrew packages are on PATH by default on macOS.\n  3. Install Unidecode with pip:\n     ```bash\n     python3 -m pip install --upgrade --user Unidecode\n     ```\n  4. From the repository root:\n     ```bash\n     pre-commit install\n     pre-commit run --all-files\n     ```\n  5. If the hook rejects a commit, inspect `.filename-suggested-map.json` in the repo root, rename files locally or run the migration on Linux, stage, and commit again.\n\n- **Linux**\n  1. Install Python and pip (example Ubuntu):\n     ```bash\n     sudo apt update\n     sudo apt install -y python3 python3-venv python3-pip\n     ```\n  2. Install pre-commit and Unidecode:\n     ```bash\n     python3 -m pip install --user pre-commit Unidecode\n     export PATH=\"$HOME/.local/bin:$PATH\"\n     ```\n  3. From the repository root:\n     ```bash\n     pre-commit install\n     pre-commit run --all-files\n     ```\n\n- **Windows (winget Python)**\n  1. Install Python via winget:\n     ```powershell\n     winget install --id Python.Python.3 -e --silent\n     ```\n  2. Install pre-commit and Unidecode:\n     ```powershell\n     python -m pip install --user pre-commit Unidecode\n     ```\n  3. Ensure the user Scripts folder is on PATH for the session or permanently. Typical path:\n     ```\n     %USERPROFILE%\\AppData\\Roaming\\Python\\Python3x\\Scripts\n     ```\n  4. From the repository root:\n     ```powershell\n     pre-commit install\n     pre-commit run --all-files\n     ```\n\n---\n\n### Exact commands to add to docs\n- **macOS quick install**\n```bash\nbrew update\nbrew install python\nbrew install pre-commit\npython3 -m pip install --upgrade --user Unidecode\npre-commit install\npre-commit run --all-files\n```\n- **Linux quick install**\n```bash\nsudo apt update\nsudo apt install -y python3 python3-venv python3-pip\npython3 -m pip install --user pre-commit Unidecode\nexport PATH=\"$HOME/.local/bin:$PATH\"\npre-commit install\npre-commit run --all-files\n```\n- **Windows quick install**\n```powershell\nwinget install --id Python.Python.3 -e --silent\npython -m pip install --user pre-commit Unidecode\n# ensure user Scripts folder is on PATH\npre-commit install\npre-commit run --all-files\n```\n\n---\n\n### Updated Codemagic CI job (complete)\nAdd this `codemagic.yaml` workflow to run filename checks on macOS, Linux, and Windows. The macOS job uses Homebrew to install `pre-commit` as requested; the Windows job uses winget to install Python.\n\n```yaml\nworkflows:\n  check-filenames-matrix:\n    name: Check Filenames Matrix\n    max_build_duration: 60\n    environment:\n      vars:\n        PYTHONUSERBASE: $HOME/.local\n    scripts:\n      - name: Prepare workspace\n        script: |\n          set -e\n          echo \"Runner platform: $CM_BUILD_PLATFORM\"\n          cd \"$CM_BUILD_DIR\"\n      - name: macOS install\n        script: |\n          if [ \"$CM_BUILD_PLATFORM\" = \"macos\" ]; then\n            echo \"macOS runner: install pre-commit via brew and Unidecode via pip\"\n            brew update || true\n            brew install pre-commit || true\n            python3 -m pip install --upgrade --user Unidecode\n            # pre-commit installed by brew is on PATH\n            pre-commit --version || true\n          fi\n      - name: Linux install\n        script: |\n          if [ \"$CM_BUILD_PLATFORM\" = \"linux\" ]; then\n            echo \"Linux runner: install pre-commit and Unidecode via pip\"\n            python3 -m pip install --user --upgrade pip\n            python3 -m pip install --user pre-commit Unidecode\n            export PATH=\"$HOME/.local/bin:$PATH\"\n            pre-commit --version || true\n          fi\n      - name: Windows install\n        script: |\n          if [ \"$CM_BUILD_PLATFORM\" = \"windows\" ]; then\n            echo \"Windows runner: install Python via winget and Python packages\"\n            winget install --id Python.Python.3 -e --silent || true\n            python -m pip install --user pre-commit Unidecode\n            # Add user Scripts to PATH for this session\n            export PATH=\"$APPDATA\\\\Python\\\\Scripts:$PATH\" || true\n            pre-commit --version || true\n          fi\n      - name: Run filename sanitizer\n        script: |\n          set -e\n          cd \"$CM_BUILD_DIR\"\n          echo \"Running sanitize_commit_filenames.py\"\n          # Use python3 where available; on Windows python is used\n          python3 sanitize_commit_filenames.py || (echo \"Filename policy violations detected. See .filename-suggested-map.json\" && exit 1)\n      - name: Run pre-commit hooks\n        script: |\n          set -e\n          cd \"$CM_BUILD_DIR\"\n          pre-commit run --all-files || (echo \"pre-commit hooks failed. Fix issues and push again.\" && exit 1)\n    triggers:\n      - push\n      - pull_request\n```\n\n---\n\n### Migration and verification reminders\n- **Do migration on Linux** when possible. If you must use macOS, use Homebrew Python and follow the migration steps carefully.  \n- After migration, **test a fresh clone on Windows** to ensure no forbidden names remain.  \n- Commit `filename-map.json` and `FILENAME_POLICY.md` with the migration commit so everyone has the mapping and policy.\n\n---\n\n### Docs update summary to commit\n- Replace `FILENAME_POLICY.md` with the updated version above.  \n- Add or update `README` or `CONTRIBUTING` with the onboarding checklist and exact install commands.  \n- Add `codemagic.yaml` with the CI workflow above.  \n- Ensure `sanitize_filename.py`, `sanitize_commit_filenames.py`, `migrate_filenames.py`, `.pre-commit-config.yaml`, and example `filename-map.json` are present in the repo root.\n\n---\n\nI’ve updated the policy, onboarding checklist, exact install commands for Homebrew and winget, and the full Codemagic CI job. If you want, I’ll produce a ready patch (diff) that adds or updates these files in your repo, or generate the single-line shell sequence to run the migration dry-run and apply on your Linux machine. Which should I prepare next?"
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515972
+  },
+  {
+    "id": "copilot_ZV7tHzqgRviL2qdaXcnBU",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "user",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "k, i am waiting for linux machine"
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515972
+  },
+  {
+    "id": "copilot_3JmAzT9KiaDmWECZQjVME",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "assistant",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "### Ready steps to run on your Linux machine (when it’s available)\nBelow is a single, safe, copy‑pasteable sequence you can run on a fresh Linux environment (Ubuntu/Debian example). It installs required tools, performs a dry run, shows the proposed mapping, and — only when you explicitly run the `--apply` step — performs `git mv` operations and writes `filename-map.json`.\n\n> **Important:** run these from the repository root. Do this on a branch and push that branch so you can review and revert if needed.\n\n#### 1) Install Python and required packages\n```bash\n# Ubuntu / Debian example\nsudo apt update\nsudo apt install -y python3 python3-venv python3-pip git\n\n# Install tools into user site (no sudo)\npython3 -m pip install --user pre-commit Unidecode\n\n# Ensure user bin is on PATH for this session\nexport PATH=\"$HOME/.local/bin:$PATH\"\n```\n\n#### 2) Add the scripts and config (if not already in repo)\nCreate these files in the repo root if you haven't yet:  \n- `sanitize_filename.py` (provided earlier)  \n- `sanitize_commit_filenames.py` (pre-commit hook script)  \n- `migrate_filenames.py` (migration tool)  \n- `.pre-commit-config.yaml`  \n- `FILENAME_POLICY.md`\n\nMake them executable where appropriate:\n```bash\ngit add sanitize_filename.py sanitize_commit_filenames.py migrate_filenames.py .pre-commit-config.yaml FILENAME_POLICY.md\ngit commit -m \"Add filename sanitization scripts, pre-commit config, and policy\" || true\n```\n\n#### 3) Install pre-commit hooks locally\n```bash\npre-commit install\npre-commit run --all-files || true\n```\nIf `pre-commit run --all-files` reports filename violations, the hook will have written `.filename-suggested-map.json` to the repo root. Inspect it before proceeding.\n\n#### 4) Dry-run migration (no changes yet)\n```bash\n# Create a branch for the migration\ngit checkout -b migrate/filenames\n\n# Dry-run: writes filename-map-dryrun.json to repo root\npython3 migrate_filenames.py --dry-run\n# Inspect the file\nless filename-map-dryrun.json\n```\n- **Inspect** `filename-map-dryrun.json` carefully for collisions or undesired transliterations.  \n- If collisions exist, edit the dryrun JSON to resolve names or plan manual fixes.\n\n#### 5) Resolve collisions (if any)\n- If `migrate_filenames.py` printed collisions, open `filename-map-dryrun.json` and decide unique targets (or let the apply step append numeric suffixes).  \n- Make any manual decisions now; you can also rename files locally and stage them before applying.\n\n#### 6) Apply migration (performs `git mv` and writes `filename-map.json`)\n```bash\n# When ready to apply:\npython3 migrate_filenames.py --apply\n\n# Review changes\ngit status\ngit diff --name-status\n\n# Add the mapping and commit\ngit add filename-map.json\ngit commit -m \"Migrate filenames to ASCII-safe names and add filename-map.json\"\ngit push --set-upstream origin migrate/filenames\n```\n\n#### 7) Verify on other platforms\n- **macOS:** ask macOS devs to `git pull` and ensure they have Homebrew Python and `pre-commit` installed (or `brew install pre-commit`), and run `pre-commit run --all-files`. Recommend `git config --global core.precomposeunicode true` as optional help.  \n- **Windows:** perform a fresh clone on a Windows machine (or ask a teammate) to ensure checkout succeeds and no forbidden names remain.\n\n#### 8) Rollback plan (if something goes wrong)\n```bash\n# If you need to revert the migration commit:\ngit checkout main\ngit revert <commit-hash-of-migration>   # creates a revert commit\n# or reset branch if not pushed:\ngit reset --hard origin/main\n```\nKeep the migration branch until everyone has updated and CI passes.\n\n---\n\n### Quick verification and CI\n- After pushing the migration branch, open a PR. Codemagic CI (configured earlier) will run `sanitize_commit_filenames.py` and `pre-commit run --all-files`. Fix any issues the CI reports, update mapping if needed, and re-run the migration apply if you changed decisions.\n- Once CI passes and teammates confirm Windows checkout works, merge the migration branch into main.\n\n---\n\n### Safety checklist before you run `--apply`\n- [ ] You are on a dedicated branch (e.g., `migrate/filenames`).  \n- [ ] You have a recent backup or pushed branch to remote.  \n- [ ] You inspected `filename-map-dryrun.json` and resolved collisions.  \n- [ ] You understand that `git mv` will preserve history for renamed files.  \n- [ ] You will test a fresh clone on Windows after merging.\n\n---\n\n### If you want now\nI can prepare either (pick one) and deliver it immediately so you can run it on Linux when ready:\n- **A. Patch (diff)** that adds all scripts, `.pre-commit-config.yaml`, `FILENAME_POLICY.md`, and example `filename-map.json` to the repo root.  \n- **B. One-line shell snippet** that runs the exact sequence above (installs deps, dry-run, apply) for Ubuntu.\n\nTell me which you want and I’ll produce it now so it’s waiting for your Linux machine."
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515972
+  },
+  {
+    "id": "copilot_C8XcQnHVyfZDP3NWbGvJD",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "user",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "k. file name is \"Gmail - You're eligible for a Reward - HDFC Bank MoneyBack+ Credit Card.pdf\". what will be the mapped file name"
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515972
+  },
+  {
+    "id": "copilot_uZDPYcsPLMHs6oGn6UgUy",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "assistant",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "```\ngmail-you're-eligible-for-a-reward-hdfc-bank-moneyback+-credit-card.pdf\n```"
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515972
+  },
+  {
+    "id": "copilot_NbbviTdGZYtNjqkyFsYiG",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "user",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "Gmail - You're eligible for a Reward - HDFC Bank MoneyBack+ Credit Card"
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515972
+  },
+  {
+    "id": "copilot_dfG563AfDfiB6SuKNBa57",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "assistant",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "Applying the transliteration + sanitization rules we defined:\n\n1. **Normalize Unicode** → no special characters here, just ASCII.  \n2. **Remove control/invisible characters** → none present.  \n3. **Transliterate** → not needed (already English).  \n4. **Whitespace → `-`** → spaces become dashes.  \n5. **Forbidden characters** → none (`<>:\"/\\|?*`).  \n6. **Lowercase** → everything lowercase.  \n7. **Trim trailing dots/spaces** → none.  \n8. **Reserved names** → not matching Windows reserved names.  \n\nResulting mapped filename:\n\n```\ngmail-you're-eligible-for-a-reward-hdfc-bank-moneyback+-credit-card\n```\n\nIf you save it as a file, you’d append the extension (e.g., `.pdf`):\n\n```\ngmail-you're-eligible-for-a-reward-hdfc-bank-moneyback+-credit-card.pdf\n```\n\n---\n\n💡 **Note:** The `+` character is technically allowed on all major platforms, but if you want to be ultra‑safe (especially for scripts or URLs), you could replace `+` with `plus`:\n\n```\ngmail-youre-eligible-for-a-reward-hdfc-bank-moneybackplus-credit-card.pdf\n```\n\nWould you prefer to **keep symbols like `+`** in mapped names, or should we normalize them into words like `plus` for maximum portability?"
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515972
+  },
+  {
+    "id": "copilot_3KkKVssJMWdRmcw4ep5cA",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "user",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "We have to need url safe and script safe to"
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515972
+  },
+  {
+    "id": "copilot_pxKuoBTrPxhdTHGWmyrvH",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "assistant",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "### Filename strategy comparison\n| **Approach** | **URL safe** | **Shell/script safe** | **Human readable** |\n|---|---:|---:|---:|\n| Percent‑encode reserved chars | Yes | Yes | Low (hard to read) |\n| Replace symbols with words (e.g., `+` → `plus`) | Yes | Yes | High |\n| Replace symbols with `-` or `_` | Yes | Mostly (some symbols lost) | Medium |\n\n---\n\n### Recommendation\n**Use transliteration → symbol‑to‑word mapping → strict character whitelist.**  \n**Why:** produces filenames that are RFC3986‑friendly, safe in shells and scripts, easy to read, and deterministic for mapping and search.\n\n**Policy summary**\n- **Transliterate** all Unicode to ASCII using `Unidecode`.  \n- **Map common symbols** to words: `+` → `plus`, `&` → `and`, `@` → `at`, `%` → `pct`, `#` → `hash`.  \n- **Remove** apostrophes and other quotes.  \n- **Allow only** lowercase letters `a–z`, digits `0–9`, hyphen `-`, underscore `_`, and dot `.` (for extension).  \n- **Replace any other character** with `-`. Collapse repeated `-` into one. Trim leading/trailing `-` or `.`.  \n- **Ensure** filename does not start with `-` or `.`; if it would, prefix with `file-`.  \n- **Avoid Windows reserved names** by appending `_file` if needed.  \n- **Limit length** to a safe value (recommend 200 characters including extension).\n\n---\n\n### Python implementation (drop into `sanitize_filename.py`)\n```python\n#!/usr/bin/env python3\nimport unicodedata, re, os, sys\nfrom unidecode import unidecode\n\nSYMBOL_MAP = {\n  '+': 'plus', '&': 'and', '@': 'at', '%': 'pct', '#': 'hash', '/': '-', '\\\\': '-'\n}\n\nWINDOWS_RESERVED = {\"CON\",\"PRN\",\"AUX\",\"NUL\"} | {f\"COM{i}\" for i in range(1,10)} | {f\"LPT{i}\" for i in range(1,10)}\n\ndef sanitize_basename(name):\n    name = unicodedata.normalize('NFC', name)\n    name = ''.join(ch for ch in name if unicodedata.category(ch)[0] != 'C')\n    name = unidecode(name)\n    # map symbols to words first\n    for s, w in SYMBOL_MAP.items():\n        name = name.replace(s, f\"-{w}-\")\n    # remove quotes/apostrophes\n    name = name.replace(\"'\", \"\").replace('\"', '')\n    # replace any non-whitelisted char with hyphen\n    name = re.sub(r'[^A-Za-z0-9._-]+', '-', name)\n    # collapse multiple hyphens/underscores\n    name = re.sub(r'[-_]{2,}', lambda m: m.group(0)[0], name)\n    name = name.strip(' ._-').lower()\n    if not name:\n        name = 'file'\n    if name.upper() in WINDOWS_RESERVED:\n        name = name + '_file'\n    # avoid leading dash or dot\n    if name[0] in '-.':\n        name = 'file-' + name.lstrip('-.')\n    # enforce max length (200 chars)\n    if len(name) > 200:\n        base, ext = os.path.splitext(name)\n        name = base[:200 - len(ext)] + ext\n    return name\n```\n\n---\n\n### Example mapping\nOriginal:  \n`Gmail - You're eligible for a Reward - HDFC Bank MoneyBack+ Credit Card.pdf`\n\nStep results:\n- Transliterate: same (ASCII)\n- Symbol map: `+` → `plus`\n- Remove apostrophe: `Youre`\n- Spaces → `-`\n- Lowercase\n\n**Final mapped filename**\n```\ngmail-youre-eligible-for-a-reward-hdfc-bank-moneyback-plus-credit-card.pdf\n```\n\n---\n\n### Integration notes\n- **Update** `sanitize_filename.py` in repo with the code above.  \n- **Pre‑commit hook**: keep `sanitize_commit_filenames.py` to call `sanitize_basename` and reject commits when staged names differ. Write suggested mapping to repo root `.filename-suggested-map.json`.  \n- **Migration**: run `migrate_filenames.py --dry-run`, inspect `filename-map-dryrun.json`, resolve collisions, then `--apply`.  \n- **CI**: run the same sanitizer in Codemagic to block PRs with unsafe names.  \n- **Documentation**: update `FILENAME_POLICY.md` to state symbol→word mappings and the whitelist.\n\n---\n\nIf you want, I’ll update the repo scripts now to apply this exact mapping logic and show the dry‑run result for your repository example filenames."
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515972
+  },
+  {
+    "id": "copilot_DQr4YaXRJvLqf6Dkaf3wT",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "user",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "Gmail - ProPeers App New DSA Patterns Edition at Lowest Price.pdf"
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515972
+  },
+  {
+    "id": "copilot_aCbLqhrFKttYrdqiX7mPs",
+    "chatGroupId": "cqiJTHrq1sW4Fe32FEiQJ",
+    "role": "assistant",
+    "model": "copilot",
+    "displayModel": "Copilot",
+    "contents": [
+      {
+        "type": "markdown",
+        "content": "Applying the **URL‑safe + script‑safe policy** we defined:\n\n1. **Normalize Unicode** → already ASCII.  \n2. **Remove control/invisible characters** → none present.  \n3. **Transliterate** → not needed (English text).  \n4. **Symbol mapping** → no `+`, `&`, `@`, etc. here.  \n5. **Remove apostrophes/quotes** → none.  \n6. **Whitespace → `-`** → spaces become dashes.  \n7. **Lowercase** → all letters lowercase.  \n8. **Whitelist only** `[a–z0–9._-]`.  \n9. **Trim leading/trailing dots/spaces/hyphens**.  \n10. **Reserved names check** → not matching Windows reserved names.  \n\n**Final mapped filename:**\n```\ngmail-propeers-app-new-dsa-patterns-edition-at-lowest-price.pdf\n```\n\nThis is safe for:\n- **URLs** (no unsafe symbols, only lowercase letters, digits, hyphens, and dot for extension).  \n- **Scripts/shells** (no spaces, quotes, or special characters).  \n\n---\n\n👉 If you’d like, I can show you how the sanitizer script processes this step‑by‑step so you can see exactly how each rule applies. Would you like me to demonstrate that?"
+      }
+    ],
+    "created_at": "",
+    "updated_at": 1772827515972
+  }
+]
