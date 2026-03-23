@@ -41,9 +41,9 @@ tasks, or capabilities, the system mandates a **Skill-First** architecture.
 - **Skill Directory**: Skills are housed in `.agent/skills/<skill-name>/` (legacy/single-agent) or
   `.agents/skills/<skill-name>/` (plural/standardized).
 - **Core Skill Files**:
-    - `SKILL.md`: The Single Source of Truth (SSOT). Contains active instructions following the **agentskills.io protocol**
+    - `SKILL.md`: The SSOT containing active instructions following the **agentskills.io protocol**
       (YAML frontmatter + Markdown body).
-    - `AGENTS.md`: The companion bridge. Provides "passive context" and refers tools back to the `SKILL.md`.
+    - `AGENTS.md`: The companion bridge providing "passive context" and referring tools back to the `SKILL.md`.
 - **Independence Mandate**: Every Skill MUST be self-contained. It MUST manage its own environmental verification,
   dependencies, and execution logic independently.
 
