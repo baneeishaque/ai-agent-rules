@@ -763,7 +763,8 @@ echo "World"
 Apply the following manual troubleshooting strategies during the generation phase or if `markdownlint-cli2 --fix`
 fails to resolve the violation:
 
-- **MD013 (Line Length)**: Use reference-style links for long URLs. Honor project-specific configuration (e.g., `.markdownlint.jsonc`) for line-length and wrapping.
+- **MD013 (Line Length)**: Use reference-style links for long URLs. Honor project-specific configuration (e.g.,
+  `.markdownlint.jsonc`) for line-length and wrapping.
 - **MD033 (Inline HTML)**: Wrap `<PLACEHOLDERS>` in backticks (e.g., `` `<PLACEHOLDER>` ``).
 - **MD051 (Links)**: Check for malformed code fences. Closing fences must be plain ` ``` `.
 - **Marker Links**: Escape bracketed markers like `[DONE]` with backticks: `` `[DONE]` ``.
