@@ -95,6 +95,9 @@ The content must balance conciseness with technical depth:
   NOT be removed unless explicitly requested or proven duplicate. New information MUST be blended into existing content
   to create an enhanced, "greater-than-before" version. If content is removed, the rationale and original content
   (if unique) must be preserved in a "Design Appendix" or session log.
+- **Script SSOT Mandate (Audit Before Creation)**: The agent MUST audit existing skill directories for prior automation
+  scripts before creating new ones. If a script already exists for a similar purpose, it MUST be refined or consolidated
+  rather than duplicated. All scripts MUST reside in a `scripts/` subdirectory within the skill folder.
 - **Pedagogical Snippets**: Use code blocks to demonstrate correct command usage or file formats.
 
 - **Architectural Samples (PoC)**: Rules defining complex patterns MUST link to high-fidelity reference implementations
