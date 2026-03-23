@@ -75,24 +75,32 @@ a single, chained command presented to the user.
     generate an upgrade command followed by a cleanup command, chained with `&&`.
     - `brew upgrade --verbose [--cask|--formula] <package> && brew cleanup --verbose <package>`
 
-5. **Handle Mixed Operations**: For requests involving other operations like `fetch`, chain them appropriately
-    within the sequence.
+5. **Handle Mixed Operations**: The position of `brew fetch` within the chain is **critical**:
+    - `brew upgrade` and `brew install` operations chain normally within the sequence.
+    - `brew fetch` (download-only) operations MUST be placed **after** the final `brew cleanup --prune=all`
+      step. Placing `fetch` **before** the final cleanup will cause the downloaded files to be immediately
+      deleted by `cleanup --prune=all`, defeating the purpose of the download.
 
 6. **Assemble Final Command**: Combine all operations into a single one-line command.
     - **Prefix with `export`**: Start the entire command line with `export HOMEBREW_DOWNLOAD_CONCURRENCY=1;` to
       ensure the download setting applies to all subsequent operations in the chain.
-    - **Add Final Cleanup**: Append a final, comprehensive cleanup to the very end of the chain:
+    - **Add Final Cleanup**: Append the comprehensive cleanup before any fetch operations:
       `&& brew cleanup --prune=all --verbose`.
+    - **Append Fetch Last**: Any `brew fetch` (download-only) operations MUST follow the final cleanup:
+      `&& brew cleanup --prune=all --verbose && brew fetch --cask --verbose <pkg1> && brew fetch --cask --verbose <pkg2>`.
 
 7. **Present to User**: The agent's final action MUST be to output the complete command as a single line of text within a markdown code block. The agent MUST NOT execute the command itself. This allows the user to review, copy, and run the command manually.
 
 - **Example of Final Command Construction**:
 
     ```bash
-    # User: upgrade all, but exclude antigravity and whatsapp. Prioritize google-chrome and onedrive. Just download gemini-cli.
-    # Agent, applying priority and sequential rules, constructs a single command:
-    export HOMEBREW_DOWNLOAD_CONCURRENCY=1; brew upgrade --verbose --cask google-chrome && brew cleanup --verbose google-chrome && brew upgrade --verbose --cask onedrive && brew cleanup --verbose onedrive && brew upgrade --verbose <other_package_1> && brew cleanup --verbose <other_package_1> && brew fetch --verbose gemini-cli && brew cleanup --prune=all --verbose
+    # User: upgrade other casks. Just download antigravity, fork, google-chrome, onedrive, warp@preview.
+    # Agent constructs a single command — fetch operations come AFTER the final cleanup:
+    export HOMEBREW_DOWNLOAD_CONCURRENCY=1; brew upgrade --verbose --cask <other_cask_1> && brew cleanup --verbose <other_cask_1> && brew upgrade --verbose --cask <other_cask_2> && brew cleanup --verbose <other_cask_2> && brew cleanup --prune=all --verbose && brew fetch --cask --verbose antigravity && brew fetch --cask --verbose fork && brew fetch --cask --verbose google-chrome && brew fetch --cask --verbose onedrive && brew fetch --cask --verbose warp@preview
     ```
+
+    > **Why fetch comes last**: `brew cleanup --prune=all` removes all cached downloads. Any `brew fetch`
+    > operation placed before the final cleanup will have its downloaded files deleted immediately.
 
 ### 3.1. Prioritized & Mixed-Operation Upgrades
 
