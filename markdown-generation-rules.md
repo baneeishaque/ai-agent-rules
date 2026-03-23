@@ -326,6 +326,16 @@ For repositories nested within the parent monorepo:
   4. Nested `.gitignore` rules (e.g., in `sync/`, `samples/cra-project/`) incorporated via relative paths.
 - **Independence**: This ensures sub-repos can be linted independently while maintaining adherence to global standards.
 
+#### 4.2.7 Registry Link Standards
+
+In centralized registry files (e.g., `AGENTS.md`), links to internal repository paths MUST follow these formatting
+requirements:
+
+- **Backtick Labels**: The link label MUST be the full relative path to the file, enclosed in backticks (e.g.,
+  `[`.agents/skills/my_skill/SKILL.md`](.agents/skills/my_skill/SKILL.md)`).
+- **Consistency**: All links within the same registry table MUST follow this exact style for uniform readability and
+  automatic navigation support.
+
 ### 4.3 Section Dividers (Industrial Standard)
 
 - **Marker**: Use three asterisks (`***`) for all horizontal rules.
