@@ -131,3 +131,23 @@ MUST adhere to this priority unless explicitly overridden by the user.
 
     (e.g., "upgrade firefox first"), the user-specified priority MUST be honored first. The agent will then apply the
     default priority order to the remaining packages being upgraded.
+
+***
+
+## 5. Formula & Cask Installation Reference
+
+### 5.1 Default Install Behaviour
+
+- **Default**: Always use `brew install --verbose <package>` (binary bottle). Do NOT add `--HEAD` or
+  `--build-from-source` unless the user **explicitly** requests it.
+- **User requests HEAD**: `brew install --HEAD --verbose <package>`
+- **User requests source build**: `brew install --build-from-source --verbose <package>`
+
+### 5.2 HEAD-Capable Formulas (reference — only use when explicitly requested)
+
+- `ffmpeg`, `harper`, `mise`, `gh`, `rclone`, `semgrep`
+
+### 5.3 Build-From-Source Only (no HEAD — only use when explicitly requested)
+
+- `tree`, `mongosh`, `gemini-cli`
+- `sqlite` ⚠️ **keg-only** — After install, add `export PATH="/opt/homebrew/opt/sqlite/bin:$PATH"` to `~/.zshenv`
