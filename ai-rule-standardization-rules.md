@@ -91,6 +91,10 @@ The content must balance conciseness with technical depth:
 - **Fidelity Mandate (Zero Omission)**: The agent MUST NEVER summarize or omit technical specifics, operational
   logic, or workflows provided by the user. "Conciseness" applies only to noise reduction, not to the factual depth
   of user-defined constraints.
+- **Preservation Mandate (Additive Refinement)**: The current information in a document is considered correct and MUST
+  NOT be removed unless explicitly requested or proven duplicate. New information MUST be blended into existing content
+  to create an enhanced, "greater-than-before" version. If content is removed, the rationale and original content
+  (if unique) must be preserved in a "Design Appendix" or session log.
 - **Pedagogical Snippets**: Use code blocks to demonstrate correct command usage or file formats.
 
 - **Architectural Samples (PoC)**: Rules defining complex patterns MUST link to high-fidelity reference implementations
