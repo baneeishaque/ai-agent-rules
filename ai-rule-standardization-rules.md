@@ -38,7 +38,8 @@ tasks, or capabilities, the system mandates a **Skill-First** architecture.
 
 - **Skill-First Architecture**: Any new, complex work process or agent-specific workflow
   MUST be created as an **Agent Skill** instead of a flat rule file.
-- **Skill Directory**: Skills are housed in `.agent/skills/<skill-name>/`.
+- **Skill Directory**: Skills are housed in `.agent/skills/<skill-name>/` (legacy/single-agent) or
+  `.agents/skills/<skill-name>/` (plural/standardized).
 - **Core Skill Files**:
     - `SKILL.md`: The Single Source of Truth (SSOT). Contains active instructions following the **agentskills.io protocol**
       (YAML frontmatter + Markdown body).
