@@ -1,5 +1,5 @@
 ---
-title: AI Agent Rule Standardization Rules
+name: AI Agent Rule Standardization Rules
 description: Craftsmanship standards for developing "Ultra-Lean Industrial" AI Agent Rules,
     ensuring consistent formatting,
     structural hierarchy, and pedagogical clarity.
@@ -52,7 +52,7 @@ tasks, or capabilities, the system mandates a **Skill-First** architecture.
 
     ```markdown
     ---
-    title: [Short, Impactful Title]
+    name: [Short, Impactful Title]
     description: [One-sentence summary of the rule's scope]
     category: [Existing or New Category]
     ---
