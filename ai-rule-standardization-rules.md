@@ -88,7 +88,9 @@ Rule files must follow a predictable, industrialized structure to maximize reada
 The content must balance conciseness with technical depth:
 
 - **Zero Noise**: Avoid introductory fluff, "happy to help" phrases, or redundant explanations.
-
+- **Fidelity Mandate (Zero Omission)**: The agent MUST NEVER summarize or omit technical specifics, operational
+  logic, or workflows provided by the user. "Conciseness" applies only to noise reduction, not to the factual depth
+  of user-defined constraints.
 - **Pedagogical Snippets**: Use code blocks to demonstrate correct command usage or file formats.
 
 - **Architectural Samples (PoC)**: Rules defining complex patterns MUST link to high-fidelity reference implementations
