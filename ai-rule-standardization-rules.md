@@ -46,6 +46,8 @@ tasks, or capabilities, the system mandates a **Skill-First** architecture.
     - `AGENTS.md`: The companion bridge providing "passive context" and referring tools back to the `SKILL.md`.
 - **Independence Mandate**: Every Skill MUST be self-contained. It MUST manage its own environmental verification,
   dependencies, and execution logic independently.
+- **Path Portability**: All links within a Skill MUST be relative and depth-correct (e.g., `../../../` for
+  skills residing 3 levels deep) to ensure zero-dependency portability across filesystems.
 
 - **File Naming**: Use strictly lowercase, kebab-case ending in `-rules.md` (e.g., `git-submodule-rules.md`).
 
