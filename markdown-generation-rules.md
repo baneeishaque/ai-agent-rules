@@ -415,6 +415,13 @@ To ensure consistent and efficient validation:
     - Verify commands in the target shell environment (e.g., `bash`, `zsh`, `PowerShell`) if generic syntax is not
         erroneous.
 
+5. **IDE Synchronization (CRITICAL)**:
+    - To ensure the VS Code `markdownlint` extension (DavidAnson) respects the workspace's Industrial standards,
+      the agent MUST verify that the `.vscode/settings.json` file explicitly references the config.
+    - **Protocol**: Add `"markdownlint.configFile": ".markdownlint.jsonc"` to the workspace settings.
+    - **Rationale**: Extensions often ignore `.jsonc` files or use default (80-char) rules unless explicitly pointed
+      to the workspace configuration. Parity between the IDE (real-time) and CLI (CI/CD) is mandatory.
+
 Before finalizing any Markdown file, the agent MUST validate against the following rules using `markdownlint-cli2`.
 
 ### 5.1 Common Rules & Aliases
