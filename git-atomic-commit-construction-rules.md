@@ -17,6 +17,41 @@ protocols defined in [git-operation-rules.md](./git-operation-rules.md).
 
 ***
 
+## 0. Section 0: Environment & Working Directory Management
+
+Before performing any phase, the agent MUST establish reliable working directory handling.
+
+- **Working Directory Targeting (CRITICAL)**: When executing git commands across 
+  one or more repositories, use `git -C <path> <command>` exclusively for reliability.
+  
+  ```bash
+  # Recommended pattern for absolute paths
+  git -C /workspaces/repo-name status
+  git -C /workspaces/repo-name diff HEAD
+  ```
+
+- **Why `git -C` is mandatory**: Shell-level `cd` commands do not persist working 
+  directory state across stateless or multi-invocation execution environments 
+  (including tool chains, CI systems, and agent frameworks). Using `git -C` ensures 
+  every git command executes in the correct repository context regardless of how 
+  invocations are orchestrated.
+
+- **Multi-Repository Workflows**: When analyzing or committing changes across 
+  multiple repositories in sequence, always use `git -C` with explicit absolute 
+  paths to prevent cross-repository contamination:
+  
+  ```bash
+  git -C /repo1 status --porcelain
+  git -C /repo2 status --porcelain
+  git -C /repo1 add file.txt  # Executes only in /repo1
+  ```
+
+- **Audit Trail Clarity**: Using `git -C /absolute/path` makes command intent 
+  explicit in logs and transcripts, eliminating ambiguity about which repository 
+  is being operated on.
+
+***
+
 ## 1. Phase 1: Deep Change Analysis
 
 Before staging any files, the agent MUST perform a dependency analysis of all
