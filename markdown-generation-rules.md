@@ -1,5 +1,5 @@
 ---
-title: Markdown Generation Rules
+name: Markdown Generation Rules
 description: Standards for creating machine-parseable, lint-compliant markdown documents.
 category: Documentation & Standards
 ---
