@@ -271,7 +271,7 @@ and clear.
 - **Orchestration**: Delegate metadata extraction to the
   `git_submodule_commit_details` skill to ensure zero-omission fidelity.
 - **Commit Message Generation**: All submodule sync commits MUST follow the
-  strict formatting and metadata requirements defined in
+  strict formatting, chronological ordering, and metadata requirements defined in
   [git-commit-message-rules.md#5-submodule-sync-commits-parent-repository](./git-commit-message-rules.md#5-submodule-sync-commits-parent-repository).
 - **Submodule History Integrity**: Before updating a submodule pointer in the
   parent repository, the changes *within* the submodule MUST be committed
