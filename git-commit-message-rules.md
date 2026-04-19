@@ -123,14 +123,21 @@ It uses a new service and I also updated the interceptor.
 - **Title**: Summarize the submodule update and its impact (e.g., `chore(submodule): sync [submodule-name] with [key change]`).
 - **Full Metadata Body (MANDATORY)**: The body MUST contain the complete,
   structured industrial record of the submodule advance.
+- **Changes Section Header**: `Changes (<submodule-name>):`
+- **Chronological Order**: The commit list MUST be ordered from **older to newer**.
+- **Metadata Section Header**: `Metadata (<submodule-name>):`
 - **Mandatory Fields**:
   - `Submodule: <name> -> <new-sha>`
   - `Submodule commit parent: <sha>`
   - `Submodule commit msg: <title>`
-  - `Submodule commit changes`: List paths and line counts.
-  - `Submodule commit author`: Name, email, and timestamp.
+  - `Submodule commit changes`: List paths and line counts (for the tip commit).
+  - `Submodule commit author`: <name> <email>
+  - `Submodule commit author time`: <timestamp>
+  - `Submodule commit committer`: <name> <email>
+  - `Submodule commit committer time`: <timestamp>
 - **Registration URL**: Every sync commit MUST include the registration URL from
-  `.gitmodules` for lineage traceability.
+  `.gitmodules` at the end of the metadata block:
+  `Register <submodule-name> submodule pointing to <registration-url>`
 - **Content Summary**:
   - Body must list key changes introduced by the submodule update, based on
     the submodule's commit messages.
