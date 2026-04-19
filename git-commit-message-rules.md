@@ -123,7 +123,9 @@ It uses a new service and I also updated the interceptor.
 - **Title**: Summarize the submodule update and its impact (e.g., `chore(submodule): sync [submodule-name] with [key change]`).
 - **Full Metadata Body (MANDATORY)**: The body MUST contain the complete,
   structured industrial record of the submodule advance.
-- **Changes Section Header**: `Changes (<submodule-name>):`
+- **Changes Section Header**: `Changes (<submodule-name>) [<old-sha>..<new-sha>]:`
+  - **Mandatory**: Use the full 40-character SHAs for both the previous pointer
+    and the new pointer.
 - **Chronological Order**: The commit list MUST be ordered from **older to newer**.
 - **Metadata Section Header**: `Metadata (<submodule-name>):`
 - **Mandatory Fields**:
