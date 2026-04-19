@@ -152,6 +152,11 @@ The content must balance conciseness with technical depth:
     maximum-detail, industry-standard examples (e.g., Nostr, WASM, RxDB) that can be reused or generated as new
     implementations according to the situation.
 
+- **Inter-Document SSOT**: To maintain a Single Source of Truth across the rule
+    set, documentation MUST NOT duplicate content that exists in another
+    definitive rule file. Instead, it MUST use **Relative Section Links** to
+    refer the agent to the authoritative source (e.g., refer to the
+    `git-commit-message-rules.md` for formatting standards).
 - **Selection & Trade-offs**: Rules MUST clearly explain the options, trade-offs, and alternatives available for an
     architectural pattern. The assistant MUST iterate with the USER to present all options (sorted by priority) and
     discuss the best fit for the context before concluding with a final recommendation for approval.
