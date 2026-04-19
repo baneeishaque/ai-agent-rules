@@ -52,7 +52,17 @@ Before performing any phase, the agent MUST establish reliable working directory
 
 ***
 
-## 1. Phase 1: Deep Change Analysis
+## 1. Phase 1: Repository State & Branch Verification
+
+Before any staging or commit operations, the agent MUST verify the repository's health and branch state.
+
+- **Active Branch Mandate**: The agent MUST NOT commit to a "detached HEAD" state (common in submodules). 
+- **Branch Checkout**: If in a detached state, the agent MUST explicitly check out the appropriate branch (usually the default branch, e.g., `main`) before proceeding.
+- **Upstream Synchronization**: The agent MUST ensure the local branch is synchronized with its upstream (e.g., via `git pull`) to avoid conflicts during the push phase.
+
+***
+
+## 2. Phase 2: Deep Change Analysis
 
 Before staging any files, the agent MUST perform a dependency analysis of all
 modifications.
@@ -86,7 +96,7 @@ modifications.
 
 ***
 
-## 2. Phase 2: Logical Grouping (Arrangement)
+## 3. Phase 3: Logical Grouping (Arrangement)
 
 The agent must "arrange" the detected changes into a proposed sequence of
 commits.
@@ -177,7 +187,7 @@ To ensure absolute precision and user control, the agent MUST adhere to these fo
 
 ***
 
-## 3. Phase 3: Interactive Hunk-Based Staging
+## 4. Phase 4: Interactive Hunk-Based Staging
 
 When a file contains mixed concerns, the agent MUST use interactive staging
 tools.
@@ -200,7 +210,7 @@ tools.
 
 ***
 
-## 4. Phase 4: Formatting and Structural Partitioning
+## 5. Phase 5: Formatting and Structural Partitioning
 
 To prevent stylistic or structural changes from obscuring functional history,
 the agent MUST explicitly partition these modifications into distinct
@@ -230,7 +240,7 @@ non-functional commits.
 
 ***
 
-## 5. Phase 5: Configuration Coupling
+## 6. Phase 6: Configuration Coupling
 
 Tool configurations and metadata must be atomically linked to the documentation
 or code they support.
@@ -249,7 +259,7 @@ or code they support.
 
 ***
 
-## 6. Phase 6: Submodule Synchronization Protocol
+## 7. Phase 7: Submodule Synchronization Protocol
 
 When managing submodules, the main repository's history must remain descriptive
 and clear.
@@ -264,7 +274,7 @@ and clear.
 
 ***
 
-## 7. Phase 7: Handling Generated Files vs. User Customization
+## 8. Phase 8: Handling Generated Files vs. User Customization
 
 When a file (e.g., `.gitignore`) contains both standard API-generated content
 (e.g., from gitignore.io) and user-defined custom rules, these MUST be split
@@ -285,7 +295,7 @@ into separate commits.
 
 ***
 
-## 8. Phase 8: Commit Message Quality Standards
+## 9. Phase 9: Commit Message Quality Standards
 
 - **Specificity Over Genericity**: Avoid generic titles like `os-specific`.
   Instead, list the specific components: `add linux, macos, and windows
@@ -317,7 +327,7 @@ into separate commits.
 
 ***
 
-## 9. Phase 9: Execution & Verification
+## 10. Phase 10: Execution & Verification
 
 - **Step-by-Step**: Execute commits one-by-one according to the approved
   arrangement.
@@ -338,7 +348,7 @@ into separate commits.
 
 ***
 
-## 10. Phase 10: Logic-Documentation Alignment (Compass)
+## 11. Phase 11: Logic-Documentation Alignment (Compass)
 
 Imagine a compass where each cardinal direction is a logical area of the
 codebase.
@@ -367,7 +377,7 @@ distinct purposes.
 
 ***
 
-## 11. Phase 11: Source Logic & Generated Files
+## 12. Phase 12: Source Logic & Generated Files
 
 When working with repositories that use code generation, templates, or CI/CD
 automation, the agent MUST distinguish between source logic and generated
@@ -421,7 +431,7 @@ history refinement or atomic commit construction.
 
 ***
 
-## 12. Phase 12: User-Requested Coupling & Deviations
+## 13. Phase 13: User-Requested Coupling & Deviations
 
 The agent must strictly follow the atomic protocols defined above. However, if
 the user explicitly requests to couple unrelated changes or deviate from the
