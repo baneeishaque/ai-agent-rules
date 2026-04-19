@@ -268,10 +268,15 @@ and clear.
 - **Synchronized Commits**: Every functional update in a submodule requiring a
   pointer update in the main repo MUST be coupled with its relevant main-repo
   configuration changes (e.g., CI scripts or IDE settings).
-- **Descriptive Titles (Mandatory)**: Main repo sync commits MUST NOT use
-  generic titles like `sync submodule`. They MUST provide a maximum-detail
-  summary of the modular improvements contained within (e.g., `docs: sync
-  rules submodule and update markdown generation standards`).
+- **Orchestration**: Delegate metadata extraction to the
+  `git_submodule_commit_details` skill to ensure zero-omission fidelity.
+- **Commit Message Generation**: All submodule sync commits MUST follow the
+  strict formatting and metadata requirements defined in
+  [git-commit-message-rules.md#5-submodule-sync-commits-parent-repository](./git-commit-message-rules.md#5-submodule-sync-commits-parent-repository).
+- **Submodule History Integrity**: Before updating a submodule pointer in the
+  parent repository, the changes *within* the submodule MUST be committed
+  according to these exact atomic construction rules. A "dirty" or
+  uncommitted submodule state is prohibited during a parent-repo sync.
 
 ***
 
