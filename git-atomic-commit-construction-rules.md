@@ -59,6 +59,7 @@ Before any staging or commit operations, the agent MUST verify the repository's 
 - **Active Branch Mandate**: The agent MUST NOT commit to a "detached HEAD" state (common in submodules). 
 - **Branch Checkout**: If in a detached state, the agent MUST explicitly check out the appropriate branch (usually the default branch, e.g., `main`) before proceeding.
 - **Upstream Synchronization**: The agent MUST ensure the local branch is synchronized with its upstream (e.g., via `git pull`) to avoid conflicts during the push phase.
+- **Build Tool Permissions**: The agent MUST ensure that necessary build tools (e.g., `gradlew`) have appropriate execute permissions before starting the commit process.
 
 ***
 
