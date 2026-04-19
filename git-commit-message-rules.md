@@ -120,17 +120,27 @@ It uses a new service and I also updated the interceptor.
 
 ### 5. Submodule Sync Commits (Parent Repository)
 
-- Title must summarize the submodule update and its impact (e.g., chore(submodule): sync [submodule-name] with [key
-
-    change]).
-
-- Body must list key changes introduced by the submodule update, based on the submodule’s commit messages.
-
-- Do not include only the commit SHA; always summarize the actual changes.
-
-- Do not repeat information from the title in the body.
-
-- Use bullet points for all details, wrap at 72 characters, and follow all other formatting and style rules.
+- **Title**: Summarize the submodule update and its impact (e.g., `chore(submodule): sync [submodule-name] with [key change]`).
+- **Full Metadata Body (MANDATORY)**: The body MUST contain the complete,
+  structured industrial record of the submodule advance.
+- **Mandatory Fields**:
+  - `Submodule: <name> -> <new-sha>`
+  - `Submodule commit parent: <sha>`
+  - `Submodule commit msg: <title>`
+  - `Submodule commit changes`: List paths and line counts.
+  - `Submodule commit author`: Name, email, and timestamp.
+- **Registration URL**: Every sync commit MUST include the registration URL from
+  `.gitmodules` for lineage traceability.
+- **Content Summary**:
+  - Body must list key changes introduced by the submodule update, based on
+    the submodule's commit messages.
+  - Do not include only the commit SHA; always summarize the actual changes.
+  - Do not repeat information from the title in the body.
+- **No Paraphrasing**: The submodule's original commit message body must be
+  preserved without summarization or omission.
+- **Format Consistency**: Use bullet points for all details, wrap lines at 72
+  characters, follow all other formatting rules, and maintain standard
+  imperative mood for the title.
 
 ### 6. Summarizing Opaque or Binary Changes
 
