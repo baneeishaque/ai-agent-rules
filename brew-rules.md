@@ -26,10 +26,14 @@ Before running any `brew` command, the agent MUST ensure maximum visibility and 
 
 - **Verbose Logging**: Every `brew` command MUST include the `--verbose` flag.
 
+- **Cleanup Does NOT Accept `--cask` or `--formula` Flags**: `brew cleanup` only takes formula/cask names as
+  positional arguments. Never pass `--cask` or `--formula` to `brew cleanup`. Invalid:
+  `brew cleanup --verbose --cask google-chrome` — Valid: `brew cleanup --verbose google-chrome`
+
 - **Example of Chained Command**:
 
     ```bash
-    export HOMEBREW_DOWNLOAD_CONCURRENCY=1; brew upgrade --verbose package1 && brew cleanup --verbose package1
+    export HOMEBREW_DOWNLOAD_CONCURRENCY=1; brew upgrade --verbose --cask google-chrome && brew cleanup --verbose google-chrome
     ```
 
 ***
@@ -73,7 +77,7 @@ a single, chained command presented to the user.
 
 4. **Construct Command Sequence**: For each package (respecting **Default Upgrade Priority** and user-specified order),
     generate an upgrade command followed by a cleanup command, chained with `&&`.
-    - `brew upgrade --verbose [--cask|--formula] <package> && brew cleanup --verbose <package>`
+     - `brew upgrade --verbose --cask <package> && brew cleanup --verbose <package>` (use `--cask` or `--formula` on `upgrade` only, never on `cleanup`)
 
 5. **Handle Mixed Operations**: The position of `brew fetch` within the chain is **critical**:
     - `brew upgrade` and `brew install` operations chain normally within the sequence.
