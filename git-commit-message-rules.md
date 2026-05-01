@@ -120,18 +120,24 @@ It uses a new service and I also updated the interceptor.
 
 ### 5. Submodule Sync Commits (Parent Repository)
 
-- **Title**: Summarize the submodule update and its impact (e.g., `chore(submodule): sync [submodule-name] with [key change]`).
+- **Title**: `chore(submodules): sync <submodule-name> with <descriptive-action>`
+  - First line format: `chore(submodules): sync <submodule-name> with <action>`
+  - Include a descriptive action that summarizes the changes
+- **Short Summary**: `Updates <submodule-name> from <old-sha-short> to <new-sha-short> (<head-commit-title>)`
 - **Full Metadata Body (MANDATORY)**: The body MUST contain the complete,
   structured industrial record of the submodule advance.
 - **Changes Section Header**: `Changes (<submodule-name>) [<old-sha>..<new-sha>]:`
   - **Mandatory**: Use the full 40-character SHAs for both the previous pointer
     and the new pointer.
+  - **Format**: Bullet points (`-`) listing commits in chronological order (older to newer)
 - **Chronological Order**: The commit list MUST be ordered from **older to newer**.
 - **Metadata Section Header**: `Metadata (<submodule-name>):`
 - **Mandatory Fields**:
   - `Submodule: <name> -> <new-sha>`
   - `Submodule commit parent: <sha>`
-  - `Submodule commit msg: <title>`
+    (merge: <parent1> <parent2> ← only if merge commit)
+  - `Submodule commit msg: <title-line>`
+  - `<body-paragraphs-if-multiline>`
   - `Submodule commit changes`: List paths and line counts (for the tip commit).
   - `Submodule commit author`: <name> <email>
   - `Submodule commit author time`: <timestamp>
