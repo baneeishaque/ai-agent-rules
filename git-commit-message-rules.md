@@ -100,8 +100,7 @@ without forcing a user logout.
 - Add unit tests for token expiration scenarios.
 
 - Update API documentation with new endpoint details.
-
-```bash
+```
 
 **Incorrect Format:**
 
@@ -115,8 +114,7 @@ It uses a new service and I also updated the interceptor.
 * `RefreshToken` service
 
 * Tests
-
-```bash
+```
 
 ### 5. Submodule Sync Commits (Parent Repository)
 
