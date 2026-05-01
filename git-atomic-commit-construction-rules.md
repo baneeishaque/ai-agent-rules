@@ -277,6 +277,21 @@ and clear.
   parent repository, the changes *within* the submodule MUST be committed
   according to these exact atomic construction rules. A "dirty" or
   uncommitted submodule state is prohibited during a parent-repo sync.
+- **Automatic Parent Sync Offer (MANDATORY)**: IMMEDIATELY after successfully
+  committing ANY change to a submodule repository, the agent MUST check the
+  parent repository (if one exists — i.e., the submodule is nested inside
+  another Git repo). If the parent repo's recorded submodule SHA is outdated,
+  the agent MUST PRESENT the proposed sync commit to the user using the arranged
+  commits preview format BEFORE the user has a chance to say anything else.
+  - The parent sync commit MUST be the **very next action** after the submodule
+    commit; do not proceed to unrelated tasks or await user discovery.
+  - The offer message MUST be explicit and directive: "The parent repository
+    needs a submodule SHA update. Execute sync?" or equivalent.
+  - If the user replies with **"yes"** (or any explicit affirmative), the agent
+    MUST immediately execute the parent sync commit without further delay or
+    re-preview.
+  - If the user replies **"no"** or does not explicitly affirm, the agent
+    must NOT commit the parent update and must wait for a clear directive.
 
 ***
 
