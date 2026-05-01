@@ -155,3 +155,9 @@ MUST adhere to this priority unless explicitly overridden by the user.
 
 - `tree`, `mongosh`, `gemini-cli`
 - `sqlite` ⚠️ **keg-only** — After install, add `export PATH="/opt/homebrew/opt/sqlite/bin:$PATH"` to `~/.zshenv`
+
+### 5.4 Dependency vs. Explicit Install Detection (added 2026-05-01)
+
+- **Explicitly installed formulae (leaves)** — Use `brew leaves --installed-on-request` to identify packages installed directly by the user. These are safe to upgrade/remove.
+- **Dependency formulae** — Avoid manually upgrading packages that are installed as dependencies. Use `brew uses --installed` to identify which installed packages depend on a given formula. When the parent package is upgraded, dependencies will be updated automatically.
+- **Before upgrading** — Cross-reference `brew outdated` with `brew leaves --installed-on-request` to filter out dependency formulae that should not be manually handled.
