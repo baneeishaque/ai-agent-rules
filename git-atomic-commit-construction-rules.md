@@ -277,21 +277,62 @@ and clear.
   parent repository, the changes *within* the submodule MUST be committed
   according to these exact atomic construction rules. A "dirty" or
   uncommitted submodule state is prohibited during a parent-repo sync.
-- **Automatic Parent Sync Offer (MANDATORY)**: IMMEDIATELY after successfully
-  committing ANY change to a submodule repository, the agent MUST check the
-  parent repository (if one exists — i.e., the submodule is nested inside
-  another Git repo). If the parent repo's recorded submodule SHA is outdated,
-  the agent MUST PRESENT the proposed sync commit to the user using the arranged
-  commits preview format BEFORE the user has a chance to say anything else.
-  - The parent sync commit MUST be the **very next action** after the submodule
-    commit; do not proceed to unrelated tasks or await user discovery.
-  - The offer message MUST be explicit and directive: "The parent repository
-    needs a submodule SHA update. Execute sync?" or equivalent.
-  - If the user replies with **"yes"** (or any explicit affirmative), the agent
-    MUST immediately execute the parent sync commit without further delay or
-    re-preview.
-  - If the user replies **"no"** or does not explicitly affirm, the agent
-    must NOT commit the parent update and must wait for a clear directive.
+
+*** 
+
+### 7.1 Ordering & Priority (CRITICAL)
+
+- **Submodule-First Discipline**: When a submodule has pending commits (either
+  staged, unstaged, or untracked), the agent MUST handle ALL submodule commits
+  BEFORE proceeding to any parent-repository work. Submodule work takes
+  absolute priority.
+- **Parent Sync Trigger**: ONLY after the submodule's working tree is clean and
+  all submodule commits are finalized does the agent check the parent repository
+  for a stale submodule pointer. If the parent's recorded SHA differs from the
+  submodule's HEAD, the parent sync commit becomes the **next atomic unit**.
+
+*** 
+
+### 7.2 Parent-Side Change Grouping
+
+- **Related Parent Changes CAN be Grouped**: If the parent repository contains
+  unstaged changes that are **directly related to the submodule update** (e.g.,
+  adding skill implementation code for a newly committed rule, updating CI
+  workflows that reference the submodule, or documentation that describes the
+  submodule's new behavior), these changes MAY be combined with the submodule
+  SHA sync commit into a single atomic unit.
+  - The combined commit MUST clearly document BOTH the submodule pointer advance
+    AND the parent-side functional changes in the commit body.
+  - The commit message MUST explain the coupling rationale: e.g., "Skill
+    implementation for the newly mandated rule" or "CI update to support
+    submodule's new behavior."
+- **Unrelated Parent Changes MUST be Separate**: If the parent repository has
+  changes unrelated to the submodule update (e.g., fixing a typo in an unrelated
+  README, updating a different skill), these MUST be staged and committed
+  **after** the submodule sync commit completes, as a separate atomic unit.
+
+*** 
+
+### 7.3 Automatic Parent Sync Offer (MANDATORY)
+
+Immediately after successfully committing ANY change to a submodule repository,
+the agent MUST:
+
+1. **Check parent state** — If the submodule is nested inside a parent Git repo,
+   run `git -C <parent-path> status` to verify the submodule entry shows
+   `modified: <submodule-name> (new commits)`.
+2. **Present arranged commit preview** — Show the parent sync commit using the
+   full arranged commits format (§4) BEFORE the user has a chance to say
+   anything else.
+   - If parent-side related changes exist, group them with the SHA update as
+     described in §7.2.
+3. **Prompt explicitly**: "The parent repository needs a submodule SHA update.
+   Execute sync?" (or equivalent directive).
+4. **On "yes"** — Execute the parent sync commit **immediately** without
+   re-preview.
+5. **On "no" or ambiguous** — Do NOT commit. Await explicit user directive.
+6. **Do not proceed** to unrelated tasks until the parent sync matter is
+   resolved (either committed or explicitly deferred by user).
 
 ***
 
