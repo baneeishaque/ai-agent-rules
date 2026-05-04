@@ -39,7 +39,7 @@ tasks, or capabilities, the system mandates a **Skill-First** architecture.
 - **Skill-First Architecture**: Any new, complex work process or agent-specific workflow
   MUST be created as an **Agent Skill** instead of a flat rule file.
 - **Skill Directory**: Skills are housed in `.agent/skills/<skill-name>/` (legacy/single-agent) or
-  `.agents/skills/<skill-name>/` (plural/standardized).
+  `.agents/skills/<skill-name>/` (plural/standardized). Skill names MUST use lowercase letters, numbers, and hyphens (no underscores).
 - **Core Skill Files**:
     - `SKILL.md`: The SSOT containing active instructions following the **agentskills.io protocol**
       (YAML frontmatter + Markdown body).
@@ -50,6 +50,7 @@ tasks, or capabilities, the system mandates a **Skill-First** architecture.
   skills residing 3 levels deep) to ensure zero-dependency portability across filesystems.
 
 - **File Naming**: Use strictly lowercase, kebab-case ending in `-rules.md` (e.g., `git-submodule-rules.md`).
+- **Skill Naming**: Skill names in YAML frontmatter MUST use lowercase letters, numbers, and hyphens (no underscores or spaces).
 
 - **YAML Frontmatter**: Every file MUST start with the following metadata block:
 
