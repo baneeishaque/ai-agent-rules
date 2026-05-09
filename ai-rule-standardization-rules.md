@@ -110,6 +110,23 @@ The content must balance conciseness with technical depth:
 - **Script SSOT Mandate (Audit Before Creation)**: The agent MUST audit existing skill directories for prior automation
   scripts before creating new ones. If a script already exists for a similar purpose, it MUST be refined or consolidated
   rather than duplicated. All scripts MUST reside in a `scripts/` subdirectory within the skill folder.
+- **Script Language Mandate (PowerShell-First)**: When creating a new automation script, the default language is
+  PowerShell (`.ps1`), cross-compatible with **Windows PowerShell 5.1+** and **PowerShell Core 7+**. Other languages
+  (Bash, Python, Node) require an explicit user override or a documented technical justification (e.g., a runtime that
+  is unavailable in PowerShell). All script craftsmanship details — documentation headers (`.SYNOPSIS`,
+  `.DESCRIPTION`, `.PARAMETER`, `.EXAMPLE`, `.NOTES`), execution priority (`pwsh-preview` → `pwsh` fallback),
+  `Common-Utils.ps1` dot-sourcing, and the `Write-Message` empty-string safeguard — are defined in the SSOT at
+  [Script Management Rules](./script-management-rules.md) and MUST be obeyed.
+- **Portable Script Path Mandate**: Any script that depends on a sibling artifact (the shared `Common-Utils.ps1`, a
+  base-skill script under the Layered Composition Mandate, a config file, etc.) MUST resolve that artifact through a
+  path anchored on the script's **own** location — NOT the caller's working directory. In PowerShell, use
+  `Split-Path -Parent $MyInvocation.MyCommand.Path` and `Join-Path` with relative `..\` segments, then `Resolve-Path`
+  for diagnostic clarity. Hard-coded absolute paths and `$PWD`-relative paths are FORBIDDEN.
+- **Recursive Submodule Mandate**: Any documented `git submodule add`, `git submodule update --init`, or
+  `git clone` instruction MUST use the recursive form (`--recursive` for `submodule update`, `--recurse-submodules`
+  for `clone`). Submodules frequently embed their own submodules, and a non-recursive instruction silently leaves
+  nested pointers uninitialized — a class of bug that surfaces only at runtime. See the
+  [Git Submodule Addition](../.agents/skills/git-submodule-addition/SKILL.md) skill §3.3 for the canonical commands.
 - **Pedagogical Snippets**: Use code blocks to demonstrate correct command usage or file formats.
 
 - **Architectural Samples (PoC)**: Rules defining complex patterns MUST link to high-fidelity reference implementations
