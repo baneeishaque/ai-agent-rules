@@ -209,3 +209,64 @@ When rebasing with unstaged changes, use `git stash` to temporarily save work.
     ```bash
     git stash list
     ```
+
+### 5. Stash Preservation (Authorization-Gated Destruction)
+
+Stashes are user-authored work-in-progress. They MUST be treated as destructive-to-remove and require **explicit
+per-stash authorization** before any operation that drops, pops-and-loses, clears, or expires them.
+
+#### 5.1. Forbidden Without Explicit Authorization
+
+The following commands MUST NOT be issued by an AI agent unless the user has authorized them for the **specific stash
+ref(s)** in the same conversational turn:
+
+- `git stash drop [<stash>]`
+- `git stash pop [<stash>]` — `pop` deletes the stash on success; treat as drop
+- `git stash clear` — destroys ALL stashes
+- `git reflog expire --expire=... refs/stash` — invisible destruction
+- `git gc --prune=now` while stash refs exist and are unreachable from another ref
+
+"Cleanup" instructions (e.g., "cleanup full", "tidy up", "remove backups") DO NOT implicitly include stash
+removal. Stash drops MUST be itemized and gated separately, even inside a multi-step cleanup batch.
+
+#### 5.2. Required Pre-Drop Protocol
+
+Before requesting authorization to drop a stash:
+
+1. **Inventory** — list all stashes across the repository AND its initialized submodules with
+   `git stash list` (parent and each submodule).
+2. **Inspect** — show the user `git stash show -p <stash>` (or summarized stat) so they can decide whether the work is
+   recoverable elsewhere.
+3. **Diff against current** — if the stash overlaps existing committed/uncommitted work, run
+   `git diff <stash>^1 -- <files>` to surface any unique semantic content the stash would lose on drop.
+4. **Request authorization** — present the verdict ("no unique content" / "unique content present") and STOP for the
+   user's explicit per-stash decision.
+
+#### 5.3. Recovery Window (When a Drop Was Made in Error)
+
+A dropped stash remains as a dangling commit object until pruned (default ~14 days, governed by
+`gc.reflogExpireUnreachable`). To recover:
+
+```bash
+# Capture the SHA from the drop output BEFORE losing the terminal scrollback
+git stash store -m "<original or recovery message>" <dangling-sha>
+git stash list   # confirm restored at stash@{0}
+```
+
+If the SHA was not captured, search the dangling commits:
+
+```bash
+git fsck --unreachable --no-reflogs | awk '/commit/ {print $3}' \
+  | xargs -I{} git log -1 --format="%H %s" {} | grep -i "WIP\|stash\|<known-message>"
+```
+
+#### 5.4. Same-Class Protections (Cross-Reference)
+
+Equivalent authorization gates apply to:
+
+- **Backup branches** (`backup/*`, `bk-*`, `pre-*`) — see
+  [`git-history-refinement-rules.md`](git-history-refinement-rules.md) cleanup gates.
+- **Reflog entries** — `git reflog expire`, `git reflog delete`.
+- **Dangling commits reachable only via reflog** — `git gc --prune=now`, `git prune`.
+
+For any of the above, follow the same Inventory → Inspect → Authorize → Act protocol as for stashes.
