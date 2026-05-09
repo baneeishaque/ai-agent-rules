@@ -1,0 +1,3 @@
+[submodule "powershell-scripts"]
+	path = powershell-scripts
+	url = https://github.com/Baneeishaque/powershell-scripts.git
