@@ -25,6 +25,36 @@ All scripts must dot-source `Common-Utils.ps1` and use its reusable functions fo
 common operations, unless explicitly stated otherwise. Any reusable functions required by multiple scripts must be
 implemented in `Common-Utils.ps1` to ensure DRY principles and maintainability.
 
+### Canonical Location
+
+`Common-Utils.ps1` lives in the [`powershell-scripts`](./powershell-scripts/Common-Utils.ps1) Git submodule of
+`ai-agent-rules` (upstream: <https://github.com/baneeishaque/powershell-scripts>). The submodule itself contains
+nested submodules, so initialization MUST always be recursive:
+
+```bash
+git -C ai-agent-rules submodule update --init --recursive powershell-scripts
+```
+
+When cloning the parent repository for the first time, use the recursive form to materialize every level of the
+submodule tree in one step:
+
+```bash
+git clone --recurse-submodules <parent-repo-url>
+# or, on an already-cloned repo:
+git submodule update --init --recursive
+```
+
+Scripts MUST resolve the dot-source path **relative to their own location** (anchored on
+`Split-Path -Parent $MyInvocation.MyCommand.Path`) rather than relative to the caller's `cwd`, so the lookup remains
+portable across filesystems and platforms. Example for a script residing 4 levels deep below the repo root
+(e.g., `<repo>/.agents/skills/<skill>/scripts/foo.ps1`):
+
+```powershell
+$ScriptDir = Split-Path -Parent -Path $MyInvocation.MyCommand.Path
+$CommonUtilsPath = Join-Path -Path $ScriptDir -ChildPath '..\..\..\..\ai-agent-rules\powershell-scripts\Common-Utils.ps1'
+. $CommonUtilsPath
+```
+
 ## Write-Message Safeguard
 
 When generating scripts, always ensure that no empty string is passed to Write-Message (or any similar output/logging
@@ -46,7 +76,7 @@ function).
 
 - "script" = PowerShell (.ps1) by default
 
-- Repository: ~/sample/path/Sample_Scripts/ (or detected scripts folder)
+- Repository: [`ai-agent-rules/powershell-scripts/`](./powershell-scripts/) (Git submodule)
 
 - Execution priority: pwsh-preview → pwsh (fallback)
 
@@ -60,9 +90,9 @@ function).
 
 ## Usage Examples
 
-- "Create a script" → PowerShell script created in PowerShell-Scripts folder
+- "Create a script" → PowerShell script created in [`powershell-scripts/`](./powershell-scripts/) folder
 
 - "Run script from zsh" → pwsh-preview -File script.ps1
-- "Create bash script" → Bash script created in Bash-Scripts folder (explicit override)
+- "Create bash script" → Bash script created in `Bash-Scripts` folder (explicit override)
 
 - "Write-Message" calls always checked for empty strings
