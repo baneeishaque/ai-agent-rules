@@ -46,6 +46,17 @@ tasks, or capabilities, the system mandates a **Skill-First** architecture.
     - `AGENTS.md`: The companion bridge providing "passive context" and referring tools back to the `SKILL.md`.
 - **Independence Mandate**: Every Skill MUST be self-contained. It MUST manage its own environmental verification,
   dependencies, and execution logic independently.
+- **Layered Composition Mandate (Base → Composer)**: When a workflow contains a generic primitive (e.g., glob assembly,
+  metadata extraction, path normalization) reused by multiple domain-specific tasks, it MUST be split into:
+    1. A **base skill** that owns ONLY the generic primitive, accepts inputs via stdin / file / arguments, and
+       produces a deterministic output. The base skill MUST be domain-agnostic.
+    2. One or more **composer skills** that own the domain-specific discovery (e.g., parsing `.gitmodules`, walking
+       `node_modules`) and pipe their output into the base skill via its public CLI contract.
+  Composer scripts MUST resolve the base script through a relative path (`$(dirname "$0")/../../<base>/scripts/...`)
+  so the pipeline works regardless of the caller's `cwd`. Inlining base logic into a composer is **FORBIDDEN** —
+  duplication breaks the SSOT contract and silently diverges bug fixes. Each composer's `SKILL.md` MUST link to its
+  base skill in a "Composition Rationale" section, and the base skill MUST list known composers in a "Composition by
+  Higher-Level Skills" section so the dependency graph is bidirectionally discoverable.
 - **Path Portability**: All links within a Skill MUST be relative and depth-correct (e.g., `../../../` for
   skills residing 3 levels deep) to ensure zero-dependency portability across filesystems.
 
