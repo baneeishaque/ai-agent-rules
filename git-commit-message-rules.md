@@ -155,6 +155,20 @@ It uses a new service and I also updated the interceptor.
   characters, follow all other formatting rules, and maintain standard
   imperative mood for the title.
 
+#### 5.1 Huge-Range Bookend Variant (>500 commits)
+
+When the submodule advance spans **more than 500 commits**, a flat
+chronological listing becomes impractical (Git practical limits, reviewer
+fatigue, log noise). In that case the agent MUST switch to the **bookend
+variant**:
+
+- **Changes Section Header**: still `Changes (<submodule-name>) [<old-sha>..<new-sha>] (N commits, bookend listing):` where `N` is the exact `git rev-list --count <old>..<new>` figure.
+- **First-K bullets**: list the **oldest 10 commits** in chronological order.
+- **Ellipsis line**: a single bullet `- ... (<N - 20> intermediate commits omitted; full list: \`git -C <submodule> log --oneline <old>..<new>\`)`.
+- **Last-K bullets**: list the **newest 10 commits** in chronological order, ending with the tip commit.
+- **Tip metadata block**: identical to the standard variant (parent, message, changes, author, committer, registration URL) — NEVER omitted.
+- **Threshold**: 500 commits. Below the threshold, use the standard flat list. The threshold MUST be stated explicitly in the body via the `(N commits, bookend listing)` annotation so reviewers know why the list is abridged.
+
 ### 6. Summarizing Opaque or Binary Changes
 
 When changes involve files that Git identifies as binary (e.g., encoded text, large assets, database dumps), the agent
