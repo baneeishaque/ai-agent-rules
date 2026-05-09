@@ -186,6 +186,46 @@ To ensure absolute precision and user control, the agent MUST adhere to these fo
   "commit" or "go" are insufficient; strict authorization ensures the user
   has reviewed the verbose preview.
 
+### 3.1 Interleaving Mandate (Submodule + Related Parent Work)
+
+When the working tree contains **both** submodule pointer advances **and**
+parent-side changes that are functionally related (e.g., a `chore: add
+project-standard gitignore` cherry-picked into a submodule + the parent's
+`.gitmodules` realignment for that same submodule), the Arranged Commits
+sequence MUST **interleave** them in dependency order rather than batching
+all submodule syncs first and all parent edits last:
+
+1. For each submodule with a stale pointer, identify any parent-side files
+   directly tied to that submodule (e.g., `.gitmodules` URL change, root
+   `AGENTS.md` row referencing the submodule, CI workflow paths).
+2. Place those parent-side files in the **same commit** as the submodule
+   sync per §7.2.
+3. Place truly unrelated parent edits **between** submodule syncs only when
+   they share a logical theme (e.g., a skill-pair edit immediately preceding
+   the submodule whose behavior it documents); otherwise place them in a
+   final dedicated batch.
+4. Forbidden anti-pattern: "all 36 submodule syncs first, then all 30 parent
+   edits last" — this destroys the per-feature traceability the interleave
+   exists to provide.
+
+### 3.2 Batch-by-Batch Authorization (Long Sequences)
+
+When the Arranged Commits sequence exceeds **5 commits**, the agent MUST
+split the preview into **batches of at most 5 commits** and request a
+separate `"start"` (or `"start batch N"`) per batch:
+
+- Each batch preview is presented in full (§3 verbose format) before the
+  agent executes any commit in that batch.
+- After each batch is executed, the agent MUST emit a one-line summary
+  (`Batch N committed: SHA1, SHA2, …`) and then present the **next**
+  batch's preview.
+- The user MAY abort, reorder, or modify subsequent batches between
+  authorizations — the agent MUST NOT pre-stage files for batches that have
+  not yet been authorized.
+- The first batch MUST also include a top-level **Master Plan Table** with
+  one row per planned commit (`# | type(scope): title | files | batch`) so
+  the user has a single-pane view before authorizing batch 1.
+
 ***
 
 ## 4. Phase 4: Interactive Hunk-Based Staging
