@@ -255,6 +255,19 @@ The content must balance conciseness with technical depth:
     - **Relative Pathing**: For relative paths, artifact permanence, and link references, follow the
       **File References** standards defined in **[Markdown Generation Rules](./markdown-generation-rules.md)**.
 
+- **Redaction & Portability Mandate (SSOT)**: Every rule file, skill file (`SKILL.md`, `AGENTS.md`), session log,
+  case study, and committed artifact authored under these standards MUST be passed through the
+  **[Redaction & Portability Skill](../.agents/skills/redaction-portability/SKILL.md)** before commit. That skill is
+  the SSOT for: (a) the three-tier sensitivity model (Tier A identity/credentials, Tier B machine/org topology,
+  Tier C public/universal), (b) the canonical placeholder vocabulary (`<workspace-root>`, `<user-home>`,
+  `<toolbase>`, `<author>`, `<user>`, `<corp-proxy-host>`, `<corp-domain>`, `<internal-vcs>`, `<ticket-system>`,
+  `<customer>`, `<product-codename>`, etc.), (c) absolute-path relativization, (d) author / username / email
+  redaction, (e) internal-domain / proxy / ticket / customer redaction, (f) filename hygiene, and (g) the
+  verification-scan + encoding sanity-check audit steps. Rule files MUST NOT inline their own redaction
+  vocabulary or replacement tokens — they MUST defer to the Redaction skill. Ad-hoc placeholder invention,
+  half-redacted strings (e.g., `<corp-proxy-host>.<real-corp>.com`), and over-redaction of public open-source
+  identifiers (`Apache Commons`, `Eclipse`, `Maven Central`) are FORBIDDEN per Redaction §10.
+
 - **Mandatory Protocols**: Use clear, imperative language (e.g., "The agent MUST...", "The agent is BLOCKED from...").
 
 - **Deep Command Explanation Mandate**: Any shell command or CLI snippet provided in a Rule or Skill MUST include

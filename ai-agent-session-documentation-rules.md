@@ -17,10 +17,34 @@ audits.
 
 **Sensitive Data & Relevance Principle:**
 Regardless of whether the document is public or private, do not include any unrelated documents, data, or
-session-irrelevant information. All sensitive data must be redacted or replaced with placeholders
-(e.g., `[REDACTED]`,`[PLACEHOLDER]`).
+session-irrelevant information. **All sensitive data MUST be redacted in strict accordance with the
+[Redaction & Portability Skill](../.agents/skills/redaction-portability/SKILL.md), which is the SSOT for the
+three-tier sensitivity model, the canonical placeholder vocabulary, the path/identity/network protocols, the
+filename-hygiene rules, and the mandatory verification + encoding sanity-check audit.** Legacy generic tokens
+(`[REDACTED]`, `[PLACEHOLDER]`) are retained for backwards compatibility but the canonical angle-bracket
+placeholders (`<workspace-root>`, `<user-home>`, `<toolbase>`, `<author>`, `<user>`, `<corp-proxy-host>`,
+`<corp-domain>`, `<internal-vcs>`, `<ticket-system>`, `<customer>`, `<product-codename>`, etc.) defined in
+Redaction §2 MUST be preferred for all newly authored session logs.
 
 ## 2. Documentation Protocol (Sensitive Data & Relevance)
+
+- **Redaction Gate (MANDATORY — SSOT delegation)**: BEFORE a session log, case study, or any other artifact
+  produced under these rules is written to a `docs/` directory or committed, it MUST pass the full audit defined
+  in **[Redaction & Portability Skill §1–§8](../.agents/skills/redaction-portability/SKILL.md)**:
+    1. Tier classification of every string (Tier A / B / C).
+    2. Substitution with the canonical placeholder vocabulary (Redaction §2).
+    3. Absolute-path relativization (Redaction §3) — including the broken-link carve-out for angle-bracket
+       placeholders inside `[text](target)` link targets (Redaction §3.3).
+    4. Identity redaction (Redaction §4) — author names, OS usernames, email addresses, reviewer names. Commit SHAs
+       are preserved.
+    5. Network / organization redaction (Redaction §5) — proxy hosts, internal domains, internal repository URLs,
+       ticket IDs, customer names, product codenames.
+    6. Filename hygiene (Redaction §6) — conversation/case filenames encode the technical topic only.
+    7. Verification scan (Redaction §8 Step 4) — regex inventory for absolute paths / emails / IPv4 / internal
+       hostnames returns empty.
+    8. Encoding sanity check (Redaction §8 Step 5) — no mojibake markers (`Ã`, `â€`, `Â`, `ï¿½`) remain.
+  Session logs that have NOT passed this gate MUST NOT be committed. The Redaction skill is the SSOT — this rule
+  file MUST NOT inline its own redaction vocabulary or substitution table.
 
 - **Session Log Location**: Store session logs in a dedicated folder WITHIN the rule set (e.g.,
 
