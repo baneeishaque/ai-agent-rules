@@ -90,5 +90,34 @@ The permission protocol applies to all `gh` commands, but some require special a
     --body-file /path/to/file.md`, also falls under the`ai-tools-rules.md` mandate for user confirmation before any
     file write operations. The AI should present the exact content to be written to the file for approval.
 
+***
+
+### 4\. Fallback Protocols when `gh` is Unavailable or Unauthenticated 🪜
+
+The permission protocol in §2 applies equally to every fallback substitution. The agent MUST NOT silently
+switch from `gh` to an equivalent REST call or PAT-in-URL without re-stating the action and re-requesting
+user approval.
+
+- **`gh` not installed / not on `PATH`**: The agent MUST defer to the
+  **[GitHub REST API Fallback Skill](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/github-rest-api-fallback/SKILL.md)**.
+  Every `gh` command in this rule has a documented REST equivalent in that skill's §3 endpoint cookbook. The
+  user-approval gate applies to the REST call as it would to the `gh` command — present the full
+  `Invoke-RestMethod` / `curl` invocation including target endpoint and any state-mutating body, then
+  ask `Yes / No`.
+- **`gh auth status` returns `Bad credentials` / 401 / 403**: The agent MUST defer to the
+  **[Git / GitHub Auth Fallback Skill](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/git-github-auth-fallback/SKILL.md)**
+  §2 to classify the error (wrong-identity cache, missing scope, etc.) before retrying. The agent MUST NOT
+  embed a Personal Access Token in any committed artifact, log, or chat transcript — PATs are Tier-A
+  per [Redaction & Portability](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/redaction-portability/SKILL.md) §1.
+- **`run_in_terminal` tool unavailable**: The agent MUST route every `gh` (or REST) call through
+  **[Terminal Fallback via VS Code Tasks](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/terminal-fallback-via-vscode-tasks/SKILL.md)**
+  §3 (file-mediated output capture). The user-approval gate still applies to the underlying command —
+  the task wrapper is a transport, not an escape hatch.
+
+> **Link form**: The skill URLs above are SHA-pinned hosted-VCS permalinks against the `ai-agents`
+> parent repository, per **markdown-generation-rules.md §4.2.8 (Cross-Repository / Submodule Isolation Links)**.
+> Upward relative paths (e.g., `../.agents/...`) are FORBIDDEN inside this submodule because they break
+> when `ai-agent-rules` is consumed standalone.
+
 This rule is a foundational component of a secure and collaborative agent-user interaction model. Adherence to this
 protocol ensures that all actions performed with the GitHub CLI are intentional, transparent, and user-approved.

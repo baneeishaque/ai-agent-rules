@@ -222,6 +222,24 @@ adhere to these principles:
 
 ## 5. Integration with Other Rules
 
+- **`gh` CLI Fallback Protocols**: Many sections below (`gh secret set`, `gh workflow run`,
+  `gh release list`, `gh issue create`, `gh pr comment`) assume `gh` is installed and authenticated. When
+  either assumption fails, the agent MUST defer:
+
+    Skill URLs are SHA-pinned hosted-VCS permalinks against the `ai-agents` parent repository, per
+    `markdown-generation-rules.md` §4.2.8 (Cross-Repository / Submodule Isolation Links):
+
+    - **`gh` not installed / not on PATH**: use the
+      [GitHub REST API Fallback](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/github-rest-api-fallback/SKILL.md)
+      skill §3 (endpoint cookbook — every `gh` subcommand in this rule has a REST equivalent there).
+    - **`gh auth status` reports unauthenticated / wrong identity / 401 / 403**: use the
+      [Git / GitHub Auth Fallback](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/git-github-auth-fallback/SKILL.md)
+      skill §2–§3 to classify and remediate before retrying any command in this rule.
+    - **No direct terminal tool available to the agent**: route every command through the
+      [Terminal Fallback via VS Code Tasks](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/terminal-fallback-via-vscode-tasks/SKILL.md)
+      skill \u00a73 (file-mediated output capture). Interactive flows (`gh auth login`) MUST be surfaced as
+      manual commands per that skill \u00a74.4.
+
 - **Testing**: Workflows for applications (e.g., Flutter apps) must include steps to run `flutter analyze`,
 
     `dart format --set-exit-if-changed .`, and`flutter test` on every pull request. This enforces code quality before

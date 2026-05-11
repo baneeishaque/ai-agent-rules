@@ -18,7 +18,7 @@ audits.
 **Sensitive Data & Relevance Principle:**
 Regardless of whether the document is public or private, do not include any unrelated documents, data, or
 session-irrelevant information. **All sensitive data MUST be redacted in strict accordance with the
-[Redaction & Portability Skill](../.agents/skills/redaction-portability/SKILL.md), which is the SSOT for the
+[Redaction & Portability Skill](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/redaction-portability/SKILL.md), which is the SSOT for the
 three-tier sensitivity model, the canonical placeholder vocabulary, the path/identity/network protocols, the
 filename-hygiene rules, and the mandatory verification + encoding sanity-check audit.** Legacy generic tokens
 (`[REDACTED]`, `[PLACEHOLDER]`) are retained for backwards compatibility but the canonical angle-bracket
@@ -30,7 +30,7 @@ Redaction §2 MUST be preferred for all newly authored session logs.
 
 - **Redaction Gate (MANDATORY — SSOT delegation)**: BEFORE a session log, case study, or any other artifact
   produced under these rules is written to a `docs/` directory or committed, it MUST pass the full audit defined
-  in **[Redaction & Portability Skill §1–§8](../.agents/skills/redaction-portability/SKILL.md)**:
+  in **[Redaction & Portability Skill §1–§8](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/redaction-portability/SKILL.md)**:
     1. Tier classification of every string (Tier A / B / C).
     2. Substitution with the canonical placeholder vocabulary (Redaction §2).
     3. Absolute-path relativization (Redaction §3) — including the broken-link carve-out for angle-bracket
@@ -185,7 +185,7 @@ Redaction §2 MUST be preferred for all newly authored session logs.
 |*********|***-|******---|
 | [REDACTED]    | [REDACTED] | [REDACTED] |
 
-- Related Rule: [ai-agent-planning-rules.md](../ai-agent-planning-rules.md)
+- Related Rule: [ai-agent-planning-rules.md](./ai-agent-planning-rules.md)
 
 ***
 

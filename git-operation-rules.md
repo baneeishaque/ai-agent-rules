@@ -27,6 +27,21 @@ is correctly configured.
     nix-shell -p github-cli --run "gh auth login"
     ```
 
+    **Fallback delegations** (MANDATORY when the named tool / capability is unavailable). Skill URLs are
+    SHA-pinned hosted-VCS permalinks against the `ai-agents` parent repository, per
+    `markdown-generation-rules.md` §4.2.8 (Cross-Repository / Submodule Isolation Links):
+
+    - **`gh` not installed**: defer to the
+      [GitHub REST API Fallback](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/github-rest-api-fallback/SKILL.md)
+      skill §3 for the REST equivalent of every `gh` command referenced in this rule.
+    - **`git push` / `git fetch` returns 401 / 403**: defer to the
+      [Git / GitHub Auth Fallback](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/git-github-auth-fallback/SKILL.md)
+      skill §2 to classify the error (wrong-identity cache vs missing scope vs needs-fork) before retrying.
+    - **Agent `run_in_terminal` tool unavailable**: route every command in this rule through
+      [Terminal Fallback via VS Code Tasks](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/terminal-fallback-via-vscode-tasks/SKILL.md)
+      skill §3 (file-mediated output capture). Interactive flows (`gh auth login`, `git credential-manager`) MUST
+      still be surfaced to the user as manual commands per that skill §4.4.
+
 - **Verify Tool Permissions**: The agent MUST ensure that all necessary build tools have execute permissions.
 
     ```bash
