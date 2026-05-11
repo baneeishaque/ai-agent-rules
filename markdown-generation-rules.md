@@ -336,6 +336,57 @@ requirements:
 - **Consistency**: All links within the same registry table MUST follow this exact style for uniform readability and
   automatic navigation support.
 
+#### 4.2.8 Cross-Repository / Submodule Isolation Links
+
+When a repository is consumed both as a standalone Git repository AND as a submodule inside one or more
+parent repositories (e.g., `ai-agent-rules` standing alone on GitHub while also being embedded in
+`ai-agents`), link directionality is **asymmetric** and MUST be enforced as follows:
+
+- **Inbound (parent → submodule)**: Files in the parent repository MAY reference files inside the
+  submodule using ordinary workspace-relative paths (e.g., `ai-agent-rules/git-submodule-rules.md`,
+  `../../../ai-agent-rules/git-submodule-rules.md` from a skill three levels deep). These resolve
+  correctly because the submodule is checked out under a known relative path within the parent
+  working tree.
+
+- **Outbound (submodule → parent or sibling repo)**: Files inside the submodule MUST NOT use
+  relative paths that traverse above the submodule's own repository root (e.g., `../.agents/...`,
+  `../../other-repo/...`). Such paths resolve only inside the parent checkout and **silently break**
+  the moment the submodule is consumed standalone (cloned directly, browsed on its own GitHub page,
+  packaged for distribution, or vendored elsewhere). This is a one-way containment rule:
+
+    > *A submodule has its own existence. It MUST NOT depend on the existence, layout, or
+    > checkout location of any parent that happens to embed it.*
+
+- **Required outbound form — Hosted VCS Permalink (SHA-pinned)**: When a file inside the submodule
+  genuinely needs to reference content in a parent or sibling repository, the link MUST be an
+  absolute hosted-VCS URL pinned to a commit SHA (never `main` / `master`):
+
+    ```markdown
+    [Skill Name](https://github.com/<org>/<parent-repo>/blob/<full-40-char-sha>/<path>/SKILL.md)
+    ```
+
+    Branch-tip URLs (`/blob/main/`, `/blob/master/`) are FORBIDDEN here for the same
+    link-rot reason given in §4.2.1 and in `code-documentation-rules.md` (Git Repo Permalinks).
+
+- **Preferred host — upstream, not a fork**: The `<org>` segment of an outbound permalink MUST
+  point at the **canonical upstream** of the referenced repository, NOT at a personal or
+  short-lived fork. Forks may be deleted, renamed, or made private at any time, which silently
+  breaks every permalink pointing at them. The upstream is identified as the repository whose
+  `parent` field (`gh repo view --json parent` or the GitHub UI's *"forked from"* breadcrumb) is
+  empty — i.e., the root of the fork network. If only a fork is currently writable but the
+  upstream exists, the permalink MUST still target the upstream; push the referenced commit
+  upstream first, or use the upstream's pre-existing SHA. Author choice MAY override this default
+  only when the upstream is unreachable (deleted, private, or 404) — see
+  `git-submodule-dead-upstream-audit` for the diagnostic procedure.
+
+- **Preferred alternative — migrate or duplicate the SSOT**: Before adding an outbound permalink,
+  the agent MUST first consider whether the referenced content belongs inside the submodule itself.
+  A persistent outbound permalink is a code smell suggesting the SSOT is in the wrong repository.
+
+- **Audit signal**: Any occurrence of the regex `\]\(\.\.\/(?!\.\.\/)[^)]*\)` (or deeper `../../`)
+  inside a tracked file of a submodule is a violation of this section unless the traversal stays
+  inside the submodule's own tree. CI / pre-commit hooks SHOULD flag such links.
+
 ### 4.3 Section Dividers (Industrial Standard)
 
 - **Marker**: Use three asterisks (`***`) for all horizontal rules.

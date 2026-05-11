@@ -59,6 +59,13 @@ tasks, or capabilities, the system mandates a **Skill-First** architecture.
   Higher-Level Skills" section so the dependency graph is bidirectionally discoverable.
 - **Path Portability**: All links within a Skill MUST be relative and depth-correct (e.g., `../../../` for
   skills residing 3 levels deep) to ensure zero-dependency portability across filesystems.
+- **Cross-Repository / Submodule Isolation (SSOT)**: When a rule or skill file lives inside a repository that is
+  also consumed as a Git submodule of another repository (e.g., `ai-agent-rules` embedded in `ai-agents`), the
+  asymmetric link rule defined in
+  **[markdown-generation-rules.md §4.2.8](./markdown-generation-rules.md#428-cross-repository--submodule-isolation-links)**
+  applies: inbound (parent → submodule) relative links are allowed; outbound (submodule → parent or sibling)
+  relative links are FORBIDDEN and MUST be replaced by SHA-pinned hosted-VCS permalinks. Rule files MUST NOT
+  inline this protocol — they MUST defer to §4.2.8 as SSOT.
 
 - **File Naming**: Use strictly lowercase, kebab-case ending in `-rules.md` (e.g., `git-submodule-rules.md`).
 - **Skill Naming**: Skill names in YAML frontmatter MUST use lowercase letters, numbers, and hyphens (no underscores or spaces).
@@ -126,7 +133,7 @@ The content must balance conciseness with technical depth:
   `git clone` instruction MUST use the recursive form (`--recursive` for `submodule update`, `--recurse-submodules`
   for `clone`). Submodules frequently embed their own submodules, and a non-recursive instruction silently leaves
   nested pointers uninitialized — a class of bug that surfaces only at runtime. See the
-  [Git Submodule Addition](../.agents/skills/git-submodule-addition/SKILL.md) skill §3.3 for the canonical commands.
+  [Git Submodule Addition](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/git-submodule-addition/SKILL.md) skill §3.3 for the canonical commands.
 - **Pedagogical Snippets**: Use code blocks to demonstrate correct command usage or file formats.
 
 - **Architectural Samples (PoC)**: Rules defining complex patterns MUST link to high-fidelity reference implementations
@@ -257,7 +264,7 @@ The content must balance conciseness with technical depth:
 
 - **Redaction & Portability Mandate (SSOT)**: Every rule file, skill file (`SKILL.md`, `AGENTS.md`), session log,
   case study, and committed artifact authored under these standards MUST be passed through the
-  **[Redaction & Portability Skill](../.agents/skills/redaction-portability/SKILL.md)** before commit. That skill is
+  **[Redaction & Portability Skill](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/redaction-portability/SKILL.md)** before commit. That skill is
   the SSOT for: (a) the three-tier sensitivity model (Tier A identity/credentials, Tier B machine/org topology,
   Tier C public/universal), (b) the canonical placeholder vocabulary (`<workspace-root>`, `<user-home>`,
   `<toolbase>`, `<author>`, `<user>`, `<corp-proxy-host>`, `<corp-domain>`, `<internal-vcs>`, `<ticket-system>`,
