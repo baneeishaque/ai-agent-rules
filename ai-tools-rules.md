@@ -79,7 +79,9 @@ These rules extend to all command-line and system tools, including but not limit
 
 - **Shell Execution**: All shell commands must adhere to the `shell-execution-rules.md`, which mandates showing
 
-    full command output.
+    full command output. Bulk text edits performed via the terminal (especially under Windows PowerShell 5.1)
+    MUST follow [`shell-execution-rules.md` §2.4 (UTF-8-Safe Bulk Text Edits)](./shell-execution-rules.md#24-utf-8-safe-bulk-text-edits-in-powershell-forbidden-patterns)
+    to avoid mojibake corruption of non-ASCII characters.
 
 - **GitHub CLI (`gh`)**: The agent **must not** execute any`gh` command without first obtaining explicit user
 
