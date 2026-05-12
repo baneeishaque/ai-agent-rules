@@ -51,6 +51,15 @@ features.
     git submodule update --init --recursive
     ```
 
+- **LFS Payload Control**: If the repository declares `filter=lfs` entries in
+  `.gitattributes` and the user wants to skip (or selectively materialize) the
+  LFS payload, the agent MUST defer to the
+  [Git LFS Selective Clone Skill](https://github.com/Baneeishaque/ai-agents/blob/HEAD/.agents/skills/git-lfs-selective-clone/SKILL.md)
+  as the SSOT. Single-flag attempts (`GIT_LFS_SKIP_SMUDGE` or
+  `-c filter.lfs.smudge=` alone) are **insufficient** on modern Git LFS installs
+  because the long-running `filter.lfs.process` driver bypasses them — the skill
+  documents the mandatory four-override combination and submodule re-application.
+
 ***
 
 ### 3. Automatic Codebase Indexing

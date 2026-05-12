@@ -34,6 +34,14 @@ When asked to clone repositories (without a specified provider), always follow t
 
 - After cloning, check for submodules and run git submodule update --init --recursive if .gitmodules exists.
 
+- **LFS-Aware Cloning**: If the target repository declares `filter=lfs` entries
+  in `.gitattributes` and the user wants a pointer-only clone (or selective LFS
+  pull), the agent MUST defer to the
+  [Git LFS Selective Clone Skill](https://github.com/Baneeishaque/ai-agents/blob/HEAD/.agents/skills/git-lfs-selective-clone/SKILL.md)
+  rather than inlining LFS skip flags here. The skill is SSOT for the four-
+  override clone, submodule re-application, and `git lfs pull --include` /
+  `--exclude` selective materialization.
+
 - **Cloning Workflow:**
 - Destination: Always clone to ~/Lab_Data/ directory.
 
