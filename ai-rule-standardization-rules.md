@@ -80,6 +80,14 @@ tasks, or capabilities, the system mandates a **Skill-First** architecture.
     ---
     ```
 
+- **Frontmatter Position Mandate**: The YAML frontmatter block (`---` ... `---`) MUST be the very FIRST content
+  in the file — line 1 column 1, with NO blank lines, BOM, HTML comments (`<!-- ... -->`), or any other content
+  preceding it. The agentskills.io lint validator parses frontmatter strictly: any preceding character (including
+  an HTML comment block that some legacy projects use as an alternative metadata carrier) makes the validator
+  treat the YAML as absent, producing `Skill must provide a name` even when a syntactically valid `name:` exists
+  below. If a project tradition uses an HTML-comment metadata block, the YAML frontmatter MUST still come first;
+  the HTML comment MAY follow it as a secondary, lint-ignored carrier.
+
 ***
 
 ## 3. Structural Hierarchy
