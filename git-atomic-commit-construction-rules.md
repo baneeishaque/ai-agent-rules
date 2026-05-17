@@ -283,6 +283,44 @@ tools.
 - **Verification**: Run `git diff --cached` after staging each chunk to
   guarantee strictly atomic contents.
 
+### 4.3 Hunk-Stage Backup Cleanup (Sidecar Discipline)
+
+When the agent uses any hunk-staging path that produces a sidecar backup
+file on disk — most commonly `git add -p` interrupted mid-flow, the
+in-editor `e` (edit-hunk) action, or programmatic `git apply` with a
+manually authored patch — the agent MUST treat every `<file>.orig`,
+`<file>.bak`, `<file>.full.bak`, `<file>.rej`, `<file>.staging-tmp`, and
+similar sidecar as a Phase-4 artifact that MUST be disposed of before the
+commit lands, never absorbed into it.
+
+Mandatory protocol:
+
+1. **Detect** after each `git add -p` session and after any `e`/`apply`
+   action: `git status --short` MUST show no untracked file whose name
+   ends in `.orig`, `.bak`, `.full.bak`, `.rej`, `.staging-tmp`, or any
+   organization-specific sidecar suffix.
+2. **Classify** every detected sidecar:
+   - **Recoverable** — the sidecar holds content the agent or the user
+     still needs (e.g., a rejected hunk that needs manual re-application,
+     or a `.full.bak` produced because the previous staging attempt was
+     aborted mid-edit). Move it OUT of the working tree (e.g., to
+     `<workspace-root>/../scratch/` or a personal-sandbox branch) before
+     proceeding.
+   - **Disposable** — the sidecar duplicates a state already represented
+     in the index, HEAD, or another branch. Delete it directly.
+3. **Verify** before committing: re-run `git status --short` and confirm
+   zero sidecar matches. Sidecars MUST NOT be added to `.gitignore` as
+   a substitute for cleanup — that hides the symptom and lets the next
+   session re-encounter the same disposal decision blind.
+4. **NEVER `git add` a sidecar** "to clean up history later". The commit
+   is the disposal decision; once a sidecar reaches the index, the only
+   safe recovery is `git reset HEAD -- <sidecar>` followed by the
+   classification above.
+
+This rule composes with [§3.3 Pre-Execution Safety Stash](#33-pre-execution-safety-stash-mandatory-for-multi-commit-sequences):
+the safety stash captures the pre-execution working tree once; the sidecar
+cleanup happens per `add -p` invocation inside that window.
+
 ***
 
 ## 5. Phase 5: Formatting and Structural Partitioning
