@@ -279,16 +279,58 @@ The content must balance conciseness with technical depth:
 
 - **Redaction & Portability Mandate (SSOT)**: Every rule file, skill file (`SKILL.md`, `AGENTS.md`), session log,
   case study, and committed artifact authored under these standards MUST be passed through the
-  **[Redaction & Portability Skill](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/redaction-portability/SKILL.md)** before commit. That skill is
-  the SSOT for: (a) the three-tier sensitivity model (Tier A identity/credentials, Tier B machine/org topology,
-  Tier C public/universal), (b) the canonical placeholder vocabulary (`<workspace-root>`, `<user-home>`,
-  `<toolbase>`, `<author>`, `<user>`, `<corp-proxy-host>`, `<corp-domain>`, `<internal-vcs>`, `<ticket-system>`,
-  `<customer>`, `<product-codename>`, etc.), (c) absolute-path relativization, (d) author / username / email
-  redaction, (e) internal-domain / proxy / ticket / customer redaction, (f) filename hygiene, and (g) the
-  verification-scan + encoding sanity-check audit steps. Rule files MUST NOT inline their own redaction
-  vocabulary or replacement tokens — they MUST defer to the Redaction skill. Ad-hoc placeholder invention,
-  half-redacted strings (e.g., `<corp-proxy-host>.<real-corp>.com`), and over-redaction of public open-source
-  identifiers (`Apache Commons`, `Eclipse`, `Maven Central`) are FORBIDDEN per Redaction §10.
+  **[Redaction & Portability Skill](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/redaction-portability/SKILL.md)**
+  (rules-side mirror: **[Redaction & Portability Rules](./redaction-portability-rules.md)**)
+  before commit. The skill is the authoritative SSOT; the rules-side mirror is the normative form referenced
+  by all other rules. The skill is the SSOT for: (a) the three-tier sensitivity model (Tier A identity/credentials,
+  Tier B machine/org topology, Tier C public/universal), (b) the canonical placeholder vocabulary
+  (`<workspace-root>`, `<user-home>`, `<toolbase>`, `<author>`, `<user>`, `<corp-proxy-host>`, `<corp-domain>`,
+  `<internal-vcs>`, `<ticket-system>`, `<customer>`, `<product-codename>`, etc.), (c) absolute-path relativization,
+  (d) author / username / email redaction, (e) internal-domain / proxy / ticket / customer redaction, (f) filename
+  hygiene, and (g) the verification-scan + encoding sanity-check audit steps. Rule files MUST NOT inline their
+  own redaction vocabulary or replacement tokens — they MUST defer to the Redaction skill. Ad-hoc placeholder
+  invention, half-redacted strings (e.g., `<corp-proxy-host>.<real-corp>.com`), and over-redaction of public
+  open-source identifiers (`Apache Commons`, `Eclipse`, `Maven Central`) are FORBIDDEN per Redaction §10.
+
+- **Repository Scope Tier Mandate (SSOT, additive to Redaction)**: Every authored file lives in exactly one
+  publication-scope tier — **public** (e.g., the public `ai-agents` repo), **org-private** (e.g., a
+  `<corp>_ai_agents` sibling repo), or **personal** (e.g., a sandbox branch).
+  The tier is determined by the **enclosing Git repository**, not by the file's content or by any local
+  workspace layout. The cardinal premise — stated as the **Independence Axiom** in
+  [`redaction-portability-rules.md`](./redaction-portability-rules.md) §1.0 — is that the public and
+  org-private repos are **independent Git repositories** with separate clone URLs, separate publication
+  lifecycles, and separate existences; a developer may legitimately clone either one **standalone**.
+  Portability in this rule set is defined as **passing the Standalone-Clone Test**: "if I clone ONLY
+  the repo this file lives in, into a fresh empty directory, on a machine that has never heard of the
+  other repo — does every relative link still resolve and does every prose reference still make sense?"
+  Multi-root VS Code workspaces and sibling-folder conventions are local accidents, not portable
+  properties, and are **inadmissible defences**. The scope tier governs what is allowed:
+  - **Public-scope files MUST be self-contained.** They MUST NOT (a) link via relative path into an
+    org-private or personal sibling repo (the link is broken in any standalone public clone and leaks the
+    private repo's existence + name), (b) name a specific organization in prose (use `<corp>` or generic
+    "your organization" phrasing instead), or (c) rely on a multi-root VS Code workspace to make a
+    cross-repo link "resolve" — it resolves only for the original author. The correct way to delegate to
+    an org-private capability is generic prose: *"consult your organization's internal skill library, if
+    one exists."*
+  - **Org-private-scope files MAY reference public-scope files — by name, not by relative
+    path.** Per the Independence Axiom, a relative link
+    `../../../../<public-repo>/...` only resolves inside one specific multi-root workspace
+    layout and is broken for any developer who clones the org-private repo standalone.
+    Reference public-scope skills and rules by canonical inline-code name only (e.g.,
+    ``the general `system-wide-tool-management` skill in the public `ai-agents` repo``).
+    Org-private files MAY use literal Tier B values universally true within that
+    organization (`<toolbase>`, the corporate proxy host, the internal VCS URL). Use the
+    canonical `<placeholder>` once beside the first literal occurrence as a teaching aid
+    for future public-scope ports.
+  - **Unifying principle:** no relative-path link may escape its enclosing repository,
+    regardless of direction.
+
+  Before staging any cross-repo reference, the agent MUST run the **Pre-Commit Checklist** in
+  [`redaction-portability-rules.md`](./redaction-portability-rules.md) §1.4, and SHOULD consult the
+  **Worked Example** in §1.5 (a public skill ↔ org-private skill pair) for the canonical correct +
+  inadmissible patterns. See
+  [`redaction-portability-rules.md`](./redaction-portability-rules.md) §1 for the full matrix and
+  detection heuristic.
 
 - **Mandatory Protocols**: Use clear, imperative language (e.g., "The agent MUST...", "The agent is BLOCKED from...").
 
