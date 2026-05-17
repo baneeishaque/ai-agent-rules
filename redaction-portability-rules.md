@@ -9,6 +9,22 @@ category: Security-Standards
 
 # Redaction & Portability Rules
 
+> ## ⛔ BLOCKING — Run This 3-Question Test Before Writing ANY of the Following
+>
+> - A markdown link with `../` that escapes the current file's enclosing repo (`[label](../../../../<other-repo>/...)`)
+> - A literal organization name, internal codename, internal product name, or internal hostname in prose
+> - A cross-repo "(see related skill in `<other-repo>`)" parenthetical
+>
+> **Test (all three MUST be YES):**
+>
+> 1. Are BOTH link endpoints in the SAME Git repository — OR in a parent + `.gitmodules`-registered-submodule pair (per §1.2)?
+> 2. Would the link still resolve if a stranger cloned ONLY the host repo into a fresh empty directory? (Multi-root VS Code workspaces, sibling folders on the author's disk, and "I have both repos checked out" do NOT count — see §1.0 Independence Axiom.)
+> 3. Does the link text + surrounding prose reveal NOTHING about an org-private repo's existence, name, codename, or internal toolchain that a public reader wouldn't already know?
+>
+> Any NO → the link/mention is FORBIDDEN. The repair is in §1.3 (asymmetric linking) — name-only references for outbound, generic-prose-only for public→private direction.
+>
+> *Anti-pattern (real audit finding):* a public-scope skill linked `../../../<corp>_ai_agents/.agents/skills/...` because both folders happened to be open in the author's multi-root VS Code workspace. This violated all three tests simultaneously: (1) different repos, (2) layout-dependent, (3) leaked the existence + name of an org-private skill library into the public artifact. The skill was repaired by deleting the cross-repo links entirely; the org-private side now references the public skill by name only.
+
 This rules file is the **rules-side SSOT** mirror of the `redaction-portability` skill
 (in the public `ai-agents` repo). The skill is the executable / operational form; this
 file is the normative rule form referenced from

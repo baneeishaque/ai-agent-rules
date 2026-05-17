@@ -11,6 +11,16 @@ category: Rule-Management
 This document defines the craftsmanship standards for creating new AI Agent Rules. Adhering to these protocols ensures
 that all rules remain professional, machine-parseable, and human-readable.
 
+> ## ⛔ BLOCKING — Cross-Repository Reference Test
+>
+> Before creating ANY rule / skill / doc that references content in a **different Git repository** (sibling folder in a multi-root workspace, separately-cloned tool repo, org-private companion repo, etc.), confirm ALL THREE:
+>
+> 1. Both endpoints in the same repo, OR a parent + `.gitmodules`-registered-submodule pair.
+> 2. Survives the **Standalone-Clone Test**: clone the host repo only, into an empty directory, with no knowledge of the other repo's existence — does every link resolve and every prose reference still make sense?
+> 3. Leaks zero org-private repo names / internal codenames / internal hostnames into a public-scope artifact.
+>
+> Multi-root VS Code workspaces and "the other repo is right there on my disk" are NOT valid layout proofs — they are local accidents per the Independence Axiom in [`redaction-portability-rules.md` §1.0](./redaction-portability-rules.md#10-the-independence-axiom-read-this-first). Full enforcement: §1.3 of the same rules file.
+
 ***
 
 ## 1. Preparation & Context Assembly (Crucial)
