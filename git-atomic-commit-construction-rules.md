@@ -226,6 +226,40 @@ separate `"start"` (or `"start batch N"`) per batch:
   one row per planned commit (`# | type(scope): title | files | batch`) so
   the user has a single-pane view before authorizing batch 1.
 
+### 3.3 Pre-Execution Safety Stash (Mandatory for Multi-Commit Sequences)
+
+Before executing any commit sequence of two or more commits (including any
+batch governed by §3.2), the agent MUST capture a verifiable safety snapshot
+of the full working-tree state — tracked modifications, staged hunks, AND
+untracked files — and immediately re-apply it so the planned execution can
+proceed against an unchanged tree. The snapshot persists until end-of-session
+verification proves every planned change reached HEAD.
+
+- **Why**: The Step-by-Step Execution mandate (§10) and the hunk-staging
+  discipline (§4) generate transient intermediate states where a mistaken
+  `git checkout`, `git reset`, IDE crash, or interrupted rebase can silently
+  discard hand-assembled changes. A retained stash is the cheapest and
+  highest-fidelity rollback primitive available.
+- **What**: A single `git stash push -u -m "<descriptive-message>"` followed
+  by an immediate `git stash apply` (NOT `pop`) preserves the snapshot AND
+  restores the working tree in a single atomic primitive.
+- **When**: Captured AFTER the Arranged Commit Preview is authorized and
+  BEFORE the first commit of the sequence executes. Released ONLY after the
+  end-of-session apply-back verification proves a clean no-op.
+
+Delegation: the operational protocol (snapshot message conventions,
+apply-not-pop discipline, no-op verification, gated drop, recovery paths
+for IDE file-locks during apply) is owned by the
+**Git Pre-Execution Safety Stash Skill** (`git-pre-execution-safety-stash`)
+in the parent repository's skills tree. The skill MUST be invoked at the
+start of every qualifying sequence and verified at end-of-session.
+Pre-existing stashes of unclear origin discovered during inventory MUST
+be classified via the **Git Stash Triage Skill** (`git-stash-triage`)
+before the safety stash is pushed, to prevent stash-stack confusion.
+Outbound submodule→parent relative links are intentionally omitted here
+per the Cross-Repository / Submodule Isolation rule
+([ai-rule-standardization-rules.md §2](./ai-rule-standardization-rules.md)).
+
 ***
 
 ## 4. Phase 4: Interactive Hunk-Based Staging
