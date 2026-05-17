@@ -88,6 +88,13 @@ tasks, or capabilities, the system mandates a **Skill-First** architecture.
   below. If a project tradition uses an HTML-comment metadata block, the YAML frontmatter MUST still come first;
   the HTML comment MAY follow it as a secondary, lint-ignored carrier.
 
+- **Namespaced Skill IDs vs Lint-Conformant Names**: Some workspaces use namespaced Skill IDs containing slashes
+  or underscores (e.g., `dgs_ice/damos_validation_completeness_audit`) for human discoverability. Those forms are
+  FORBIDDEN in the `name:` field because the lint validator enforces `^[a-z0-9-]+$`. Resolution:
+  the `name:` field MUST be the hyphenated, single-segment form (e.g., `damos-validation-completeness-audit`);
+  the namespaced form MAY appear ONLY in the body (e.g., `> **Skill ID:** \`dgs_ice/damos_validation_completeness_audit\``)
+  where it is not lint-validated.
+
 ***
 
 ## 3. Structural Hierarchy
