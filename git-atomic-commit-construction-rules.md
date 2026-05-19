@@ -186,27 +186,38 @@ To ensure absolute precision and user control, the agent MUST adhere to these fo
   "commit" or "go" are insufficient; strict authorization ensures the user
   has reviewed the verbose preview.
 
-### 3.1 Interleaving Mandate (Submodule + Related Parent Work)
+### 3.1 Interleaving Mandate (Artifact + Registry Registration)
 
-When the working tree contains **both** submodule pointer advances **and**
-parent-side changes that are functionally related (e.g., a `chore: add
-project-standard gitignore` cherry-picked into a submodule + the parent's
-`.gitmodules` realignment for that same submodule), the Arranged Commits
-sequence MUST **interleave** them in dependency order rather than batching
-all submodule syncs first and all parent edits last:
+Whenever a commit introduces or renames an artifact **and** a shared index /
+registry file (e.g., root `AGENTS.md` skills table, `.gitmodules`, CI
+workflow manifests) needs a corresponding row or entry for that artifact,
+the registry hunk MUST be **staged in the same commit** as the artifact
+itself — never batched into a separate "registration" commit at the end.
 
-1. For each submodule with a stale pointer, identify any parent-side files
-   directly tied to that submodule (e.g., `.gitmodules` URL change, root
-   `AGENTS.md` row referencing the submodule, CI workflow paths).
-2. Place those parent-side files in the **same commit** as the submodule
-   sync per §7.2.
-3. Place truly unrelated parent edits **between** submodule syncs only when
-   they share a logical theme (e.g., a skill-pair edit immediately preceding
-   the submodule whose behavior it documents); otherwise place them in a
-   final dedicated batch.
-4. Forbidden anti-pattern: "all 36 submodule syncs first, then all 30 parent
-   edits last" — this destroys the per-feature traceability the interleave
-   exists to provide.
+This applies equally to:
+
+- **New skills**: the root `AGENTS.md` row for the skill belongs in the
+  same commit as the skill's `SKILL.md` / `scripts/` files.
+- **Submodule pointer advances**: the `.gitmodules` URL change and any root
+  `AGENTS.md` row referencing the submodule belong in the same commit as
+  the submodule sync (per §7.2).
+- **Any artifact with a shared index entry**: treat the index row as part of
+  the artifact's definition, not as metadata to be collected last.
+
+Procedure for artifact commits when the registry file has mixed hunks (some
+for this artifact, some unrelated):
+
+1. Identify the exact hunk(s) in the registry file that reference this
+   artifact.
+2. Use `git add -p <registry-file>` to stage only those hunks alongside the
+   artifact files.
+3. Leave unrelated hunks unstaged; they belong to their own artifact's commit
+   or a later dedicated session.
+
+Forbidden anti-pattern: "commit all artifacts first, then one final commit
+registers them all in AGENTS.md" — this destroys per-feature traceability
+and makes individual commits incomplete (the skill exists but is not
+discoverable until a later commit).
 
 ### 3.2 Batch-by-Batch Authorization (Long Sequences)
 
