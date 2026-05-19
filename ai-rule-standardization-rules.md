@@ -142,6 +142,15 @@ The content must balance conciseness with technical depth:
 - **Script SSOT Mandate (Audit Before Creation)**: The agent MUST audit existing skill directories for prior automation
   scripts before creating new ones. If a script already exists for a similar purpose, it MUST be refined or consolidated
   rather than duplicated. All scripts MUST reside in a `scripts/` subdirectory within the skill folder.
+- **Script Delivery Mandate (Ship It)**: Automation scripts developed during a skill session are **first-class
+  deliverables** of the skill — NOT disposable work products. If a workflow was automated by a script during the
+  session, that script MUST be committed inside the skill's `scripts/` directory as part of the skill's canonical
+  form. "The script helped during the session" is sufficient justification to ship it permanently.
+- **Script Preservation Mandate (Never Silent Drop)**: Existing scripts in a skill's `scripts/` directory MUST NOT
+  be deleted, emptied, or replaced without an explicit user instruction to do so. During skill refactors (e.g.,
+  extracting a base layer), the original script MUST be migrated or superseded explicitly — not silently removed.
+  If a script is superseded by a higher-layer composer, the SKILL.md MUST document the migration rationale and the
+  new invocation path so no operational knowledge is lost.
 - **Script Language Mandate (PowerShell-First)**: When creating a new automation script, the default language is
   PowerShell (`.ps1`), cross-compatible with **Windows PowerShell 5.1+** and **PowerShell Core 7+**. Other languages
   (Bash, Python, Node) require an explicit user override or a documented technical justification (e.g., a runtime that
