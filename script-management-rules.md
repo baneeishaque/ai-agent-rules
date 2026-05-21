@@ -96,3 +96,60 @@ function).
 - "Create bash script" → Bash script created in `Bash-Scripts` folder (explicit override)
 
 - "Write-Message" calls always checked for empty strings
+
+## PowerShell Default Mandate
+
+Whenever a skill, rule, or agent task says "every command in PowerShell" — or a skill explicitly mandates a shell
+(e.g., `git-divergence-audit` mandates PowerShell) — every command in that workflow MUST be executed via PowerShell
+(`pwsh-preview` → `pwsh` fallback). Inline `bash`/`sh`/`zsh` shortcuts are forbidden, even for one-liners. If a
+command needs ad-hoc composition, write it into a `.ps1` file and invoke that file.
+
+## Escape Sequence Correctness (Single vs Double Quotes)
+
+PowerShell escape sequences (`` `t ``, `` `n ``, `` `r ``, `` `0 ``, etc.) and variable interpolation (`$var`,
+`$($expr)`) are **only expanded inside double-quoted strings (`"..."`)**. Single-quoted strings (`'...'`) are
+literal — escapes are printed verbatim.
+
+### Forbidden (escape inside single quotes)
+
+```powershell
+Write-Host '--- ahead/behind counts (local`tremote) ---'   # prints: local`tremote
+```
+
+### Required (escape inside double quotes)
+
+```powershell
+Write-Host "--- ahead/behind counts (local`tremote) ---"   # prints: local<TAB>remote
+```
+
+### Rule
+
+When generating any PowerShell script:
+
+1. Use **single quotes** for pure-literal strings with no escapes and no variables.
+2. Use **double quotes** the moment a string contains any of: `` `t ``, `` `n ``, `` `r ``, `` $var ``, `` $($expr) ``.
+3. After generating any script, **scan it for backtick-escapes inside single quotes** and convert those strings to
+   double quotes before saving.
+
+## Profile Initialization Mandate
+
+PowerShell scripts and one-shot `pwsh` invocations MUST run with the user's profile loaded. The user's
+`$PROFILE` (e.g., `~/.config/powershell/Microsoft.PowerShell_profile.ps1`) provides aliases, PSReadLine
+configuration, mise/asdf/rbenv shims, oh-my-posh prompt, and module auto-imports that downstream scripts may rely on.
+
+### Forbidden
+
+```powershell
+pwsh -NoProfile -File script.ps1   # skips $PROFILE — disallowed
+pwsh -nop      -File script.ps1    # short form — also disallowed
+```
+
+### Required
+
+```powershell
+pwsh-preview -File script.ps1       # preferred
+pwsh         -File script.ps1       # fallback
+```
+
+`-NoProfile` is permitted **only** when a CI/CD environment explicitly requires a deterministic shell with no
+user-side state, AND the requirement is documented inline at the call site.
