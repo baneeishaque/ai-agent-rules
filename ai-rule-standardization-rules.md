@@ -142,6 +142,16 @@ The content must balance conciseness with technical depth:
 - **Script SSOT Mandate (Audit Before Creation)**: The agent MUST audit existing skill directories for prior automation
   scripts before creating new ones. If a script already exists for a similar purpose, it MUST be refined or consolidated
   rather than duplicated. All scripts MUST reside in a `scripts/` subdirectory within the skill folder.
+- **No-Embedded-Script Mandate**: Script source code MUST NOT be embedded inside `SKILL.md`, `AGENTS.md`, README, or any
+  other markdown document — neither inline nor inside fenced code blocks. Markdown documents MUST link to the separate
+  script file under `scripts/` using a **relative** path (e.g., `[scripts/foo.ps1](scripts/foo.ps1)`) and MAY include a
+  short fenced **invocation example** (one-liner). Embedding full script bodies is FORBIDDEN because it (a) loses
+  syntax highlighting, debugging, and standalone execution, (b) duplicates the SSOT, and (c) silently diverges from the
+  executable file when one side is edited.
+- **Self-Verification Mandate (Lint Before Present)**: After generating or editing ANY markdown artifact, the agent
+  MUST re-read the artifact and verify it for formatting issues — stray tool-output tags (`</content>`, `<parameter ...>`),
+  duplicated lines, broken/multi-line links, missing fenced-block closers, embedded absolute paths — and fix them
+  BEFORE presenting the result to the user. Presenting an artifact that the agent has not re-read is FORBIDDEN.
 - **Script Delivery Mandate (Ship It)**: Automation scripts developed during a skill session are **first-class
   deliverables** of the skill — NOT disposable work products. If a workflow was automated by a script during the
   session, that script MUST be committed inside the skill's `scripts/` directory as part of the skill's canonical
@@ -202,8 +212,14 @@ The content must balance conciseness with technical depth:
   or "Environment & Dependencies". This section MUST instruct the agent to autonomously verify required tools
   (e.g., `rclone`, `diff`) and provide installation logic for standard package managers (`brew`, `apt`, `yum`).
 
-- **Artifact Linting Mandate**: All Markdown artifacts (Plans, Tasks, Walkthroughs) MUST be verified with `markdownlint-cli`
-  prior to user presentation. Any violations MUST be resolved.
+- **Artifact Linting Mandate**: All Markdown artifacts (Plans, Tasks, Walkthroughs, Skills, Rules) MUST be verified
+  with the **`markdownlint-cli2`** binary prior to user presentation. Any violations MUST be resolved.
+    - **Direct Execution (NO NPX)**: The agent MUST invoke the standalone binary directly (e.g.,
+      `markdownlint-cli2 <path>` and `markdownlint-cli2 --fix <path>`). Using `npx markdownlint-cli2` is
+      **FORBIDDEN** — it adds startup overhead, masks installation drift, and bypasses the project's pinned tool.
+    - **SSOT**: This mandate mirrors and is governed by
+      **[Markdown Generation Rules §5 (Validation Rules)](./markdown-generation-rules.md#5-validation-rules-markdownlint-cli2)**;
+      that section is the single source of truth for invocation, install path, and custom-rule resolution.
 
 - **Status Traceability Mandate**: Plans used for rule-building or multi-phase tasks MUST mark completed steps with
   `[DONE] [TIMESTAMP]` in the 'Proposed Changes' section to maintain execution context.
