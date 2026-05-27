@@ -59,6 +59,43 @@ plan. This prevents the agent from executing commands in an ad-hoc or unapproved
 The agent must use background processes (via `&`) for commands that are not expected to terminate on their own (e.g., a
 development server). If the agent is unsure, it must ask the user for guidance.
 
+#### 2.3.1 Compound Exploration Chains — Atomize, Don't Concatenate
+
+When inspecting unfamiliar filesystem state (paths that may not exist, sibling
+candidates, optional configs), the agent MUST issue **small independent shell
+calls**, NOT one long `&&` / `|` chain with `2>/dev/null` swallowing errors.
+
+Hazards of the chained form:
+
+- `2>/dev/null` hides the diagnostic that would have told the agent *which*
+  segment failed, leaving the entire chain in indeterminate state.
+- `| head -N` on a slow / mounted / network-backed filesystem can stall the
+  pipeline if the upstream blocks before producing N lines (SIGPIPE timing).
+- A non-existent path inside `find` / `grep -r` can trigger a slow traversal
+  fallback in some shells before the error is suppressed.
+- Mixing the above with a missing-but-similarly-named path (e.g.
+  `/path/foo/` vs `/path/foo-2/`) yields a silent stall that looks like the
+  tool itself hung.
+
+Required pattern: one purpose per call. Read the result. Decide. Issue the
+next call. Compose multiple **independent** lookups in parallel tool calls
+(NOT chained in one bash string) when they don't depend on each other.
+
+#### 2.3.2 Prefer Bash Heredocs Over Editor Edit Tool for Large Writes
+
+The agent's editor-side `edit` tool can hang or time out on large markdown /
+JSON / code files (empirically: anything > ~10 KB or with many surrounding
+lines included in `old_str` matching). When a write is large, full-file, or
+spans many lines, the agent MUST use a Bash heredoc instead:
+
+- Whole-file authoring → `cat > /abs/path <<'EOF' ... EOF`
+- In-place transformations → `python3 - <<'PY' ... PY` reading and rewriting
+  the file via `Path(...).read_text()` / `write_text()`.
+
+The `edit` tool remains appropriate for small, surgical replacements with
+clearly unique `old_str` context. For multi-line / whole-file / new-file
+authoring, prefer Bash.
+
 #### 2.4 UTF-8-Safe Bulk Text Edits in PowerShell (FORBIDDEN PATTERNS)
 
 When the agent edits files via the terminal (e.g., bulk URL replacements, in-place string substitution, applying a
