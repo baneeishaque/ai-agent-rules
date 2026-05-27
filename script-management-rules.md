@@ -94,6 +94,7 @@ function).
 
 - "Run script from zsh" → pwsh-preview -File script.ps1
 - "Create bash script" → Bash script created in `Bash-Scripts` folder (explicit override)
+  - Bash script filenames MUST use the `.bash` extension (never `.sh`). See [Bash Scripting Rules §Naming](./bash-scripting-rules.md).
 
 - "Write-Message" calls always checked for empty strings
 

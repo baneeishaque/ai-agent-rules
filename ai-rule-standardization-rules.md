@@ -167,7 +167,7 @@ The content must balance conciseness with technical depth:
   is unavailable in PowerShell). All script craftsmanship details — documentation headers (`.SYNOPSIS`,
   `.DESCRIPTION`, `.PARAMETER`, `.EXAMPLE`, `.NOTES`), execution priority (`pwsh-preview` → `pwsh` fallback),
   `Common-Utils.ps1` dot-sourcing, and the `Write-Message` empty-string safeguard — are defined in the SSOT at
-  [Script Management Rules](./script-management-rules.md) and MUST be obeyed.
+  [Script Management Rules](./script-management-rules.md) and MUST be obeyed. **Bash Extension Mandate**: When a Bash script is authored (under user override or documented justification), the file MUST use the `.bash` extension — never `.sh` — per the [Bash Scripting Rules](./bash-scripting-rules.md) §Naming and the [GitHub Actions Workflow Rules](./github-actions-workflow-rules.md) standalone-script mandate.
 - **Portable Script Path Mandate**: Any script that depends on a sibling artifact (the shared `Common-Utils.ps1`, a
   base-skill script under the Layered Composition Mandate, a config file, etc.) MUST resolve that artifact through a
   path anchored on the script's **own** location — NOT the caller's working directory. In PowerShell, use
