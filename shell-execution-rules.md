@@ -96,6 +96,45 @@ The `edit` tool remains appropriate for small, surgical replacements with
 clearly unique `old_str` context. For multi-line / whole-file / new-file
 authoring, prefer Bash.
 
+#### 2.3.3 Never Nest Heredocs Inside Heredocs (Python-in-Bash)
+
+Compounding §2.3.2: when the agent uses a `python3 - <<'PY' ... PY` heredoc
+for an in-place file edit, the Python body MUST NOT itself contain a
+triple-quoted multiline string that embeds bash-heredoc-looking sentinels
+(`EOF`, `PY`, `MARKEREOF`, etc.) or backtick fences.
+
+Failure mode the agent has hit repeatedly:
+
+1. The agentic CLI wraps the agent's bash command in its own implicit
+   heredoc / newline-preserving transport.
+2. The agent writes `python3 <<'PY'` whose body contains a Python triple
+   quoted string with embedded backticks, `\<newline>` continuations, or
+   sentinel-like tokens.
+3. The shell mis-counts heredoc terminators and waits indefinitely for a
+   sentinel that, from its parser's perspective, has already been consumed.
+4. The bash call hangs with no output and no exit code.
+
+Required pattern — two independent, unique-sentinel stages:
+
+1. Write the literal payload to a temp file with a heredoc whose sentinel
+   is GUARANTEED unique vs. the body (e.g. `ZZZ_PAYLOAD_END_ZZZ`).
+2. In a separate bash call, write the transformer script via its own
+   uniquely-sentinelled heredoc (e.g. `ZZZ_SCRIPT_END_ZZZ`).
+3. Invoke the script.
+
+Each stage carries exactly one heredoc and one sentinel token; no nesting,
+no collision.
+
+Forbidden patterns:
+
+- A `python3 <<'PY'` heredoc whose Python body holds a triple-quoted
+  string containing fenced code blocks or any token resembling a heredoc
+  terminator.
+- Re-using the same sentinel (`EOF`, `MARKEREOF`) for outer and inner
+  heredocs — the inner terminator closes the outer heredoc early and the
+  remainder of the script is mis-parsed, often manifesting as a silent
+  hang.
+
 #### 2.4 UTF-8-Safe Bulk Text Edits in PowerShell (FORBIDDEN PATTERNS)
 
 When the agent edits files via the terminal (e.g., bulk URL replacements, in-place string substitution, applying a
