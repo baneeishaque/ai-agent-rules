@@ -34,7 +34,6 @@ This file is a comprehensive, flat index of all rule files in this repository.
 
 | File | Purpose |
 | :--- | :--- |
-| [`Docker-rules.md`](./Docker-rules.md) | Guidelines for Docker containerization, best practices for Dockerfiles, and image optimization. |
 | [`ci-cd-rules.md`](./ci-cd-rules.md) | Principles and practices for CI/CD, including protected branches, security, observability, advanced deployment strategies, and automated rollbacks. |
 | [`github-actions-workflow-rules.md`](./github-actions-workflow-rules.md) | Rules for GitHub Actions workflows, covering trigger preferences, security, performance, and integrations. |
 | [`render-deployment-rules.md`](./render-deployment-rules.md) | Deployment configurations for Render, including environment variables and custom domains. |
