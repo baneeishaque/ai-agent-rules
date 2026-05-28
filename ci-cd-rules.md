@@ -276,3 +276,15 @@ streamlining the path from code commit to production.
 - **General Adherence:** Adhere to all general rule documents, including `ai-agent-planning-rules.md`,
 
     `ai-tools-rules.md`, and`shell-execution-rules.md`, to ensure a unified and secure development environment.
+
+***
+
+### Platform-Specific: Render
+
+- **Dynamic Base URLs**: When the application must self-reference (e.g., generating absolute links, OAuth callbacks),
+    use environment variables Render injects automatically. In Node.js, prefer
+    `process.env.RENDER_EXTERNAL_URL` over hard-coded hostnames so the same build runs across preview, staging, and
+    production services without reconfiguration.
+
+- **Custom Domains**: Attach custom domains to the service in the Render dashboard and add the corresponding `CNAME`
+    record at the DNS provider per Render's instructions. Plan TLS issuance time before swapping production traffic.

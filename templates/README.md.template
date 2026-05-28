@@ -115,8 +115,7 @@ AI-Agent-Rules/
 │
 ├── ⚙️ CI/CD & DevOps
 │   ├── ci-cd-rules.md                  # Pipeline principles
-│   ├── github-actions-workflow-rules.md         # Workflow configuration
-│   └── render-deployment-rules.md
+│   └── github-actions-workflow-rules.md         # Workflow configuration
 │
 ├── 🗃️ Repository Management
 │   ├── Git-Repository-rules.md         # Repo creation standards

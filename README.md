@@ -116,7 +116,6 @@ Follow the guidelines in:
 | :--- | :--- |
 | [`ci-cd-rules.md`](./ci-cd-rules.md) | Principles and practices for CI/CD, including protected branches, security, observability, advanced deployment strategies, and automated rollbacks. |
 | [`github-actions-workflow-rules.md`](./github-actions-workflow-rules.md) | Rules for GitHub Actions workflows, covering trigger preferences, security, performance, and integrations. |
-| [`render-deployment-rules.md`](./render-deployment-rules.md) | Deployment configurations for Render, including environment variables and custom domains. |
 
 ### Code Quality & Linting
 
@@ -285,8 +284,7 @@ AI-Agent-Rules/
 │
 ├── ⚙️ CI/CD & DevOps
 │   ├── ci-cd-rules.md                  # Pipeline principles
-│   ├── github-actions-workflow-rules.md         # Workflow configuration
-│   └── render-deployment-rules.md
+│   └── github-actions-workflow-rules.md         # Workflow configuration
 │
 ├── 🗃️ Repository Management
 │   ├── Git-Repository-rules.md         # Repo creation standards
