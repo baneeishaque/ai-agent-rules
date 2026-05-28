@@ -360,6 +360,7 @@ Grouped by why-they-might-show-up:
 | "Use Java because there's a Maven artifact for it" | The same library usually has a Python / Go / Rust binding; check before importing the JVM tax | Confirm no Tier-1/2/3 binding exists before Tier 4 |
 | "PowerShell 5.1 is fine, we'll just be careful with encoding" | §2.6 documents four real incidents proving "be careful" doesn't scale | `pwsh` required; fall back to 5.1 only when no install step is possible |
 | "I'll write the hot loop in Python and `numba`-jit it later" | `numba` adds a heavy import-time cost and is fragile across NumPy versions | If the hot path is real, go to Tier 3 — don't half-measure |
+| "Wrap a `python3 - <<PY ... PY` heredoc in a bash file because the entry-point feels shell-shaped" | The script is the wrong tier (Python in shell clothing) AND a [§2.3.3 nested-heredoc silent-hang hazard](./shell-execution-rules.md); the bash wrapper buys nothing argparse + pathlib doesn't do natively | Port to a pure `.py` per [`script-language-tier-port`](../.agents/skills/script-language-tier-port/SKILL.md) |
 
 ***
 
@@ -373,6 +374,12 @@ Grouped by why-they-might-show-up:
   PowerShell encoding hazards that motivate Python's Tier-1 status.
 - [`bash-scripting-rules.md`](./bash-scripting-rules.md) — when the chosen
   Tier-2 shell is bash rather than `pwsh`.
+- [`script-language-tier-port`](../.agents/skills/script-language-tier-port/SKILL.md) — the
+  remediation skill: when an EXISTING script is found to have picked the wrong
+  tier (typically a bash wrapper around a Python heredoc, or a `.sh` doing JSON /
+  regex work), this document defines WHICH tier is correct; the port skill defines
+  HOW to migrate it (line-accounting → idiomatic translation → byte-parity smoke
+  test → atomic refactor commit).
 - [`python-script-generation`](../.agents/skills/python-script-generation/SKILL.md)
   skill — authoring standards for Tier-1 Python scripts.
 - [`large-text-file-stream-split`](../.agents/skills/large-text-file-stream-split/SKILL.md)
