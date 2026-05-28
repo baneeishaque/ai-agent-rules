@@ -155,12 +155,6 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | [`linkedin-contributor-call-rules.md`](./linkedin-contributor-call-rules.md) | Specialized protocol for drafting "Call for Contributors" posts to recruit developers for personal projects, focusing on mentorship, labour-rich stacks, and leadership. |
 | [`linkedin-post-creation-rules.md`](./linkedin-post-creation-rules.md) | Protocol for crafting viral, professional, and accessible LinkedIn posts customized for Banee Ishaque K's persona, emphasizing plain-text optimization and human storytelling. |
 
-### Tech Stack
-
-| File | Purpose |
-| :--- | :--- |
-| [`nestjs-react-app-rules.md`](./nestjs-react-app-rules.md) | Guidelines for developing NestJS backends with React frontends. |
-
 ### Tooling & Workflows
 
 | File | Purpose |

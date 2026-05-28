@@ -235,12 +235,6 @@ Follow the guidelines in:
 | [`linkedin-contributor-call-rules.md`](./linkedin-contributor-call-rules.md) | Specialized protocol for drafting "Call for Contributors" posts to recruit developers for personal projects, focusing on mentorship, labour-rich stacks, and leadership. |
 | [`linkedin-post-creation-rules.md`](./linkedin-post-creation-rules.md) | Protocol for crafting viral, professional, and accessible LinkedIn posts customized for Banee Ishaque K's persona, emphasizing plain-text optimization and human storytelling. |
 
-### Tech Stack
-
-| File | Purpose |
-| :--- | :--- |
-| [`nestjs-react-app-rules.md`](./nestjs-react-app-rules.md) | Guidelines for developing NestJS backends with React frontends. |
-
 ### Tooling & Workflows
 
 | File | Purpose |
@@ -278,8 +272,7 @@ AI-Agent-Rules/
 │
 ├── 📱 Development Frameworks
 │   ├── flutter-app-development-rules.md            # Flutter best practices
-│   ├── flutter-android-rules.md    # Flutter Android specific
-│   └── nestjs-react-app-rules.md       # NestJS + React
+│   └── flutter-android-rules.md    # Flutter Android specific
 │
 ├── ⚙️ CI/CD & DevOps
 │   ├── ci-cd-rules.md                  # Pipeline principles

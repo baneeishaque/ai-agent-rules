@@ -159,7 +159,31 @@ Every `tsconfig.json`MUST have an adjacent`tsconfig.json.md` following the
 
 ***
 
-## 6. Related Conversations
+## 6. Cross-Stack Type Contracts (Backend ↔ Frontend)
+
+When a TypeScript project spans a server stack and a browser stack (canonical
+example: a **NestJS** backend with a **React** frontend), the type system MUST
+extend across the network boundary — not stop at it.
+
+- **Single source of truth via OpenAPI**: All HTTP endpoints MUST be documented
+  with Swagger / OpenAPI (e.g., `@nestjs/swagger` decorators on controllers).
+  The generated spec is the contract — neither side hand-writes request /
+  response shapes.
+
+- **Generated client types**: The frontend MUST consume TypeScript client types
+  *generated* from the OpenAPI spec (via `openapi-typescript`,
+  `orval`, `openapi-generator`, or equivalent). Hand-maintained DTOs duplicated
+  in both repos are PROHIBITED.
+
+- **Monorepo for shared types**: Prefer a monorepo layout (Nx, Turborepo,
+  pnpm workspaces) so that generated types, shared interfaces, and validation
+  schemas live in a `packages/shared` (or equivalent) workspace consumed by
+  both `apps/api` and `apps/web`. This eliminates the publish-and-bump cycle
+  for internal contracts.
+
+***
+
+## 7. Related Conversations
 
 - [Standardizing TypeScript Configuration (Current
 
