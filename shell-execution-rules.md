@@ -192,6 +192,42 @@ in-flight tool call to the agent as `interrupted` with no recoverable
 context. Treating output-size as a first-class resource constraint (on par
 with timeouts and tokens) keeps the loop alive.
 
+##### 2.3.4.1 Cumulative Scrollback Pressure (long sessions, many small outputs)
+
+Single-output sizing is necessary but NOT sufficient. The IDE renderer
+freeze hazard recurs even when every individual tool output is small, once
+the cumulative chat-view DOM crosses a threshold. Observed pattern: a
+session of 30+ tool calls — each well under 50 KB — produced an
+unresponsive IDE during a trivial 2-file grep, because the renderer was
+already saturated by accumulated `view`, `head`, and `bash` results held
+in scrollback.
+
+Additional defaults the agent MUST apply on long sessions:
+
+- **Prefer `view_range` over full-file `view`.** Even files under 50 KB
+  bloat scrollback when viewed whole. Pull only the lines being reasoned
+  about; widen on demand.
+- **Prefer file-write over stdout for intermediate artifacts.** When a
+  command produces a result the agent needs to re-read later (e.g., a
+  generated script body, a long extraction), write it to disk and `view`
+  the specific range — do not echo it back through bash stdout where it
+  enters scrollback permanently.
+- **Avoid re-printing content already in scrollback.** Once a file has been
+  shown to the user (via `view`, `cat`, or as a tool result), refer to it
+  by path instead of re-emitting it. Re-emission doubles the DOM cost.
+- **Defer post-action verification dumps.** A trailing `cat newfile.md` or
+  `head -50 result.txt` "just to confirm" adds permanent scrollback weight
+  for ephemeral value. Verify silently via exit code or `wc -l`; only
+  surface content the user explicitly asked to see.
+- **Watch the tool-call count.** When a single user message has driven
+  ~20+ tool calls, the agent SHOULD finish the current operation, then
+  pause and consolidate rather than chaining further investigative
+  batches.
+
+These rules compound with the single-output rule above — both apply
+simultaneously. A 49 KB output is "within limits" by §2.3.4 but is still
+the wrong choice on call #25 of a session.
+
 #### 2.4 UTF-8-Safe Bulk Text Edits in PowerShell (FORBIDDEN PATTERNS)
 
 When the agent edits files via the terminal (e.g., bulk URL replacements, in-place string substitution, applying a
