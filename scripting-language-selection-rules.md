@@ -182,7 +182,7 @@ development time for a 1.05× wall-clock improvement.
 
 | Language | Single-line summary | Pick it when |
 |---|---|---|
-| **C** | Universal toolchain (gcc / clang / MSVC / MinGW / tcc), tiny binaries, every OS, every CPU, every embedded target. The reference Tier-3 default. | The task is genuinely procedural, the dependencies are zero, and the result must compile *anywhere*. Reference: the `split_log.c` program in [`large-text-file-stream-split`](../.agents/skills/large-text-file-stream-split/SKILL.md). |
+| **C** | Universal toolchain (gcc / clang / MSVC / MinGW / tcc), tiny binaries, every OS, every CPU, every embedded target. The reference Tier-3 default. | The task is genuinely procedural, the dependencies are zero, and the result must compile *anywhere*. Reference: the `split_log.c` program in [`large-text-file-stream-split`](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/large-text-file-stream-split/SKILL.md). |
 | **Go** | Static binary, built-in concurrency (`goroutines`), excellent stdlib for networking and CLI, fast compile, gentle learning curve. | Network services, CLI tools that ship as a single binary to ops, parallel I/O-fan-out. Garbage-collected — don't use for hard real-time. |
 | **Rust** | Memory safety without GC, sub-millisecond latencies, exceptional type system, but steepest learning curve and longest compile times. | Memory-safety-critical work (parsers, crypto, anything exposed to untrusted input), latency-sensitive code, or where the maintainability tax of C is unacceptable. |
 | **Zig** | "Better C" — manual memory, no hidden control flow, single-binary cross-compilation as a *first-class* feature, can call into C trivially. Younger ecosystem (pre-1.0 in 2026). | Cross-compiling a single source file to N targets (Windows / Linux / macOS / WASM) without setting up a toolchain per host; reaching for C ergonomics without the C footguns. |
@@ -372,7 +372,7 @@ Grouped by why-they-might-show-up:
 | "Use Java because there's a Maven artifact for it" | The same library usually has a Python / Go / Rust binding; check before importing the JVM tax | Confirm no Tier-1/2/3 binding exists before Tier 4 |
 | "PowerShell 5.1 is fine, we'll just be careful with encoding" | §2.6 documents four real incidents proving "be careful" doesn't scale | `pwsh` required; fall back to 5.1 only when no install step is possible |
 | "I'll write the hot loop in Python and `numba`-jit it later" | `numba` adds a heavy import-time cost and is fragile across NumPy versions | If the hot path is real, go to Tier 3 — don't half-measure |
-| "Wrap a `python3 - <<PY ... PY` heredoc in a bash file because the entry-point feels shell-shaped" | The script is the wrong tier (Python in shell clothing) AND a [§2.3.3 nested-heredoc silent-hang hazard](./shell-execution-rules.md); the bash wrapper buys nothing argparse + pathlib doesn't do natively | Port to a pure `.py` per [`script-language-tier-port`](../.agents/skills/script-language-tier-port/SKILL.md) |
+| "Wrap a `python3 - <<PY ... PY` heredoc in a bash file because the entry-point feels shell-shaped" | The script is the wrong tier (Python in shell clothing) AND a [§2.3.3 nested-heredoc silent-hang hazard](./shell-execution-rules.md); the bash wrapper buys nothing argparse + pathlib doesn't do natively | Port to a pure `.py` per [`script-language-tier-port`](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/script-language-tier-port/SKILL.md) |
 
 ***
 
@@ -386,15 +386,15 @@ Grouped by why-they-might-show-up:
   PowerShell encoding hazards that motivate Python's Tier-1 status.
 - [`bash-scripting-rules.md`](./bash-scripting-rules.md) — when the chosen
   Tier-2 shell is bash rather than `pwsh`.
-- [`script-language-tier-port`](../.agents/skills/script-language-tier-port/SKILL.md) — the
+- [`script-language-tier-port`](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/script-language-tier-port/SKILL.md) — the
   remediation skill: when an EXISTING script is found to have picked the wrong
   tier (typically a bash wrapper around a Python heredoc, or a `.sh` doing JSON /
   regex work), this document defines WHICH tier is correct; the port skill defines
   HOW to migrate it (line-accounting → idiomatic translation → byte-parity smoke
   test → atomic refactor commit).
-- [`python-script-generation`](../.agents/skills/python-script-generation/SKILL.md)
+- [`python-script-generation`](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/python-script-generation/SKILL.md)
   skill — authoring standards for Tier-1 Python scripts.
-- [`large-text-file-stream-split`](../.agents/skills/large-text-file-stream-split/SKILL.md)
+- [`large-text-file-stream-split`](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/large-text-file-stream-split/SKILL.md)
   skill — reference application of Tier-3 C with a Tier-2 `pwsh` build wrapper.
 
 ***
