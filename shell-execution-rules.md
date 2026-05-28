@@ -135,6 +135,63 @@ Forbidden patterns:
   remainder of the script is mis-parsed, often manifesting as a silent
   hang.
 
+#### 2.3.4 Bound Tool Output Size to Protect the IDE Renderer
+
+Empirically observed failure: large tool outputs streamed back into the chat
+transcript (recursive `grep -r` over hundreds of files, `find` over a deep
+tree, `cat` on a minified JS bundle, full-file dumps from
+`workbench.desktop.main.js`-class artifacts) accumulate in the VS Code chat
+scrollback DOM and can freeze the entire IDE renderer process. When the user
+force-quits to recover, every in-flight tool call is reported back to the
+agent as `interrupted` and any unsaved shell session state is lost.
+
+Mitigations the agent MUST apply by default:
+
+- **Never dump a >50 KB payload directly into the chat stream.** If a command
+  is expected to produce a large result (any recursive search across a
+  many-file tree, any `cat` on a bundle / minified file, any
+  `git log -p` over a wide range), the agent MUST redirect to a temp file
+  first and then read selectively:
+
+    ```bash
+    cmd ... > /tmp/out.txt 2>&1
+    wc -l /tmp/out.txt
+    head -50 /tmp/out.txt        # or
+    grep -E 'pattern' /tmp/out.txt | head -50
+    ```
+
+  The Bash tool itself enforces this by spilling outputs >50 KB to a temp
+  file and reporting only the path + preview; the agent MUST treat that as
+  the *default expectation*, not an exception path.
+
+- **Prefer the editor's built-in `grep` / `glob` / `view` tools over a
+  shell-side recursive scan.** They stream results into the agent context
+  page-by-page instead of into the chat transcript DOM, and they truncate
+  predictably. Reserve `bash grep -r` for targets the built-in tools cannot
+  reach (e.g., binaries inside an app bundle, content inside a Git pack
+  file).
+
+- **Narrow the scope before scanning.** Use a `glob` of candidate files
+  first, then `grep` only those paths. Recursive scans over `node_modules`,
+  `.git`, `out/`, app-bundle `Resources/app/`, or large skill / docs trees
+  MUST be path-pinned (single subtree, single file family) or replaced by
+  the indexed search tool.
+
+- **When a large dump is genuinely required**, capture it to disk and
+  inspect with `view` + `view_range`, `head`, `tail`, `grep`, or `jq` — not
+  by letting bash echo it into the chat.
+
+- **Atomicity with chat-load.** Do NOT combine "produce a large output" and
+  "read a large file" in the same tool-call batch. Each large artifact gets
+  its own turn so the chat surface has time to render and the user retains
+  the option to cancel.
+
+Rationale: an unresponsive IDE is a worse failure than a slow turn — it
+forces a full restart, drops live shell sessions, and surfaces every
+in-flight tool call to the agent as `interrupted` with no recoverable
+context. Treating output-size as a first-class resource constraint (on par
+with timeouts and tokens) keeps the loop alive.
+
 #### 2.4 UTF-8-Safe Bulk Text Edits in PowerShell (FORBIDDEN PATTERNS)
 
 When the agent edits files via the terminal (e.g., bulk URL replacements, in-place string substitution, applying a
