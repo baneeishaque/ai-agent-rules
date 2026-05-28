@@ -138,6 +138,12 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | :--- | :--- |
 | [`ai-rule-standardization-rules.md`](./ai-rule-standardization-rules.md) | Craftsmanship standards for developing "Ultra-Lean Industrial" AI Agent Rules, ensuring consistent formatting, structural hierarchy, and pedagogical clarity. |
 
+### Security-Standards
+
+| File | Purpose |
+| :--- | :--- |
+| [`redaction-portability-rules.md`](./redaction-portability-rules.md) | Public-vs-organization-private repository scope tiers, asymmetric inter-repo linking rules, three sensitivity tiers (identity / topology / public), canonical placeholder vocabulary, and prohibited behaviors that keep every produced artifact safe to publish and portable across machines. |
+
 ### Shell-Scripting
 
 | File | Purpose |
@@ -164,6 +170,7 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | :--- | :--- |
 | [`rule-management-rules.md`](./rule-management-rules.md) | Documentation sync and update workflow, including metadata management for rule indexing. |
 | [`script-management-rules.md`](./script-management-rules.md) | Script standards, folder usage, and safeguards for helper scripts. |
+| [`scripting-language-selection-rules.md`](./scripting-language-selection-rules.md) | Decision framework for picking the right scripting / programming language for a given automation, tool, or one-off task — Python as the default, PowerShell as the cross-platform shell-glue, a systems-language tier (C / Go / Rust / Zig) for CPU-bound work, and a special-occasion tier (Java / C# / Node.js / PHP) reserved for ecosystem-driven cases. |
 | [`warp-terminal-ai-rules.md`](./warp-terminal-ai-rules.md) | Backup and reference for Warp AI Agent specific configurations. |
 
 ### VCS-Integration
