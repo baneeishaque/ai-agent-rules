@@ -71,6 +71,18 @@ difference, not by language preference.
   [`script-management-rules.md`](./script-management-rules.md)) when they are
   reusable across repos; one-shots stay co-located with the work they serve.
 
+- **Workspace-equivalent alternative: [`mise`](https://mise.jdx.dev)**. When a
+  workspace already standardises on `mise` for multi-language runtime management
+  (Python + Node + Go + PHP + etc. pinned in a shared `mise.toml`), `mise` is an
+  acceptable substitute for `uv`'s interpreter-management half: `mise use
+  python@3.12` pins the interpreter and `mise exec -- python script.py` runs it.
+  `uv` retains the edge for **dependency resolution + lockfiles + PEP 723
+  one-shots**; `mise` retains the edge for **polyglot workspaces** where Python
+  is one runtime among many. The decision is local to the workspace, not
+  per-script — do NOT mix the two within one repository. Reference sibling skill
+  using `mise` for Python: `mysql-capability-probe-pymysql`. See also
+  [`mise-tool-management`](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/mise-tool-management/SKILL.md).
+
 ### 2.3 Python authoring conventions for agent scripts
 
 - **Byte-safe file edits**: `Path(p).write_bytes(...)`. NEVER `open(p, 'w')`
