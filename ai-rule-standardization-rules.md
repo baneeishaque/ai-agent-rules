@@ -47,7 +47,15 @@ All rule files must be stored in the `AI-Agent-Rules` directory. However, for sp
 tasks, or capabilities, the system mandates a **Skill-First** architecture.
 
 - **Skill-First Architecture**: Any new, complex work process or agent-specific workflow
-  MUST be created as an **Agent Skill** instead of a flat rule file.
+  MUST be created as an **Agent Skill** instead of a flat rule file. Rationale: rules /
+  instruction files are **vendor-locked** (`.cursor/rules/*.mdc`, `.github/copilot-instructions.md`,
+  `AGENTS.md`, `CLAUDE.md`, `.windsurfrules`, etc.) -- a rule authored for one vendor is invisible
+  to every other. The Agent Skills standard ([agentskills.io](https://agentskills.io),
+  Anthropic-originated, multi-vendor adopted) is the open, portable alternative: a single
+  `SKILL.md` with YAML frontmatter is consumable by every conformant runtime. Authoring a
+  parallel rule file alongside a skill is **FORBIDDEN** -- it re-introduces vendor lock and
+  splits the SSOT. Full rationale: see `rule-to-skill-industrialization` skill (sibling
+  `ai-agents` repo).
 - **Skill Directory**: Skills are housed in `.agent/skills/<skill-name>/` (legacy/single-agent) or
   `.agents/skills/<skill-name>/` (plural/standardized). Skill names MUST use lowercase letters, numbers, and hyphens (no underscores).
 - **Core Skill Files**:
