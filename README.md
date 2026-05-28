@@ -191,12 +191,6 @@ Follow the guidelines in:
 | :--- | :--- |
 | [`typescript-rules.md`](./typescript-rules.md) | Industrial standards for TypeScript configuration, strictness, and strict dependency freezing. |
 
-### Mobile Development
-
-| File | Purpose |
-| :--- | :--- |
-| [`flutter-android-rules.md`](./flutter-android-rules.md) | Specific guidelines for Android configurations within Flutter projects. |
-
 ### Package Management
 
 | File | Purpose |
@@ -271,8 +265,7 @@ AI-Agent-Rules/
 │   └── github-cli-permission-rules.md  # Permission protocols
 │
 ├── 📱 Development Frameworks
-│   ├── flutter-app-development-rules.md            # Flutter best practices
-│   └── flutter-android-rules.md    # Flutter Android specific
+│   └── flutter-app-development-rules.md            # Flutter best practices
 │
 ├── ⚙️ CI/CD & DevOps
 │   ├── ci-cd-rules.md                  # Pipeline principles

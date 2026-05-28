@@ -483,3 +483,33 @@ members and ensures that architectural decisions and project conventions are not
 - **Open Source Contribution Guidelines:** If the project is open source, include a `CONTRIBUTING.md` file to guide
 
     external contributors on how to submit issues and pull requests, and to ensure adherence to the project's rules.
+
+
+### 13\. Android Platform Configuration
+
+Flutter projects targeting Android MUST honor the following platform-specific
+constraints. These rules sit at the boundary where Flutter's cross-platform
+abstractions hand off to the native Android toolchain (`android/app/build.gradle`,
+`AndroidManifest.xml`).
+
+- **`minSdkVersion`**: Pin explicitly in `android/app/build.gradle` (do not
+  rely on the Flutter default, which shifts between SDK releases). Choose the
+  lowest SDK level that genuinely covers the target user base — every bump
+  above the floor silently drops devices.
+
+- **`targetSdkVersion`**: Track the latest stable Android API level. Play
+  Store policy enforces a moving minimum for `targetSdkVersion` and rejects
+  uploads that lag behind, so this is operationally non-optional, not a
+  best-practice preference.
+
+- **Permissions**: Every runtime permission MUST be declared explicitly in
+  `android/app/src/main/AndroidManifest.xml`. Do not depend on plugins to
+  silently inject permissions via manifest merging — audit the merged
+  manifest (`flutter build apk --debug && unzip -p build/.../app-debug.apk \
+  AndroidManifest.xml`) before each release.
+
+- **Least Privilege**: Request the narrowest permission that satisfies the
+  use case (e.g., `ACCESS_COARSE_LOCATION` instead of `ACCESS_FINE_LOCATION`
+  when city-level fidelity suffices; `READ_MEDIA_IMAGES` instead of
+  `READ_EXTERNAL_STORAGE` on API 33+). Over-permissioned manifests trigger
+  Play Store review friction and erode user trust at install time.

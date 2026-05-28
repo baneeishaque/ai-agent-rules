@@ -111,12 +111,6 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | :--- | :--- |
 | [`typescript-rules.md`](./typescript-rules.md) | Industrial standards for TypeScript configuration, strictness, and strict dependency freezing. |
 
-### Mobile Development
-
-| File | Purpose |
-| :--- | :--- |
-| [`flutter-android-rules.md`](./flutter-android-rules.md) | Specific guidelines for Android configurations within Flutter projects. |
-
 ### Package Management
 
 | File | Purpose |

@@ -109,8 +109,7 @@ AI-Agent-Rules/
 │   └── github-cli-permission-rules.md  # Permission protocols
 │
 ├── 📱 Development Frameworks
-│   ├── flutter-app-development-rules.md            # Flutter best practices
-│   └── flutter-android-rules.md    # Flutter Android specific
+│   └── flutter-app-development-rules.md            # Flutter best practices
 │
 ├── ⚙️ CI/CD & DevOps
 │   ├── ci-cd-rules.md                  # Pipeline principles
