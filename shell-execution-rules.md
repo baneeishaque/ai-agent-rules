@@ -81,20 +81,33 @@ Required pattern: one purpose per call. Read the result. Decide. Issue the
 next call. Compose multiple **independent** lookups in parallel tool calls
 (NOT chained in one bash string) when they don't depend on each other.
 
-#### 2.3.2 Prefer Bash Heredocs Over Editor Edit Tool for Large Writes
+#### 2.3.2 Prefer Bash Heredocs Over Editor `edit` / `create` Tools for Large Writes
 
-The agent's editor-side `edit` tool can hang or time out on large markdown /
-JSON / code files (empirically: anything > ~10 KB or with many surrounding
-lines included in `old_str` matching). When a write is large, full-file, or
-spans many lines, the agent MUST use a Bash heredoc instead:
+The agent's editor-side `edit` AND `create` tools can both hang or time
+out on large markdown / JSON / code files (empirically: anything
+> ~10 KB or > ~100 lines, or `edit` calls with many surrounding lines
+in `old_str`). The hang mechanism is the same — large payloads stress
+the IDE renderer when streamed through the editor tool channel — and
+the symptom is identical (silent hang, eventual `interrupted` reply,
+forced VS Code recovery). When a write is large, full-file, or spans
+many lines, the agent MUST use a Bash heredoc instead:
 
-- Whole-file authoring → `cat > /abs/path <<'EOF' ... EOF`
+- Whole-file authoring (new OR overwrite) → `cat > /abs/path <<'EOF' ... EOF`
 - In-place transformations → `python3 - <<'PY' ... PY` reading and rewriting
   the file via `Path(...).read_text()` / `write_text()`.
 
-The `edit` tool remains appropriate for small, surgical replacements with
-clearly unique `old_str` context. For multi-line / whole-file / new-file
-authoring, prefer Bash.
+The `edit` tool remains appropriate for small, surgical replacements
+with clearly unique `old_str` context. The `create` tool is acceptable
+ONLY for short new files (< ~10 KB / < ~100 lines) with no large
+embedded code blocks. For multi-line / whole-file / new-file authoring
+above that threshold, prefer Bash.
+
+**Anti-pattern (real incident, 2026-05-29):** an agent used `create`
+with a ~200-line `file_text` payload and the call hung; the user had
+to force-recover VS Code, which marked subsequent in-flight tool calls
+as `interrupted` and dropped live shell sessions. Root cause: only the
+`edit` tool was flagged in earlier guidance; `create` carried the same
+hazard but was not yet named. Both tools are now covered by this rule.
 
 #### 2.3.3 Never Nest Heredocs Inside Heredocs (Python-in-Bash)
 
