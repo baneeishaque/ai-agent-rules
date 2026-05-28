@@ -241,7 +241,6 @@ Follow the guidelines in:
 | File | Purpose |
 | :--- | :--- |
 | [`nestjs-react-app-rules.md`](./nestjs-react-app-rules.md) | Guidelines for developing NestJS backends with React frontends. |
-| [`nestjs-react-flutter-stack-rules.md`](./nestjs-react-flutter-stack-rules.md) | Full-stack guidelines for NestJS/React web apps with an accompanying Flutter mobile client. |
 
 ### Tooling & Workflows
 
@@ -282,8 +281,7 @@ AI-Agent-Rules/
 ├── 📱 Development Frameworks
 │   ├── flutter-app-development-rules.md            # Flutter best practices
 │   ├── flutter-android-rules.md    # Flutter Android specific
-│   ├── nestjs-react-app-rules.md       # NestJS + React
-│   └── nestjs-react-flutter-stack-rules.md
+│   └── nestjs-react-app-rules.md       # NestJS + React
 │
 ├── ⚙️ CI/CD & DevOps
 │   ├── ci-cd-rules.md                  # Pipeline principles

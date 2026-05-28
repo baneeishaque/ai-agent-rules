@@ -161,7 +161,6 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | File | Purpose |
 | :--- | :--- |
 | [`nestjs-react-app-rules.md`](./nestjs-react-app-rules.md) | Guidelines for developing NestJS backends with React frontends. |
-| [`nestjs-react-flutter-stack-rules.md`](./nestjs-react-flutter-stack-rules.md) | Full-stack guidelines for NestJS/React web apps with an accompanying Flutter mobile client. |
 
 ### Tooling & Workflows
 

@@ -111,8 +111,7 @@ AI-Agent-Rules/
 ├── 📱 Development Frameworks
 │   ├── flutter-app-development-rules.md            # Flutter best practices
 │   ├── flutter-android-rules.md    # Flutter Android specific
-│   ├── nestjs-react-app-rules.md       # NestJS + React
-│   └── nestjs-react-flutter-stack-rules.md
+│   └── nestjs-react-app-rules.md       # NestJS + React
 │
 ├── ⚙️ CI/CD & DevOps
 │   ├── ci-cd-rules.md                  # Pipeline principles
