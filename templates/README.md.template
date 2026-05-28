@@ -130,8 +130,7 @@ AI-Agent-Rules/
 │
 ├── 🔧 Tooling
 │   ├── android-app-launch-rules.md     # Emulator management
-│   ├── rule-management-rules.md        # Documentation sync
-│   └── warp-terminal-ai-rules.md                   # Terminal configurations
+│   └── rule-management-rules.md        # Documentation sync
 │
 └── 📂 Configuration
     ├── .gitignore                      # Git ignore patterns

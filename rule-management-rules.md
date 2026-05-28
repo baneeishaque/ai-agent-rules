@@ -100,3 +100,23 @@ and commit with conventional commit message. This ensures documentation stays sy
 - "Let's create a rule that..."
 
 - "Modify the rule for..."
+
+---
+
+## Per-Surface Notes
+
+Different AI-agent surfaces (Warp, Cursor, Copilot, Claude Desktop, etc.) may have
+their own per-surface mechanism for *delivering* rule content to the agent at
+runtime. These mechanisms are **distinct from** the README/agent-rules
+auto-generation flow documented above (which governs how the index files are
+produced from `*-rules.md` frontmatter).
+
+### Warp Terminal
+
+- **Cloud sync:** Warp propagates per-developer agent rules across all devices
+  signed in to the same Warp account; no manual export/import is required.
+- **Authoring surface:** Add or modify rules through the Warp settings UI; the
+  underlying `*-rules.md` files in this repository remain the canonical,
+  reviewable source of truth that gets pasted into / referenced from Warp.
+- **Sync direction:** Repository → Warp (manual paste/reference). Warp does not
+  write back to the repository.

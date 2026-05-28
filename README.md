@@ -248,7 +248,6 @@ Follow the guidelines in:
 | [`rule-management-rules.md`](./rule-management-rules.md) | Documentation sync and update workflow, including metadata management for rule indexing. |
 | [`script-management-rules.md`](./script-management-rules.md) | Script standards, folder usage, and safeguards for helper scripts. |
 | [`scripting-language-selection-rules.md`](./scripting-language-selection-rules.md) | Decision framework for picking the right scripting / programming language for a given automation, tool, or one-off task — Python as the default, PowerShell as the cross-platform shell-glue, a systems-language tier (C / Go / Rust / Zig) for CPU-bound work, and a special-occasion tier (Java / C# / Node.js / PHP) reserved for ecosystem-driven cases. |
-| [`warp-terminal-ai-rules.md`](./warp-terminal-ai-rules.md) | Backup and reference for Warp AI Agent specific configurations. |
 
 ### VCS-Integration
 
@@ -299,8 +298,7 @@ AI-Agent-Rules/
 │
 ├── 🔧 Tooling
 │   ├── android-app-launch-rules.md     # Emulator management
-│   ├── rule-management-rules.md        # Documentation sync
-│   └── warp-terminal-ai-rules.md                   # Terminal configurations
+│   └── rule-management-rules.md        # Documentation sync
 │
 └── 📂 Configuration
     ├── .gitignore                      # Git ignore patterns
