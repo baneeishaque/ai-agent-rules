@@ -81,6 +81,42 @@ Required pattern: one purpose per call. Read the result. Decide. Issue the
 next call. Compose multiple **independent** lookups in parallel tool calls
 (NOT chained in one bash string) when they don't depend on each other.
 
+##### 2.3.1.1 Case-Sensitivity Trap on Case-Insensitive Volumes
+
+Many common volumes are **case-insensitive but case-preserving by
+default** — macOS HFS+/APFS, Windows NTFS, many SMB/AFP network
+shares, and some Docker bind mounts. A path whose casing differs
+from the on-disk canonical form (e.g.
+`<WORKSPACE_ROOT>/Foo_Bar/...` when disk has
+`<WORKSPACE_ROOT>/foo-bar/...`) will still *resolve* — but resolution
+goes through a slower case-folding code path. On volumes with active
+filewatchers (Spotlight, fsevents, IDE indexers, cloud-sync agents)
+the lookup can stall long enough to freeze the IDE renderer waiting
+on the tool result.
+
+Observed failure mode:
+
+- An exploratory `ls` against a guessed path with the wrong case
+  triggers a multi-second stall that propagates up as an IDE window
+  freeze; the user must force-recover.
+- Repeated case-mismatched lookups inside a chained probe compound
+  the stall — each segment re-folds before the next runs.
+
+Required pattern:
+
+- Before guessing a sibling path's case, run a case-correct lookup
+  of the parent directory first (e.g. `ls <PARENT_DIR>` to discover
+  that the child is `foo-bar`, not `Foo_Bar`).
+- Cache the canonical casing once per session and reuse it; do NOT
+  re-guess in later calls.
+- When unsure, derive the path from a known-good artifact — a recent
+  `git -C <KNOWN_PATH> rev-parse --show-toplevel`, an environment
+  variable, or the cwd reported in the environment context — rather
+  than from memory or capitalization conventions.
+- Pair with §2.3.1: never bundle a case-guess path probe with other
+  work in the same chained call. The stall hides the diagnostic and
+  may freeze the IDE.
+
 #### 2.3.2 Prefer Bash Heredocs Over Editor `edit` / `create` Tools for Large Writes
 
 The agent's editor-side `edit` AND `create` tools can both hang or time
