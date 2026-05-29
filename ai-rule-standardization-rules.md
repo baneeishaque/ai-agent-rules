@@ -364,14 +364,14 @@ The content must balance conciseness with technical depth:
   other repo — does every relative link still resolve and does every prose reference still make sense?"
   Multi-root VS Code workspaces and sibling-folder conventions are local accidents, not portable
   properties, and are **inadmissible defences**. The scope tier governs what is allowed:
-  - **Public-scope files MUST be self-contained.** They MUST NOT (a) link via relative path into an
+    - **Public-scope files MUST be self-contained.** They MUST NOT (a) link via relative path into an
     org-private or personal sibling repo (the link is broken in any standalone public clone and leaks the
     private repo's existence + name), (b) name a specific organization in prose (use `<corp>` or generic
     "your organization" phrasing instead), or (c) rely on a multi-root VS Code workspace to make a
     cross-repo link "resolve" — it resolves only for the original author. The correct way to delegate to
     an org-private capability is generic prose: *"consult your organization's internal skill library, if
     one exists."*
-  - **Org-private-scope files MAY reference public-scope files — by name, not by relative
+    - **Org-private-scope files MAY reference public-scope files — by name, not by relative
     path.** Per the Independence Axiom, a relative link
     `../../../../<public-repo>/...` only resolves inside one specific multi-root workspace
     layout and is broken for any developer who clones the org-private repo standalone.
@@ -381,7 +381,7 @@ The content must balance conciseness with technical depth:
     organization (`<toolbase>`, the corporate proxy host, the internal VCS URL). Use the
     canonical `<placeholder>` once beside the first literal occurrence as a teaching aid
     for future public-scope ports.
-  - **Unifying principle:** no relative-path link may escape its enclosing repository,
+    - **Unifying principle:** no relative-path link may escape its enclosing repository,
     regardless of direction.
 
   Before staging any cross-repo reference, the agent MUST run the **Pre-Commit Checklist** in
