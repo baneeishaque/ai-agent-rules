@@ -169,13 +169,29 @@ The content must balance conciseness with technical depth:
   extracting a base layer), the original script MUST be migrated or superseded explicitly — not silently removed.
   If a script is superseded by a higher-layer composer, the SKILL.md MUST document the migration rationale and the
   new invocation path so no operational knowledge is lost.
-- **Script Language Mandate (PowerShell-First)**: When creating a new automation script, the default language is
-  PowerShell (`.ps1`), cross-compatible with **Windows PowerShell 5.1+** and **PowerShell Core 7+**. Other languages
-  (Bash, Python, Node) require an explicit user override or a documented technical justification (e.g., a runtime that
-  is unavailable in PowerShell). All script craftsmanship details — documentation headers (`.SYNOPSIS`,
-  `.DESCRIPTION`, `.PARAMETER`, `.EXAMPLE`, `.NOTES`), execution priority (`pwsh-preview` → `pwsh` fallback),
-  `Common-Utils.ps1` dot-sourcing, and the `Write-Message` empty-string safeguard — are defined in the SSOT at
-  [Script Management Rules](./script-management-rules.md) and MUST be obeyed. **Bash Extension Mandate**: When a Bash script is authored (under user override or documented justification), the file MUST use the `.bash` extension — never `.sh` — per the [Bash Scripting Rules](./bash-scripting-rules.md) §Naming and the [GitHub Actions Workflow Rules](./github-actions-workflow-rules.md) standalone-script mandate.
+- **Script Language Mandate (SSOT-Delegated)**: When creating a new automation script, the language MUST be chosen
+  per the four-tier framework in **[Scripting Language Selection Rules](./scripting-language-selection-rules.md)** —
+  which is the SSOT. In summary (do NOT inline the framework here — read the SSOT):
+    - **Tier 1 (default) — Python 3.12+** for general-purpose automation, JSON / text file mutation, REST clients,
+      data munging, and ALL agent helper scripts UNLESS a Tier 2–4 override applies.
+    - **Tier 2 — PowerShell 7+ (`pwsh`)** ONLY when the script body IS shell glue (≤ 80% native-binary
+      invocation in sequence). Cross-compatible with **Windows PowerShell 5.1+** only under the §3.4 escape
+      clause.
+    - **Tier 3 (systems: C / Go / Rust / Zig)** ONLY after a measured Python prototype proves the bottleneck.
+    - **Tier 4 (special: Java / C# / Node.js / PHP)** ONLY when ecosystem mandates it.
+  Any deviation from the SSOT's recommendation requires explicit user override or a written `.NOTES`-block
+  justification citing the §3–§5 rule that applies. The **older "PowerShell-First" default is RETIRED for new
+  scripts** — see Scripting Language Selection Rules §intro for the supersession statement. Tier-2 (PowerShell)
+  craftsmanship details — documentation headers (`.SYNOPSIS`, `.DESCRIPTION`, `.PARAMETER`, `.EXAMPLE`,
+  `.NOTES`), execution priority (`pwsh-preview` → `pwsh` fallback), `Common-Utils.ps1` dot-sourcing, and the
+  `Write-Message` empty-string safeguard — remain SSOT-owned by
+  [Script Management Rules](./script-management-rules.md) and MUST be obeyed whenever Tier 2 is selected.
+  Tier-1 (Python) craftsmanship details are SSOT-owned by Scripting Language Selection Rules §2.3 (byte-safe
+  I/O, `argparse`, `ruff`, `pytest`, PEP 723 / `uv`). **Bash Extension Mandate**: When Bash is selected (a
+  Tier-2 borderline case requiring documented justification — usually because the host lacks `pwsh`), the
+  file MUST use the `.bash` extension — never `.sh` — per the
+  [Bash Scripting Rules](./bash-scripting-rules.md) §Naming and the
+  [GitHub Actions Workflow Rules](./github-actions-workflow-rules.md) standalone-script mandate.
 - **Portable Script Path Mandate**: Any script that depends on a sibling artifact (the shared `Common-Utils.ps1`, a
   base-skill script under the Layered Composition Mandate, a config file, etc.) MUST resolve that artifact through a
   path anchored on the script's **own** location — NOT the caller's working directory. In PowerShell, use
