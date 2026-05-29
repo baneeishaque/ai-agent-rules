@@ -99,3 +99,65 @@ When processing a `.gitignore` file that contains both standard and custom rules
     output intact to ensure reproducibility.
 
 - **Cleanliness**: Remove the backup file (`.gitignore.bak`) only after the final verification is complete.
+
+***
+
+## 4. Narrow Leaf-Ignore Over Folder-Ignore (Unknown-Schema Defense)
+
+When ignoring **ephemeral state** inside a folder whose **future schema is
+unknown** (third-party tool spool dirs, IDE per-session storage, generated
+caches with versioned layouts), the agent **MUST NOT** ignore the parent
+folder. Instead, ignore only the *known-ephemeral leaves*.
+
+### Rationale
+
+A trailing-slash folder ignore (`some/dir/`) hides every current AND future
+file the tool emits in that folder. If the tool later adds a sibling artifact
+the user would want to version-control, it is silently swallowed and never
+surfaces in `git status`. Narrow leaf-ignores keep `git status` honest:
+unknown siblings appear as untracked and force a deliberate triage decision.
+
+### Rule
+
+For any per-session / per-instance state folder whose contents are not a
+closed, documented schema:
+
+- Ignore each **leaf file** (`folder/*/state.json`) or **known-ephemeral
+  subdirectory** (`folder/*/contents/`) explicitly.
+- Do **NOT** ignore the enclosing per-session folder
+  (`folder/*/`) — keep it un-ignored so future sibling files surface.
+- Add an inline comment above the block explaining why the parent is
+  deliberately not ignored.
+
+### Companion `.gitattributes` Cleanup
+
+When a `.gitattributes` filter / diff / textconv line targets a path that
+now becomes gitignored, that line is dead config. Remove it in the same
+commit (or an adjacent atomic commit) that introduces the narrowed ignore
+rule.
+
+### Canonical Example: VS Code Copilot Chat `chatEditingSessions/`
+
+```gitignore
+# Copilot Chat per-session undo/redo timeline (state.json) + content-addressed
+# snapshots (contents/) — machine- and session-local; the canonical history of
+# any edited file already lives in this repo's commit history, so these are pure
+# redundant churn. Folder itself is NOT ignored so future, unknown sibling files
+# surface for review.
+…/workspaceStorage/*/chatEditingSessions/*/state.json
+…/workspaceStorage/*/chatEditingSessions/*/contents/
+```
+
+### Anti-Pattern
+
+```gitignore
+# WRONG — hides every future artifact VS Code may add per session.
+…/workspaceStorage/*/chatEditingSessions/
+```
+
+### Audit Cue
+
+When a user asks to "ignore this whole tool state folder", first enumerate
+the folder's current leaf set, classify each leaf as **ephemeral** or
+**potentially-canonical**, and only ignore the ephemeral set with a comment
+documenting the classification.
