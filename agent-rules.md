@@ -116,7 +116,6 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | File | Purpose |
 | :--- | :--- |
 | [`brew-rules.md`](./brew-rules.md) | Comprehensive SSOT for Homebrew operations, including installation preferences, keg-only handling, and exclusion-based upgrade workflows. |
-| [`mise-plugin-backend-management-rules.md`](./mise-plugin-backend-management-rules.md) | Intelligent backend selection for mise plugin installations with fallback handling and user prompts. |
 
 ### Quality Assurance & Verification
 
