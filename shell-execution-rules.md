@@ -81,41 +81,84 @@ Required pattern: one purpose per call. Read the result. Decide. Issue the
 next call. Compose multiple **independent** lookups in parallel tool calls
 (NOT chained in one bash string) when they don't depend on each other.
 
-##### 2.3.1.1 Case-Sensitivity Trap on Case-Insensitive Volumes
+##### 2.3.1.1 Heavy-Filewatcher-Tree Probe Trap (formerly: Case-Sensitivity Trap)
 
-Many common volumes are **case-insensitive but case-preserving by
-default** — macOS HFS+/APFS, Windows NTFS, many SMB/AFP network
-shares, and some Docker bind mounts. A path whose casing differs
-from the on-disk canonical form (e.g.
-`<WORKSPACE_ROOT>/Foo_Bar/...` when disk has
-`<WORKSPACE_ROOT>/foo-bar/...`) will still *resolve* — but resolution
-goes through a slower case-folding code path. On volumes with active
-filewatchers (Spotlight, fsevents, IDE indexers, cloud-sync agents)
-the lookup can stall long enough to freeze the IDE renderer waiting
-on the tool result.
+**Re-attribution note (May 2026):** the original framing of this section
+attributed IDE renderer freezes to *case-folding stall on
+case-insensitive volumes*. That diagnosis was incomplete and
+misattributed. The dominant root cause is **probing into deeply
+symlinked, filewatcher-heavy directory subtrees** — particularly
+trees that fan out into private configuration mounts, cloud-sync
+roots, or IDE-indexed workspaces. Case-folding IS a real (minor)
+amplifier on case-insensitive volumes, but it is rarely the
+proximate cause of a hang. The original case-sensitivity guidance
+is retained below as a secondary concern.
 
-Observed failure mode:
+###### Primary cause: heavy-filewatcher-tree fan-out
 
-- An exploratory `ls` against a guessed path with the wrong case
-  triggers a multi-second stall that propagates up as an IDE window
-  freeze; the user must force-recover.
-- Repeated case-mismatched lookups inside a chained probe compound
-  the stall — each segment re-folds before the next runs.
+A single `ls`, `find`, `grep -r`, or `realpath` against a directory
+that contains many symlinks into private/cloud/indexed trees can
+trigger a cascade of fsevents / Spotlight / IDE-indexer wake-ups
+that **block** the foreground tool call long enough to freeze the
+IDE renderer. The user's only recovery is to force-quit, which
+reports every in-flight tool call back as `interrupted`.
 
-Required pattern:
+Concrete failure case in this workspace:
 
-- Before guessing a sibling path's case, run a case-correct lookup
-  of the parent directory first (e.g. `ls <PARENT_DIR>` to discover
-  that the child is `foo-bar`, not `Foo_Bar`).
+- `/Users/dk/Lab_Data/configurations-private/` is a symlinked
+  private-config root whose children fan out into developer
+  dotfiles, secrets, and per-app config trees consumed by
+  long-running watchers.
+- `/Users/dk/lab-data/` is a SIBLING directory (NOT a case-variant)
+  containing code repositories.
+- The two paths differ in **dash vs underscore** AND in **case**
+  (`Lab_Data` vs `lab-data`). They are distinct directories, not
+  the same dir reached through case-folding. Earlier diagnoses that
+  attributed the freeze to "case-insensitive resolution" were
+  conflating the directory-name confusion with the actual hang
+  trigger (filewatcher-tree fan-out under `Lab_Data/`).
+
+###### Required pattern
+
+- Before probing into any directory that contains symlinked
+  configuration / cloud-sync / IDE-workspace subtrees, address the
+  specific file path you need directly. Do NOT walk parents to
+  discover it.
+- Prefer absolute, fully-canonical paths from environment variables
+  or known-good `git -C <KNOWN_PATH> rev-parse --show-toplevel`
+  output over exploratory tree walks.
+- Specifically: read files under `/Users/dk/Lab_Data/configurations-private/`
+  by exact path (e.g. `cat /Users/dk/Lab_Data/configurations-private/Account-Ledger-Server/act.secrets`).
+  Never `ls /Users/dk/Lab_Data/` or `find /Users/dk/Lab_Data/ ...`.
+- Use the built-in `glob` / `grep` / `view` tools (see §2.3.1.2)
+  instead of shell `find` / `grep -r` for any tree walk; they
+  respect the IDE's filewatcher discipline.
+- Pair with §2.3.1: never bundle a heavy-tree probe with other
+  work in the same chained call — the stall hides the diagnostic
+  and may freeze the IDE.
+
+###### Secondary cause: case-folding on case-insensitive volumes
+
+Many common volumes are case-insensitive but case-preserving by
+default — macOS HFS+/APFS, Windows NTFS, many SMB/AFP network
+shares, some Docker bind mounts. A path whose casing differs from
+the on-disk canonical form will still *resolve*, but through a
+slower case-folding code path. On its own this is rarely enough to
+freeze the IDE; it amplifies the primary-cause hang above when the
+mis-cased lookup ALSO targets a filewatcher-heavy subtree.
+
+Required pattern (when working on a case-insensitive volume):
+
+- Before guessing a sibling path's case, derive the canonical
+  casing from `ls` of the parent directory (provided that parent
+  is NOT itself a heavy-filewatcher tree), a known-good git
+  artifact, an environment variable, or the cwd reported in the
+  environment context.
 - Cache the canonical casing once per session and reuse it; do NOT
   re-guess in later calls.
-- When unsure, derive the path from a known-good artifact — a recent
-  `git -C <KNOWN_PATH> rev-parse --show-toplevel`, an environment
-  variable, or the cwd reported in the environment context — rather
-  than from memory or capitalization conventions.
-- Pair with §2.3.1: never bundle a case-guess path probe with other
-  work in the same chained call. The stall hides the diagnostic and
-  may freeze the IDE.
+- Confusing `lab-data` with `Lab_Data` in this workspace is a
+  case-AND-punctuation confusion — not pure case-folding — so the
+  cache MUST distinguish them as distinct names, not aliases.
 
 ##### 2.3.1.2 Prefer Built-in Search / Read Tools Over Shell Fallbacks
 
