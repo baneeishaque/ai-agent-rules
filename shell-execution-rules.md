@@ -97,13 +97,16 @@ is retained below as a secondary concern.
 ###### Primary cause: heavy-filewatcher-tree fan-out
 
 A single `ls`, `find`, `grep -r`, or `realpath` against a directory
-that contains many symlinks into private/cloud/indexed trees can
+that contains many symlinks into private/cloud/indexed trees — OR a
+plain in-repo directory with a wide fan-out of sibling subfolders
+each watched by the IDE's editor / extension filewatchers — can
 trigger a cascade of fsevents / Spotlight / IDE-indexer wake-ups
 that **block** the foreground tool call long enough to freeze the
-IDE renderer. The user's only recovery is to force-quit, which
-reports every in-flight tool call back as `interrupted`.
+IDE renderer. The user's only recovery is to force-quit / reopen
+the window, which reports every in-flight tool call back as
+`interrupted`.
 
-Concrete failure case in this workspace:
+Concrete failure cases in this workspace:
 
 - `/Users/dk/Lab_Data/configurations-private/` is a symlinked
   private-config root whose children fan out into developer
@@ -117,6 +120,40 @@ Concrete failure case in this workspace:
   attributed the freeze to "case-insensitive resolution" were
   conflating the directory-name confusion with the actual hang
   trigger (filewatcher-tree fan-out under `Lab_Data/`).
+- `/Users/dk/lab-data/ai-suite-2/.agents/skills/` is an in-repo
+  directory holding ~80+ skill subfolders, each containing
+  `SKILL.md` files actively watched by VS Code's editor,
+  extension hosts, and skill-resolver indexers. A single
+  `bash ls .agents/skills/` issued through the agent's TTY
+  pipeline froze the VS Code Insiders renderer to "not
+  responding" (May 2026 incident); the user had to reopen the
+  window. This proves the hazard is NOT limited to symlinked
+  private-config trees — any directory with a wide fan-out
+  under active IDE watchers is in scope. Use the built-in
+  `glob` tool (e.g. `pattern: ".agents/skills/*/SKILL.md"`)
+  for such enumerations; it bypasses the TTY/renderer pipeline.
+
+###### Renderer-recovery fallout: `edit` / `create` tools also stall
+
+When the renderer freezes from a heavy-filewatcher probe and the
+user force-reopens the VS Code window, the editor / extension hosts
+must drain the queued fsevents backlog before they accept new
+filesystem operations. The agent's `edit` and `create` tools route
+through the VS Code FileSystem provider on the same renderer
+thread, so any `edit` / `create` call issued during the drain
+window will itself be reported as `interrupted`. Mitigations:
+
+- After a renderer freeze, the FIRST recovery action MUST be a
+  `bash` command (e.g. `wc -l`, `git status`) — these bypass the
+  VS Code FS provider entirely and confirm the drain is complete.
+- For the actual content fix, prefer **Bash heredocs +
+  `python` / `sed`** over the `edit` / `create` tools (this also
+  satisfies AGENTS.md Permanent Operating Reminder #2). Heredoc
+  writes touch the disk through the shell, not the renderer.
+- Cross-workspace edits (cwd in repo A, editing files in repo B)
+  compound the risk because VS Code may not have a hot FS
+  provider for repo B's root — prefer `bash` writes for any
+  out-of-cwd file mutation.
 
 ###### Required pattern
 
