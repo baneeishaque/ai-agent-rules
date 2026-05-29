@@ -117,6 +117,42 @@ Required pattern:
   work in the same chained call. The stall hides the diagnostic and
   may freeze the IDE.
 
+##### 2.3.1.2 Prefer Built-in Search / Read Tools Over Shell Fallbacks
+
+The host runtime exposes first-class code-search and file-read tools
+(`grep`, `glob`, `view`) that are explicitly designed to respect the
+output-sizing, scrollback-hygiene, and atomization rules in §2.3.1 and
+§2.3.4. Falling back to `bash grep`, `find`, `rg`, `cat`, `head`, or
+`tail` for tasks the built-ins already handle reintroduces every freeze
+hazard those tools were built to eliminate.
+
+Most acute failure mode: passing `-r` / `-R` *alongside explicit file
+paths* in `grep` / `rg` is a logical contradiction (recursion has no
+meaning on a leaf file), but the flag is silently accepted. On some
+ripgrep versions the explicit paths are ignored and the tool degrades
+into a recursive walk of the current working directory — on a large
+monorepo with active filewatchers (Spotlight, fsevents, IDE indexer),
+that walk can stall long enough to freeze the IDE renderer.
+
+Required pattern:
+
+- **Content search** → use the built-in `grep` tool with `paths` pinned
+  to the specific files or directories of interest. Do NOT pass `-r` /
+  `-R` together with explicit file paths.
+- **Filename / glob search** → use the built-in `glob` tool, not `find`
+  or `Get-ChildItem`.
+- **File reads** → use the built-in `view` tool with `view_range` for
+  any file you expect to exceed a small fraction of the 50 KB truncation
+  limit (per §2.3.4).
+- **Bash fallback** is allowed only when the query requires shell
+  features the built-in tool cannot express (multi-stage pipes,
+  command substitution, custom post-processing). When falling back,
+  the query MUST be scoped to explicit paths and MUST NOT use
+  recursion flags on a leaf-path query.
+
+This rule composes with §2.3.1 (chain atomization) — a `bash grep` fallback
+inside a `&&` chain compounds both hazards.
+
 #### 2.3.2 Prefer Bash Heredocs Over Editor `edit` / `create` Tools for Large Writes
 
 The agent's editor-side `edit` AND `create` tools can both hang or time
