@@ -87,6 +87,7 @@ tasks, or capabilities, the system mandates a **Skill-First** architecture.
 
 - **File Naming**: Use strictly lowercase, kebab-case ending in `-rules.md` (e.g., `git-submodule-rules.md`).
 - **Skill Naming**: Skill names in YAML frontmatter MUST use lowercase letters, numbers, and hyphens (no underscores or spaces).
+- **Skill-Name Precision Mandate (SSOT)**: A skill's `name:` (folder name + YAML frontmatter) MUST encode every distinguishing constraint of its scope — not just the generic action. Names that omit a qualifying constraint (filetype, transport, mode, exclusion) silently overlap with future skills that own the constraint and mislead callers into composing the wrong primitive. Example: a skill that performs selective Git submodule init/update **while skipping LFS blob downloads** MUST be named `git-submodule-selective-init-no-lfs` (or `git-submodule-selective-init-lfs-skip`), NOT `git-submodule-selective-init` — the latter reads as the generic selective-init primitive and leaves no name-space for a future LFS-aware variant. When in doubt, append the differentiating qualifier; a longer precise name is always preferable to a shorter ambiguous one. Renaming after the fact requires a folder move + frontmatter update + every inbound link rewrite across the repo and submodules — much cheaper to name correctly at creation.
 
 - **YAML Frontmatter**: Every file MUST start with the following metadata block:
 
