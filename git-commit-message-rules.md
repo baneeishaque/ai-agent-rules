@@ -187,3 +187,44 @@ MUST "dig down" to understand the content.
 - **Dependency Details**: For dependency files (e.g., `requirements.txt`,`local.txt`), even if seen as binary,
 
     summarize the key package updates instead of just saying "updates dependencies".
+
+### 7. Amending Established Commits
+
+When amending a commit (`git commit --amend`), the message MUST describe
+the **final combined state** of the commit as it stands after incorporating
+the amend — not the delta that the amend introduces, and not the original
+pre-amend state.
+
+**Procedure:**
+
+1. Read the original commit's full diff and the new staged changes.
+2. Identify the union of both: what does the commit now contain in total?
+3. Write a single coherent message (title + body) for that union.
+
+**Correct (final state):**
+
+```text
+docs(rules): cross-reference stash-apply failure fallback with resolvable URLs
+
+- Link to selective file extraction recovery path via GitHub URL that
+  resolves in standalone clone
+- Link to redaction-portability skill for the URL decision framework
+  used here
+```
+
+This describes the commit's final content: a blockquote that
+cross-references the failure fallback, and the URLs are resolvable.
+
+**Incorrect (delta-only — would be rejected):**
+
+```text
+docs(rules): replace prose reference with SHA-pinned URLs
+```
+
+This describes only what the amend changed, not what the commit IS.
+
+**Submodule-specific consideration.** When amending a commit inside a
+registered submodule, ensure the final message also passes the standalone-
+clone test per `redaction-portability` skill §0.2. The message must make
+sense to a reader who only has the submodule cloned, without knowledge of
+the parent repo's internal labels or layout.
