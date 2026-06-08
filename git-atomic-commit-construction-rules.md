@@ -268,9 +268,20 @@ Pre-existing stashes of unclear origin discovered during inventory MUST
 be classified via the **Git Stash Triage Skill** (`git-stash-triage`)
 before the safety stash is pushed, to prevent stash-stack confusion.
 
-Outbound submodule→parent relative links are intentionally omitted here
-per the Cross-Repository / Submodule Isolation rule
-([ai-rule-standardization-rules.md §2](./ai-rule-standardization-rules.md)).
+> **If the immediate `git stash apply` fails** due to live editor
+> conflicts (VS Code, Copilot, Eclipse, IntelliJ rewriting files between
+> push and apply), do NOT retry — delegate to the [**Selective File
+> Extraction from Stash (Phase 1g)**](https://github.com/baneeishaque/ai-suite/blob/a405f52/.agents/skills/git-pre-execution-safety-stash/SKILL.md#1g--stash-apply-conflict-recovery-via-selective-file-extraction)
+> recovery path in the `git-pre-execution-safety-stash` skill. This path
+> extracts per-commit files individually from the intact `stash@{0}`
+> entry, working through the approved commit plan one commit at a time,
+> without ever re-applying the full stash.
+
+The URL above is SHA-pinned to parent commit `a405f52` so the link
+resolves even in a standalone submodule clone. See the
+[`redaction-portability` skill §0.2](https://github.com/baneeishaque/ai-suite/blob/a405f52/.agents/skills/redaction-portability/SKILL.md#02-submoduleparent-url-references--the-standalone-clone-gap)
+for the three-option decision framework (relative path / SHA-pinned URL
+/ branch-pinned URL).
 
 ***
 
