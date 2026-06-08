@@ -127,6 +127,8 @@ To ensure absolute precision and user control, the agent MUST adhere to these fo
   files). Only planned files/hunks for the CURRENT atomic unit should be staged.
 - **Serial Execution & Command Isolation**: Commits must be executed one by one.
   Chaining commands (e.g., `&&`) is FORBIDDEN unless explicitly said by the user.
+  **Rationale**: chaining suppresses the user's opportunity to inspect intermediate
+  state (`git status`, `git diff`) and abort or amend before the next action fires.
 - **Single-Linter Isolation**: Changes related to different linters (e.g.,
   Harper vs. Pylint) MUST NOT be clubbed. Rationale: They serve different
   technical purposes and should be committed separately to ensure maximum
