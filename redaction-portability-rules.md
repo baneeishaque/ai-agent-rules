@@ -302,6 +302,26 @@ operational references where standalone resolution matters. **Never use
 Option C.** See the `redaction-portability` skill §0.2 for treatment
 details and the branch-pinned detection command.
 
+### 1.8 Commit Messages — Standalone-Clone Test Applies
+
+Submodule commit messages are committed artifacts subject to the same
+standalone-clone test as any file. Three allowed reference patterns for
+parent-repo content, in order of preference:
+
+1. **SHA-pinned GitHub URL** — immutable, resolves everywhere.
+2. **Full repo-name + descriptive path** — navigable search hint when
+   URL is impractical.
+3. **Generic prose** — conceptual reference without load-bearing
+   location.
+
+**Forbidden:** parent-repo jargon, relative paths, branch-pinned URLs.
+Message must be self-contained for a reader who clones only the
+submodule.
+
+See the `redaction-portability` skill §0.3 for full treatment with
+examples. Do NOT redefine the three-pattern framework here — refer to
+the skill.
+
 ***
 
 ## 2. The Three String Sensitivity Tiers
