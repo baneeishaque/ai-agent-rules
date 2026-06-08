@@ -21,7 +21,7 @@ protocols defined in [git-operation-rules.md](./git-operation-rules.md).
 
 Before performing any phase, the agent MUST establish reliable working directory handling.
 
-- **Working Directory Targeting (CRITICAL)**: When executing git commands across 
+- **Working Directory Targeting (CRITICAL)**: When executing git commands across
   one or more repositories, use `git -C <path> <command>` exclusively for reliability.
   
   ```bash
@@ -30,14 +30,14 @@ Before performing any phase, the agent MUST establish reliable working directory
   git -C /workspaces/repo-name diff HEAD
   ```
 
-- **Why `git -C` is mandatory**: Shell-level `cd` commands do not persist working 
-  directory state across stateless or multi-invocation execution environments 
-  (including tool chains, CI systems, and agent frameworks). Using `git -C` ensures 
-  every git command executes in the correct repository context regardless of how 
+- **Why `git -C` is mandatory**: Shell-level `cd` commands do not persist working
+  directory state across stateless or multi-invocation execution environments
+  (including tool chains, CI systems, and agent frameworks). Using `git -C` ensures
+  every git command executes in the correct repository context regardless of how
   invocations are orchestrated.
 
-- **Multi-Repository Workflows**: When analyzing or committing changes across 
-  multiple repositories in sequence, always use `git -C` with explicit absolute 
+- **Multi-Repository Workflows**: When analyzing or committing changes across
+  multiple repositories in sequence, always use `git -C` with explicit absolute
   paths to prevent cross-repository contamination:
   
   ```bash
@@ -46,8 +46,8 @@ Before performing any phase, the agent MUST establish reliable working directory
   git -C /repo1 add file.txt  # Executes only in /repo1
   ```
 
-- **Audit Trail Clarity**: Using `git -C /absolute/path` makes command intent 
-  explicit in logs and transcripts, eliminating ambiguity about which repository 
+- **Audit Trail Clarity**: Using `git -C /absolute/path` makes command intent
+  explicit in logs and transcripts, eliminating ambiguity about which repository
   is being operated on.
 
 ***
@@ -56,7 +56,7 @@ Before performing any phase, the agent MUST establish reliable working directory
 
 Before any staging or commit operations, the agent MUST verify the repository's health and branch state.
 
-- **Active Branch Mandate**: The agent MUST NOT commit to a "detached HEAD" state (common in submodules). 
+- **Active Branch Mandate**: The agent MUST NOT commit to a "detached HEAD" state (common in submodules).
 - **Branch Checkout**: If in a detached state, the agent MUST explicitly check out the appropriate branch (usually the default branch, e.g., `main`) before proceeding.
 - **Upstream Synchronization**: The agent MUST ensure the local branch is synchronized with its upstream (e.g., via `git pull`) to avoid conflicts during the push phase.
 - **Build Tool Permissions**: The agent MUST ensure that necessary build tools (e.g., `gradlew`) have appropriate execute permissions before starting the commit process.
@@ -267,6 +267,7 @@ start of every qualifying sequence and verified at end-of-session.
 Pre-existing stashes of unclear origin discovered during inventory MUST
 be classified via the **Git Stash Triage Skill** (`git-stash-triage`)
 before the safety stash is pushed, to prevent stash-stack confusion.
+
 Outbound submodule→parent relative links are intentionally omitted here
 per the Cross-Repository / Submodule Isolation rule
 ([ai-rule-standardization-rules.md §2](./ai-rule-standardization-rules.md)).
@@ -401,7 +402,7 @@ and clear.
   according to these exact atomic construction rules. A "dirty" or
   uncommitted submodule state is prohibited during a parent-repo sync.
 
-*** 
+***
 
 ### 7.1 Ordering & Priority (CRITICAL)
 
@@ -414,7 +415,7 @@ and clear.
   for a stale submodule pointer. If the parent's recorded SHA differs from the
   submodule's HEAD, the parent sync commit becomes the **next atomic unit**.
 
-*** 
+***
 
 ### 7.2 Parent-Side Change Grouping
 
@@ -424,9 +425,9 @@ and clear.
   workflows that reference the submodule, or documentation that describes the
   submodule's new behavior), these changes MAY be combined with the submodule
   SHA sync commit into a single atomic unit.
-  - The combined commit MUST clearly document BOTH the submodule pointer advance
+    - The combined commit MUST clearly document BOTH the submodule pointer advance
     AND the parent-side functional changes in the commit body.
-  - The commit message MUST explain the coupling rationale: e.g., "Skill
+    - The commit message MUST explain the coupling rationale: e.g., "Skill
     implementation for the newly mandated rule" or "CI update to support
     submodule's new behavior."
 - **Unrelated Parent Changes MUST be Separate**: If the parent repository has
@@ -434,7 +435,7 @@ and clear.
   README, updating a different skill), these MUST be staged and committed
   **after** the submodule sync commit completes, as a separate atomic unit.
 
-*** 
+***
 
 ### 7.3 Automatic Parent Sync Offer (MANDATORY)
 
