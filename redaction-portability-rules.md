@@ -285,6 +285,23 @@ correct treatment is one of:
   skill library, if one exists"*) without naming or linking.
 - Move the cross-reference to the org-private side (which IS allowed to link inward).
 
+### 1.7 Submodule→Parent URL References
+
+When a submodule artifact must reference the parent repo in a way that survives
+standalone submodule clone, a relative path (Option A) won't resolve. Choose
+between three options:
+
+| Option | Standalone clone | Stable |
+|---|---|---|
+| **A — Relative path** (`../../<parent>/<path>`) | ❌ Broken | ✅ |
+| **B — SHA-pinned URL** (`https://github.com/<OWNER>/<REPO>/blob/<SHA>/<path>`) | ✅ Resolves | ✅ Pinned |
+| **C — Branch-pinned URL** (`/blob/main/...`) | ✅ Resolves | ❌ Content shifts |
+
+**Recommendation:** Option A for pedagogical references; Option B for
+operational references where standalone resolution matters. **Never use
+Option C.** See the `redaction-portability` skill §0.2 for treatment
+details and the branch-pinned detection command.
+
 ***
 
 ## 2. The Three String Sensitivity Tiers
@@ -374,7 +391,12 @@ A zero-result run is the gate for committing a public-scope change.
 
 ## 7. Versioning
 
-This rule file is at parity with `redaction-portability` skill v2. When the skill
-advances, increment this file in the same commit that updates the skill (per
-[`git-atomic-commit-construction-rules.md`](git-atomic-commit-construction-rules.md)
+| Version | Date | Change |
+|---|---|---|
+| v2 | 2026-05-10 | Parity with skill v2 (three-tier model, placeholder vocabulary, etc.) |
+| v2.1 | 2026-06-09 | Added §1.7 submodule→parent URL reference options, branch-pinned detection, SHA-pinned recommendation |
+
+This rule file is maintained in lock-step with the `redaction-portability` skill
+(in the public `ai-agents` repo). When the skill advances, increment this file in
+the same commit that updates the skill (per [`git-atomic-commit-construction-rules.md`](git-atomic-commit-construction-rules.md)
 §6 Configuration Coupling).
