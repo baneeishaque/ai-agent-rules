@@ -240,6 +240,12 @@ Follow the status markers and include timestamps:
 - **Initial Creation**: Create `task.md` at the start of planning with all top-level items.
 - **Incremental Updates**: Update `task.md` after completing each significant milestone.
 - **Status Markers**: Use `[ ]` for pending, `[/]` for in-progress, and `[x]` for completed items `[YYYY-MM-DD HH:mm]`.
+- **Artifact Location**: All planning artifacts (task.md, implementation plans, walkthroughs) MUST be stored in
+    the **main repository's** `docs/` directory (e.g., `docs/implementation-plans/<date>-<topic>.md`). When
+    `ai-agent-rules/` is a Git submodule, artifacts MUST NOT be placed inside the submodule — doing so scatters
+    planning history into a separate repo's commit graph. The main repo's `docs/` tree is the single source of
+    truth for all planning artifacts.
+- **Artifact Cleanup**: If everything is OK, we can remove the artifacts. The removal needs explicit user confirmation.
 - **Compliance Mandate**: Every generated artifact (task, implementation plan, walkthrough) MUST strictly comply
     with **[Markdown Generation Rules](./markdown-generation-rules.md)** and
     **[Markdown Generation Rules Additions](./markdown-generation-rules-additions.md)**.

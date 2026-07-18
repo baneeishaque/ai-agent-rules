@@ -330,8 +330,10 @@ The content must balance conciseness with technical depth:
 
     "DO NOT block UI"). These MUST be clear, non-ambiguous, and explained as the SSOT for what to avoid.
 
-- **Traceability Portability**: Permanent records MUST be stored in the repository's permanent documentation directory
-    (`ai-agent-rules/docs/`) using a structured hierarchy.
+- **Traceability Portability**: Permanent records MUST be stored in the **main repository's** documentation directory
+    (`docs/`) using a structured hierarchy. When `ai-agent-rules/` is a Git submodule, records MUST NOT be placed
+    inside the submodule — use the main repo's `docs/` tree instead (e.g., `docs/implementation-plans/`,
+    `docs/conversations/`, `docs/walkthroughs/`).
     - **Protocols**: All session or conversation logs MUST follow the protocols defined in
       **[AI Agent Session Documentation Rules](./ai-agent-session-documentation-rules.md)**.
     - **Relative Pathing**: For relative paths, artifact permanence, and link references, follow the
