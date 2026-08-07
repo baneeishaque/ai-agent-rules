@@ -217,6 +217,16 @@ Before presenting a new plan version, the agent **MUST** perform a literal line-
 version. Any dropped task, alert, or requirement MUST be either restored or explicitly listed in the 'Change History'
 with a rationale for its removal. **Summarizing integrated logic from sub-plans is a violation.**
 
+**Verbatim-Superset Construction:** When creating version n of ANY versioned artifact (plan, preview, walkthrough,
+audit-log, summary, skill doc, release notes), the new version MUST be version n-1's text kept verbatim, with version
+n's deltas appended — never rewritten, reworded, reordered, or selectively dropped (even with a Change History
+rationale). Rationale entries in the Change History explain deltas; they do not license removal of previous content.
+The deterministic construction is operationalized by the
+[`versioned-artifact-superset-build`](../.agents/skills/general/planning/versioned-artifact-superset-build/SKILL.md)
+base skill (`scripts/build-version-superset.py`); the
+[`planning-version-coverage-audit`](../.agents/skills/general/planning/planning-version-coverage-audit/SKILL.md)
+audit verifies the result post-hoc.
+
 ### 7.2 Sub-Plan Versioning & Integration Mandate
 
 All planning artifacts, including secondary or 'sub-plans,' MUST follow the versioning mandate (v1, v2, etc.). They
