@@ -22,7 +22,7 @@ jobs:
       MISE_CONFIG_FILE: scripts/mise.toml
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4.4.0
 
       - name: Set up and Verify Mise
         id: mise
