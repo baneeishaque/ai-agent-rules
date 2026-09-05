@@ -6,7 +6,7 @@
     "types": "src/index.ts",
     "dependencies": {
         "rxdb": "15.39.0",
-        "nostr-tools": "2.23.0",
+        "nostr-tools": "2.25.2",
         "rxjs": "7.8.2"
     }
 }
