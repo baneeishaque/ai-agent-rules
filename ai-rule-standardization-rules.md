@@ -227,8 +227,7 @@ The content must balance conciseness with technical depth:
 
 - `/*.md`: Every code file MUST have an adjacent Markdown file explaining the code line-by-line with usage scenarios.
 
-    These explainers MUST be pedagogical and deep, following the strict standards defined in **[Code Documentation
-    Rules](./code-documentation-rules.md)**.
+    These explainers MUST be pedagogical and deep, following the strict standards defined in **`code-explanation` (in the `ai-suite` repository)**.
 
 - **Relative Links**: Documentation and explainers MUST use **Relative Links** (not absolute paths) to ensure the
     rule set remains portable and functional in any local filesystem.

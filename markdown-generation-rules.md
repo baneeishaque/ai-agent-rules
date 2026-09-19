@@ -366,7 +366,7 @@ parent repositories (e.g., `ai-agent-rules` standing alone on GitHub while also 
     ```
 
     Branch-tip URLs (`/blob/main/`, `/blob/master/`) are FORBIDDEN here for the same
-    link-rot reason given in §4.2.1 and in `code-documentation-rules.md` (Git Repo Permalinks).
+    link-rot reason given in §4.2.1 and in `code-explanation` (in the `ai-suite` repository) §6.
 
 - **Preferred host — upstream, not a fork**: The `<org>` segment of an outbound permalink MUST
   point at the **canonical upstream** of the referenced repository, NOT at a personal or

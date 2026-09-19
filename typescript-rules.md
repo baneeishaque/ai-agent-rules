@@ -149,7 +149,7 @@ const val = data['dynamicKey'];
 ## 5. Documentation
 
 Every `tsconfig.json`MUST have an adjacent`tsconfig.json.md` following the
-[Code Documentation Rules](./code-documentation-rules.md). This explainer must include:
+`code-explanation` (in the `ai-suite` repository). This explainer must include:
 
 1. Compliance Assessment table.
 
