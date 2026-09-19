@@ -256,7 +256,7 @@ Follow the status markers and include timestamps:
     truth for all planning artifacts.
 - **Artifact Cleanup**: If everything is OK, we can remove the artifacts. The removal needs explicit user confirmation.
 - **Compliance Mandate**: Every generated artifact (task, implementation plan, walkthrough) MUST strictly comply
-    with **[Markdown Generation Rules](./markdown-generation-rules.md)** and
+    with **[Markdown Generation Skill](https://github.com/baneeishaque/ai-suite/blob/3786486bb54805fde12181bc8db34aaabede3e92/.agents/skills/markdown-generation/SKILL.md)** and
     **[Markdown Generation Rules Additions](./markdown-generation-rules-additions.md)**.
     This includes mandatory verification using `markdownlint-cli` before finalizing any artifact.
 

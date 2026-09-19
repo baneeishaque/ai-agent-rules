@@ -36,7 +36,7 @@ normalized the rule files to ensure explicit cross-references and absolute porta
     improves maintainability.
 - **Rules Followed**:
     - `ai-rule-standardization-rules.md`
-    - `markdown-generation-rules.md`
+    - `markdown-generation` (in the `ai-suite` repository)
     - `markdown-generation-rules-additions.md`
     - `ai-agent-session-documentation-rules.md`
 - **Revision**: Updated `implementation_plan.md` to version v5 to address user questions regarding rule

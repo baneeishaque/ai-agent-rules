@@ -227,7 +227,7 @@ adhere to these principles:
   either assumption fails, the agent MUST defer:
 
     Skill URLs are SHA-pinned hosted-VCS permalinks against the `ai-agents` parent repository, per
-    `markdown-generation-rules.md` §4.2.8 (Cross-Repository / Submodule Isolation Links):
+    [Markdown Generation Skill §4.2.8](https://github.com/baneeishaque/ai-suite/blob/3786486bb54805fde12181bc8db34aaabede3e92/.agents/skills/markdown-generation/SKILL.md#4.2.8) (Cross-Repository / Submodule Isolation Links):
 
     - **`gh` not installed / not on PATH**: use the
       [GitHub REST API Fallback](https://github.com/Baneeishaque/ai-agents/blob/de777420fe2931e8ef43ea7a0aa9b27f7e6bf296/.agents/skills/github-rest-api-fallback/SKILL.md)

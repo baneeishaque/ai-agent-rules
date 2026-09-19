@@ -174,7 +174,7 @@ Follow the single-rule-refinement workflow:
 
 - Workflow detected from commit patterns
 - Frequency: ~8x per month
-- Files: *-rules.md, git-atomic-commit-construction-rules.md, markdown-generation-rules.md
+- Files: *-rules.md, git-atomic-commit-construction-rules.md
 
 ---
 id: ai-agent-rules-workflow-mass-standardization-update
@@ -269,7 +269,7 @@ Use kebab-case naming convention
 ## Evidence
 
 - git-atomic-commit-construction-rules.md
-- markdown-generation-rules.md
+- Markdown Generation Skill (parent repo: [SKILL.md](https://github.com/baneeishaque/ai-suite/blob/3786486bb54805fde12181bc8db34aaabede3e92/.agents/skills/markdown-generation/SKILL.md))
 - ai-agent-planning-rules.md
 
 ---

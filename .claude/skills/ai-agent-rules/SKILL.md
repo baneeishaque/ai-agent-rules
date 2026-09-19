@@ -58,7 +58,7 @@ export default class RuleManager { ... }
 **Trigger:** When enhancing or clarifying specific individual rules  
 **Command:** `/refine-rule`
 
-1. Identify the target rule file (e.g., `markdown-generation-rules.md`)
+1. Identify the target rule file (e.g., `markdown-generation` (in the `ai-suite` repository))
 2. Make focused improvements to content, structure, or clarity
 3. Commit with descriptive message mentioning the specific rule type
 4. Optionally update related templates if the change affects the pattern

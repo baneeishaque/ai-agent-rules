@@ -88,7 +88,7 @@ When processing a `.gitignore` file that contains both standard and custom rules
 
 - **Markdown Standards**: All documentation and rule files MUST adhere to **[Markdown Generation
 
-    Rules](./markdown-generation-rules.md)**.
+    Rules](https://github.com/baneeishaque/ai-suite/blob/69cc4bc0a1e38687f9a64aa97773e043368e9acd/.agents/skills/markdown-generation/SKILL.md)**.
 
 - **Do not mix scopes**: If you are adding OS rules, do not slip in IDE rules in the same commit if they can be
 

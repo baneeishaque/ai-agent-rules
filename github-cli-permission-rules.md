@@ -115,7 +115,7 @@ user approval.
   the task wrapper is a transport, not an escape hatch.
 
 > **Link form**: The skill URLs above are SHA-pinned hosted-VCS permalinks against the `ai-agents`
-> parent repository, per **markdown-generation-rules.md §4.2.8 (Cross-Repository / Submodule Isolation Links)**.
+> parent repository, per **`markdown-generation` (in the `ai-suite` repository)**.
 > Upward relative paths (e.g., `../.agents/...`) are FORBIDDEN inside this submodule because they break
 > when `ai-agent-rules` is consumed standalone.
 

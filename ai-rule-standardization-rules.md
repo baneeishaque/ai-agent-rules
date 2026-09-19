@@ -80,7 +80,7 @@ tasks, or capabilities, the system mandates a **Skill-First** architecture.
 - **Cross-Repository / Submodule Isolation (SSOT)**: When a rule or skill file lives inside a repository that is
   also consumed as a Git submodule of another repository (e.g., `ai-agent-rules` embedded in `ai-agents`), the
   asymmetric link rule defined in
-  **[markdown-generation-rules.md §4.2.8](./markdown-generation-rules.md#428-cross-repository--submodule-isolation-links)**
+  **[Markdown Generation Skill §4.2.8](https://github.com/baneeishaque/ai-suite/blob/3786486bb54805fde12181bc8db34aaabede3e92/.agents/skills/markdown-generation/SKILL.md#428-cross-repository--submodule-isolation-links)**
   applies: inbound (parent → submodule) relative links are allowed; outbound (submodule → parent or sibling)
   relative links are FORBIDDEN and MUST be replaced by SHA-pinned hosted-VCS permalinks. Rule files MUST NOT
   inline this protocol — they MUST defer to §4.2.8 as SSOT.
@@ -242,7 +242,7 @@ The content must balance conciseness with technical depth:
       `markdownlint-cli2 <path>` and `markdownlint-cli2 --fix <path>`). Using `npx markdownlint-cli2` is
       **FORBIDDEN** — it adds startup overhead, masks installation drift, and bypasses the project's pinned tool.
     - **SSOT**: This mandate mirrors and is governed by
-      **[Markdown Generation Rules §5 (Validation Rules)](./markdown-generation-rules.md#5-validation-rules-markdownlint-cli2)**;
+      **[Markdown Generation Skill §5 (Validation Rules)](https://github.com/baneeishaque/ai-suite/blob/3786486bb54805fde12181bc8db34aaabede3e92/.agents/skills/markdown-generation/SKILL.md#5-validation-rules-markdownlint-cli2)**;
       that section is the single source of truth for invocation, install path, and custom-rule resolution.
 
 - **Status Traceability Mandate**: Plans used for rule-building or multi-phase tasks MUST mark completed steps with
@@ -336,7 +336,7 @@ The content must balance conciseness with technical depth:
     - **Protocols**: All session or conversation logs MUST follow the protocols defined in
       **[AI Agent Session Documentation Rules](./ai-agent-session-documentation-rules.md)**.
     - **Relative Pathing**: For relative paths, artifact permanence, and link references, follow the
-      **File References** standards defined in **[Markdown Generation Rules](./markdown-generation-rules.md)**.
+      **File References** standards defined in **[Markdown Generation Skill](https://github.com/baneeishaque/ai-suite/blob/3786486bb54805fde12181bc8db34aaabede3e92/.agents/skills/markdown-generation/SKILL.md)**.
 
 - **Redaction & Portability Mandate (SSOT)**: Every rule file, skill file (`SKILL.md`, `AGENTS.md`), session log,
   case study, and committed artifact authored under these standards MUST be passed through the
@@ -407,7 +407,7 @@ Before finalizing a new rule:
 
 1. **Cross-Reference**: Check for existing rules to avoid duplication.
 
-1. **Lint Check**: Ensure all content complies with **[Markdown Generation Rules](./markdown-generation-rules.md)** and
+1. **Lint Check**: Ensure all content complies with **[Markdown Generation Skill](https://github.com/baneeishaque/ai-suite/blob/3786486bb54805fde12181bc8db34aaabede3e92/.agents/skills/markdown-generation/SKILL.md)** and
     **[Markdown Generation Rules Additions](./markdown-generation-rules-additions.md)**.
 
 1. **Sync Trigger**: Remind the user to trigger the `agent-rules.md` update workflow.

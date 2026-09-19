@@ -87,7 +87,7 @@ Redaction §2 MUST be preferred for all newly authored session logs.
 - **Rule References:** Explicitly list only the rules or protocols referenced or followed during the session.
 
 - **Traceability Standards:** Follow the **File References** standards defined in
-    [Markdown Generation Rules](./markdown-generation-rules.md) and
+    [Markdown Generation Skill](https://github.com/baneeishaque/ai-suite/blob/3786486bb54805fde12181bc8db34aaabede3e92/.agents/skills/markdown-generation/SKILL.md) and
     [Markdown Generation Rules Additions](./markdown-generation-rules-additions.md), including:
 
 - Use relative paths (not absolute `file:///...` paths)
@@ -105,7 +105,7 @@ Redaction §2 MUST be preferred for all newly authored session logs.
 
 - **Lint Check:** Ensure all generated Markdown complies with
 
-    **[Markdown Generation Rules](./markdown-generation-rules.md)** to maintain consistency and lint readiness.
+    **[Markdown Generation Skill](https://github.com/baneeishaque/ai-suite/blob/3786486bb54805fde12181bc8db34aaabede3e92/.agents/skills/markdown-generation/SKILL.md)** to maintain consistency and lint readiness.
 
 - **Summary Table:** At the end, provide a summary table of requirements, actions, and references, but only for
 

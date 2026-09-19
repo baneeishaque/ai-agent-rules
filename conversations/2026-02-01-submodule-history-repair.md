@@ -49,7 +49,7 @@ A plan for rewriting the parent repository history using `git filter-repo` or a 
 
 - Related Rule: **[ai-agent-planning-rules.md](../ai-agent-planning-rules.md)**
 - Related Rule: **[ai-rule-standardization-rules.md](../ai-rule-standardization-rules.md)**
-- Related Rule: **[markdown-generation-rules.md](../markdown-generation-rules.md)**
+- Related Rule: **`markdown-generation` (in the `ai-suite` repository)**
 
 ***
 

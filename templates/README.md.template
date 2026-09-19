@@ -97,7 +97,7 @@ AI-Agent-Rules/
 ├── 📄 agent-rules.md                    # Central index (start here!)
 │
 ├── 📖 Documentation & Standards
-│   └── markdown-generation-rules.md    # Lint-compliant formatting
+│   └── markdown-generation/SKILL.md    # Lint-compliant formatting
 │
 ├── 🧠 Core Agent Rules
 │   ├── ai-agent-planning-rules.md               # Planning & workflow protocols

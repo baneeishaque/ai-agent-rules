@@ -401,7 +401,7 @@ A zero-result run is the gate for committing a public-scope change.
   Cardinal Rule 2 (no relative path may escape the enclosing repo).
 - [`ai-rule-standardization-rules.md`](ai-rule-standardization-rules.md) — every new
   rule MUST be redacted per §1–§4 before commit.
-- [`markdown-generation-rules.md`](markdown-generation-rules.md) — `fileLinkification`
+- [`markdown-generation` (in the `ai-suite` repository)](https://github.com/baneeishaque/ai-suite/blob/69cc4bc0a1e38687f9a64aa97773e043368e9acd/.agents/skills/markdown-generation/SKILL.md) — `fileLinkification`
   section; the public-scope link rule in §1.1 of this file extends those rules with
   the cross-repo-link prohibition.
 - [`git-atomic-commit-construction-rules.md`](git-atomic-commit-construction-rules.md) —

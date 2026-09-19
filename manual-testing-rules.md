@@ -92,7 +92,7 @@ This ensures the test plan serves dual purposes:
 
 **CRITICAL**: All file links MUST use relative paths (e.g., `./KNOWN_BUGS.md`), never absolute paths
 (e.g., `file:///Users/...`). This ensures portability and follows standard markdown conventions per
-`markdown-generation-rules.md`.
+[Markdown Generation Skill](https://github.com/baneeishaque/ai-suite/blob/3786486bb54805fde12181bc8db34aaabede3e92/.agents/skills/markdown-generation/SKILL.md).
 
 ***
 
