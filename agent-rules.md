@@ -78,7 +78,6 @@ This file is a comprehensive, flat index of all rule files in this repository.
 
 | File | Purpose |
 | :--- | :--- |
-| [`code-documentation-rules.md`](./code-documentation-rules.md) | Standards for deep-dive, pedagogical code documentation including adjacent markdown files and various folder patterns. |
 | [`markdown-generation-rules.md`](./markdown-generation-rules.md) | Standards for creating machine-parseable, lint-compliant markdown documents. |
 
 ### Git & Repository Management

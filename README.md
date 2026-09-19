@@ -158,7 +158,6 @@ Follow the guidelines in:
 
 | File | Purpose |
 | :--- | :--- |
-| [`code-documentation-rules.md`](./code-documentation-rules.md) | Standards for deep-dive, pedagogical code documentation including adjacent markdown files and various folder patterns. |
 | [`markdown-generation-rules.md`](./markdown-generation-rules.md) | Standards for creating machine-parseable, lint-compliant markdown documents. |
 
 ### Git & Repository Management
@@ -252,7 +251,6 @@ AI-Agent-Rules/
 ├── 📄 agent-rules.md                    # Central index (start here!)
 │
 ├── 📖 Documentation & Standards
-│   ├── code-documentation-rules.md     # Deep-dive & Pedagogical standards
 │   └── markdown-generation-rules.md    # Lint-compliant formatting
 │
 ├── 🧠 Core Agent Rules
