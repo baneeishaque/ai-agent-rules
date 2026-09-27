@@ -154,12 +154,6 @@ Follow the guidelines in:
 | :--- | :--- |
 | [`flutter-app-development-rules.md`](./flutter-app-development-rules.md) | Rules for Flutter app development, including version pinning with `mise`, dependency management, and mandatory documentation. |
 
-### Documentation & Standards
-
-| File | Purpose |
-| :--- | :--- |
-| [`markdown-generation-rules.md`](./markdown-generation-rules.md) | Standards for creating machine-parseable, lint-compliant markdown documents. |
-
 ### Git & Repository Management
 
 | File | Purpose |
@@ -251,7 +245,7 @@ AI-Agent-Rules/
 ├── 📄 agent-rules.md                    # Central index (start here!)
 │
 ├── 📖 Documentation & Standards
-│   └── markdown-generation-rules.md    # Lint-compliant formatting
+│   └── markdown-generation/SKILL.md    # Lint-compliant formatting
 │
 ├── 🧠 Core Agent Rules
 │   ├── ai-agent-planning-rules.md               # Planning & workflow protocols

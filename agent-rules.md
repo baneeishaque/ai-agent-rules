@@ -74,12 +74,6 @@ This file is a comprehensive, flat index of all rule files in this repository.
 | :--- | :--- |
 | [`flutter-app-development-rules.md`](./flutter-app-development-rules.md) | Rules for Flutter app development, including version pinning with `mise`, dependency management, and mandatory documentation. |
 
-### Documentation & Standards
-
-| File | Purpose |
-| :--- | :--- |
-| [`markdown-generation-rules.md`](./markdown-generation-rules.md) | Standards for creating machine-parseable, lint-compliant markdown documents. |
-
 ### Git & Repository Management
 
 | File | Purpose |
