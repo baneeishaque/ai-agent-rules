@@ -191,17 +191,17 @@ To ensure absolute precision and user control, the agent MUST adhere to these fo
 ### 3.1 Interleaving Mandate (Artifact + Registry Registration)
 
 Whenever a commit introduces or renames an artifact **and** a shared index /
-registry file (e.g., root `AGENTS.md` skills table, `.gitmodules`, CI
+registry file (e.g., `AGENTS-legacy.md` skills table, `.gitmodules`, CI
 workflow manifests) needs a corresponding row or entry for that artifact,
 the registry hunk MUST be **staged in the same commit** as the artifact
 itself — never batched into a separate "registration" commit at the end.
 
 This applies equally to:
 
-- **New skills**: the root `AGENTS.md` row for the skill belongs in the
+- **New skills**: the `AGENTS-legacy.md` row for the skill belongs in the
   same commit as the skill's `SKILL.md` / `scripts/` files.
 - **Submodule pointer advances**: the `.gitmodules` URL change and any root
-  `AGENTS.md` row referencing the submodule belong in the same commit as
+  `AGENTS-legacy.md` row referencing the submodule belong in the same commit as
   the submodule sync (per §7.2).
 - **Any artifact with a shared index entry**: treat the index row as part of
   the artifact's definition, not as metadata to be collected last.
@@ -217,7 +217,7 @@ for this artifact, some unrelated):
    or a later dedicated session.
 
 Forbidden anti-pattern: "commit all artifacts first, then one final commit
-registers them all in AGENTS.md" — this destroys per-feature traceability
+registers them all in AGENTS-legacy.md" — this destroys per-feature traceability
 and makes individual commits incomplete (the skill exists but is not
 discoverable until a later commit).
 
