@@ -58,7 +58,7 @@ Before any staging or commit operations, the agent MUST verify the repository's 
 
 - **Active Branch Mandate**: The agent MUST NOT commit to a "detached HEAD" state (common in submodules).
 - **Branch Checkout**: If in a detached state, the agent MUST explicitly check out the appropriate branch (usually the default branch, e.g., `main`) before proceeding.
-- **Upstream Synchronization**: The agent MUST ensure the local branch is synchronized with its upstream (e.g., via `git pull`) to avoid conflicts during the push phase.
+- **Upstream Synchronization**: The agent MUST ensure the local branch is synchronized with its upstream (e.g., via `git pull`) to avoid conflicts during the push phase. This planning-stage check goes stale — it does NOT replace the mandatory Phase 10 Pre-Commit Sync Refresh before every commit.
 - **Build Tool Permissions**: The agent MUST ensure that necessary build tools (e.g., `gradlew`) have appropriate execute permissions before starting the commit process.
 
 ***
@@ -530,6 +530,13 @@ into separate commits.
 
 - **Step-by-Step**: Execute commits one-by-one according to the approved
   arrangement.
+- **Pre-Commit Sync Refresh (Mandatory before every commit)**: The Phase 1
+  upstream check goes stale. After staging verification and BEFORE each
+  `git commit`, run `git fetch origin` (non-mutating) and compare `HEAD`
+  against `origin/<branch>`. If behind, STOP — do not commit; ask the user
+  whether to `git pull --rebase` or merge (pull/rebase requires explicit
+  approval per git-operation-rules.md), and commit only after sync. Repeat
+  before EVERY commit in a sequence, not just the first.
 - **History Refinement**: If existing commits need to be split or refined
   (e.g., to fix non-atomic changes), follow the **[Git History Refinement
   Rules](./git-history-refinement-rules.md)**.
